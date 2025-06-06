@@ -26,3 +26,16 @@ For each key, provide:
 | Grammar & Syntax | Grammatical correctness, tense consistency, punctuation, sentence structure fluency |  
 | Structure & Flow | Logical progression, paragraph transitions, thematic cohesion, argument sequencing |  
 '''
+
+extract_resume = f'''
+your task is to extract json with keys
+  "name",
+  "contact",
+  "education",
+  "experience",
+  "certifications",
+  "projects",
+  "skills"
+
+from resume text. if information in resume is incomplete based on the keys, keep the values of key empty.
+'''
