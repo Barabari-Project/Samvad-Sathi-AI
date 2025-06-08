@@ -25,19 +25,8 @@ extract_resume_agent = Agent(
     instructions=extract_resume,
 )
 
-app = FastAPI()
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
 class TextRequest(BaseModel):
     text: str
-
-@app.post('/check-language')
-async def check_lang(payload: TextRequest):
-    result = await Runner.run(language_agent,"**Text to Analyze** \n  {payload.text}")
-    return {"feedback":result.final_output}
 
 def extract_json_dict(text: str) -> dict:
     try:
@@ -47,6 +36,20 @@ def extract_json_dict(text: str) -> dict:
         return json.loads(json_str)
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON found: {e}")
+
+
+app = FastAPI()
+
+@app.get("/")
+async def read_root():
+    return {"Hello": "World"}
+
+    
+@app.post('/check-language')
+async def check_lang(payload: TextRequest):
+    result = await Runner.run(language_agent,"**Text to Analyze** \n  {payload.text}")
+    result = extract_json_dict(result.final_output)
+    return {"feedback":result}
 
 @app.post("/extract-resume")
 async def extract_text_from_pdf(file: UploadFile = File(...)):
@@ -69,5 +72,9 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
         return JSONResponse(content={"json-resume":dic})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
+    
+    
+# @app.post("/gen-questions")
+# async def gen_questions()
     
 
