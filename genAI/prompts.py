@@ -40,3 +40,28 @@ your task is to extract json with keys
 from resume text. if information in resume is incomplete based on the keys, keep the values of key empty.
 '''
 
+gen_question_template='''
+Role: Expert interviewer for {target_role}.
+
+Context:
+- Candidate Profile: {relevent_info}
+{job_highlights}
+
+TASK: 
+genarate n = {n} interview questions following the instructions.
+
+Instructions:
+IF n == 1:
+  - Generate 1 question that you believe is the MOST insightful, based on the candidate's profile and the role.
+  - The question can be technical, behavioral, or resume-specific.
+ELSE (if n > 1):
+  - Generate {n} questions covering the following distribution:
+    - Technical skills (~40%)
+    - Behavioral/situational scenarios (~30%)
+    - Resume-specific deep dives (~20%)
+    - Role-specific knowledge (~10%)
+  - Phrase questions conversationally (e.g., "Tell me about a time...").
+  - Include 1-2 challenge questions targeting experience gaps.
+
+Output format: JSON list with "question" and "category" keys.
+'''
