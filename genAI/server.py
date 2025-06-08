@@ -65,7 +65,9 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
         json_str = await Runner.run(extract_resume_agent,text)
         json_str = json_str.final_output
         dic = extract_json_dict(json_str)
-        json_str = {k: str(v) for k, v in dic.items()}
-        return JSONResponse(content={"json-resume":json_str})
+        # json_str = {k: str(v) for k, v in dic.items()}
+        return JSONResponse(content={"json-resume":dic})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
+    
+
