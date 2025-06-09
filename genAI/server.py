@@ -37,6 +37,9 @@ class TextRequest(BaseModel):
     
 class dictRequest(BaseModel):
     dic : dict
+    
+class intRequest(BaseModel):
+    num : int
 
 def extract_json_dict(text: str):
     try:
@@ -62,7 +65,6 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World"}
 
-    
 @app.post('/check-language')
 async def check_lang(payload: TextRequest):
     result = await Runner.run(language_agent,"**Text to Analyze** \n  {payload.text}")
@@ -93,8 +95,8 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
     
     
 @app.post("/gen-questions")
-async def gen_questions(user_profile:dictRequest,target_job:TextRequest,job_description:Optional[TextRequest] = Body(default=None)):
-    n = '1'
+async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_of_ques:intRequest,job_description:Optional[TextRequest] = Body(default=None)):
+    n = str(number_of_ques.num)
     if job_description:
         job_description = "- Job Requirements: " + job_description.text
     else:
@@ -105,8 +107,4 @@ async def gen_questions(user_profile:dictRequest,target_job:TextRequest,job_desc
     result = result.final_output
     json = extract_json_dict(result)
     return JSONResponse(content=json)
-    # print(user_profile.dic)
-    # print
-    # return {"Hello": "World"}
-    
 
