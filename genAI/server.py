@@ -10,9 +10,13 @@ import PyPDF2
 import io
 import json
 import re
+from deepgram import DeepgramClient, PrerecordedOptions, FileSource
+import time
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
+dg_client = DeepgramClient(DEEPGRAM_API_KEY)
 
 language_agent = Agent(
     name="language_agent",
@@ -108,3 +112,25 @@ async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_o
     json = extract_json_dict(result)
     return JSONResponse(content=json)
 
+
+@app.post("/transcribe")
+async def transcribe_audio(file: UploadFile = File(...)):
+    if not file.filename.lower().endswith(".mp3"):
+        raise HTTPException(status_code=400, detail="Only .mp3 files are supported.")
+
+    audio_bytes = await file.read()
+    payload: FileSource = {"buffer": audio_bytes}
+
+    options = PrerecordedOptions(
+        model="nova-2",       
+        smart_format=True
+    )
+
+    try:
+        t1 = time.time()
+        response = dg_client.listen.rest.v("1").transcribe_file(payload, options)
+        t1 = time.time() - t1
+        transcript = response["results"]["channels"][0]["alternatives"][0]["transcript"]
+        return JSONResponse(content={"transcript": transcript,"time":t1,"chars per sec":len(transcript)/t1})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
