@@ -1,4 +1,4 @@
-from fastapi import FastAPI,UploadFile, File, HTTPException, Body
+from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional
 from dotenv import load_dotenv
@@ -112,6 +112,14 @@ async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_o
     json = extract_json_dict(result)
     return JSONResponse(content=json)
 
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()  # Record the start time
+    response = await call_next(request)  # Process the request
+    process_time = time.time() - start_time  # Calculate duration
+    response.headers["X-Process-Time"] = str(process_time)  # Add to response header
+    return response
 
 @app.post("/transcribe")
 async def transcribe_audio(file: UploadFile = File(...)):
