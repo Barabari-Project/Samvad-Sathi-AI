@@ -1,4 +1,4 @@
-check_language=f'''
+analyze_text_template='''
 **System Role**  
 Act as a linguistic analysis expert. Evaluate the user-provided text across four key dimensions:  
 1. **Clarity**  
@@ -27,7 +27,7 @@ For each key, provide:
 | Structure & Flow | Logical progression, paragraph transitions, thematic cohesion, argument sequencing |  
 '''
 
-extract_resume = f'''
+extract_resume_template = f'''
 your task is to extract json with keys
   "name",
   "contact",
@@ -64,4 +64,41 @@ ELSE (if n > 1):
   - Include 1-2 challenge questions targeting experience gaps.
 
 Output format: JSON list with "question" and "category" keys.
+'''
+
+
+analyze_answer_template='''
+Role: Expert Interview Analyst
+Context:
+
+- Target Role: {job_title}
+- Seniority Level: {level}
+- User's resume: {user_profile}
+ 
+- Question: "{interview_question}"
+
+Candidate Response: "{user_response}"
+
+Evaluation Tasks:
+
+1. Rate each dimension 1-5 (5=excellent):
+    - Relevance: _
+    - Completeness: _
+    - Clarity: _
+    - Depth: _
+    - Authenticity: _
+    - Skill Demonstration: _
+2. Identify top 2 strengths with specific examples
+3. Identify top 2 improvement areas with actionable advice
+4. Provide overall feedback (1-2 sentences)
+5. Generate follow-up question (if needed)
+
+Output Format (JSON):
+{{
+"scores": {{dimension: score}},
+"strengths": ["strength1", "strength2"],
+"improvements": ["advice1", "advice2"],
+"overall_feedback": "text",
+"follow_up_question": "text"
+}}
 '''

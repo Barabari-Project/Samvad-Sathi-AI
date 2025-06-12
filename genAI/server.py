@@ -1,50 +1,50 @@
 from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 from typing import Optional
 from dotenv import load_dotenv
 import os
 from agents import Agent,Runner
-from prompts import check_language,extract_resume,gen_question_template
+from prompts import extract_resume_template,gen_question_template,analyze_text_template,analyze_answer_template
 from pydantic import BaseModel
 import PyPDF2
 import io
 import json
+from json import JSONDecodeError
 import re
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 import time
 from fastapi.middleware.cors import CORSMiddleware
+from openai import OpenAI
 
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
-dg_client = DeepgramClient(DEEPGRAM_API_KEY)
+dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-language_agent = Agent(
-    name="language_agent",
-    model="gpt-4o-mini",
-    instructions=check_language,
-)
-
-extract_resume_agent = Agent(
-    name="extract resume",
-    model="gpt-4o-mini",
-    instructions=extract_resume,
-)
-
-gen_questions_agent = Agent(
-    name="questions genarator",
-    model="gpt-4o-mini",
-    instructions="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format.",
-)
-
+def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperature: float = 0.7) -> str:
+    try:
+        messages = []
+        if system:
+            messages = [{"role":"system","content":system}]
+        messages.append({"role": "user", "content": prompt})
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=messages
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"Error in call_llm func: {e}"
+    
 class TextRequest(BaseModel):
     text: str
     
 class dictRequest(BaseModel):
-    dic : dict
+    profile : dict
     
 class intRequest(BaseModel):
     num : int
+
+    
     
 def extract_json_dict(text: str):
     try:
@@ -86,12 +86,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post('/check-language')
-async def check_lang(payload: TextRequest):
-    result = await Runner.run(language_agent,"**Text to Analyze** \n  {payload.text}")
-    result = extract_json_dict(result.final_output)
-    return {"feedback":result}
-
 @app.post("/extract-resume")
 async def extract_text_from_pdf(file: UploadFile = File(...)):
     if not file.filename.endswith(".pdf"):
@@ -106,15 +100,13 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
             text += page.extract_text() or ""
 
         text = text.strip()
-        json_str = await Runner.run(extract_resume_agent,text)
-        json_str = json_str.final_output
+        json_str = call_llm(system=extract_resume_template,prompt=text)
         dic = extract_json_dict(json_str)
         # json_str = {k: str(v) for k, v in dic.items()}
         return JSONResponse(content=dic)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
-    
-    
+        
 @app.post("/gen-questions")
 async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_of_ques:intRequest,job_description:Optional[TextRequest] = Body(default=None)):
     n = str(number_of_ques.num)
@@ -122,13 +114,11 @@ async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_o
         job_description = "- Job Requirements: " + job_description.text
     else:
         job_description = ''
-    prompt = gen_question_template.format(n=n,relevent_info=str(user_profile.dic),job_highlights=job_description,target_role=target_job.text)
-
-    result = await Runner.run(gen_questions_agent,prompt)
-    result = result.final_output
-    json = extract_json_dict(result)
-    return JSONResponse(content=json)
-
+    prompt = gen_question_template.format(n=n,relevent_info=str(user_profile.profile),job_highlights=job_description,target_role=target_job.text)
+    system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
+    result = call_llm(system=system,prompt=prompt)
+    ex_json = extract_json_dict(result)
+    return JSONResponse(content=ex_json)
 
 @app.post("/transcribe")
 async def transcribe_audio(file: UploadFile = File(...)):
@@ -188,8 +178,7 @@ async def extract_resume_and_gen_questions(
         text = text.strip()
         
         # Extract structured resume data using the agent
-        json_str = await Runner.run(extract_resume_agent, text)
-        json_str = json_str.final_output
+        json_str = call_llm(system=extract_resume_template,prompt=text)
         resume_data = extract_json_dict(json_str)
         
         # Step 2: Generate questions based on extracted resume data
@@ -208,7 +197,8 @@ async def extract_resume_and_gen_questions(
         )
         
         # Generate questions using the agent
-        result = await Runner.run(gen_questions_agent, prompt)
+        system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
+        result = call_llm(system=system,prompt=prompt)
         result = result.final_output
         questions_data = extract_json_dict(result)
         
@@ -230,3 +220,39 @@ async def extract_resume_and_gen_questions(
             status_code=500, 
             detail=f"Failed to process resume and generate questions: {str(e)}"
         )
+        
+@app.post('/analyse-text')
+async def analyse_text_response(payload: TextRequest):
+    '''
+        Evaluate the user-provided text across four key dimensions:  
+        1. Clarity 
+        2. Vocabulary richness  
+        3. Grammar & syntax  
+        4. Structure & flow  
+    '''
+    result = call_llm(system=analyze_text_template,prompt=payload.text)
+    result = extract_json_dict(result)
+    return {"feedback":result}
+
+
+class AnalyseAnswerRequest(BaseModel):
+    question : str
+    answer : str
+    target_job_role : str
+    seniority_level : str
+    
+@app.post("/analyse-answer")
+async def analyse_answer(user_profile:dictRequest = Body(...), payload: AnalyseAnswerRequest = Body(...)):
+    user_profile = user_profile.profile
+    user_profile.pop('name')
+    user_profile.pop('contact')
+    user_profile = str(user_profile)
+    
+    prompt = analyze_answer_template.format(job_title=payload.target_job_role,
+                                          level=payload.seniority_level,
+                                          user_profile=user_profile,
+                                          interview_question=payload.question,
+                                          user_response=payload.answer)
+    response = call_llm(prompt=prompt)
+    json_res = extract_json_dict(response)
+    return JSONResponse(content=json_res)
