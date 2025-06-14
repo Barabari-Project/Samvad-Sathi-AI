@@ -81,7 +81,7 @@ if __name__ == "__main__":
     # IMPORTANT: Replace this with the actual path to your audio file.
     # The file should be in a standard format like .wav, .mp3, .flac, etc.
     # For best results, use a .wav file with a 16kHz sample rate.
-    audio_file = "harvard.wav" # <--- CHANGE THIS
+    audio_file = "audio.wav" # <--- CHANGE THIS
 
     # Create a dummy audio file for demonstration if it doesn't exist.
     if audio_file == "your_audio_file.wav" and not os.path.exists(audio_file):

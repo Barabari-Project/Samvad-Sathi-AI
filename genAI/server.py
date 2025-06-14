@@ -16,6 +16,7 @@ from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 import time
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
+import openai
 
 load_dotenv()
 dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
@@ -120,7 +121,7 @@ async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_o
     ex_json = extract_json_dict(result)
     return JSONResponse(content=ex_json)
 
-@app.post("/transcribe")
+@app.post("/transcribe_nova_3")
 async def transcribe_audio(file: UploadFile = File(...)):
     if not file.filename.lower().endswith(".mp3"):
         raise HTTPException(status_code=400, detail="Only .mp3 files are supported.")
@@ -130,7 +131,11 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
     options = PrerecordedOptions(
         model="nova-3",       
-        smart_format=False
+        smart_format=False,
+        filler_words=True,
+        language="multi",
+        punctuate=False,
+        utterances=True,
     )
 
     try:
@@ -141,6 +146,31 @@ async def transcribe_audio(file: UploadFile = File(...)):
         return JSONResponse(content={"transcript": transcript,"time":t1,"chars per sec":len(transcript)/t1})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
+    
+@app.post("/transcribe_whisper")
+async def transcribe_audio(file: UploadFile = File(...)):
+    # Validate file extension
+    if not file.filename.lower().endswith((".mp3", ".wav", ".m4a", ".flac")):
+        raise HTTPException(status_code=400, detail="Unsupported audio format")
+    
+    audio_bytes = await file.read()
+    buffer = io.BytesIO(audio_bytes)
+    buffer.name = file.filename  # Vital for OpenAI to accept it :contentReference[oaicite:2]{index=2}
+
+    try:
+        transcription = client.audio.transcriptions.create(
+        model="whisper-1", 
+        file=buffer, 
+        response_format="verbose_json", # verbose_json
+        prompt="matlab, jaise ki, vagera-vagera, I'm like,you know what I mean, kind of, um, ah, huh, and so, so um, uh, and um, like um, so like, like it's, it's like, i mean, yeah, ok so, uh so, so uh, yeah so, you know, it's uh, uh and, and uh, like, kind",
+        timestamp_granularities=["word"]
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
+
+    return JSONResponse(content=transcription.model_dump())
+    
 
 @app.post("/extract-resume-and-gen-questions")
 async def extract_resume_and_gen_questions(
@@ -199,7 +229,6 @@ async def extract_resume_and_gen_questions(
         # Generate questions using the agent
         system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
         result = call_llm(system=system,prompt=prompt)
-        result = result.final_output
         questions_data = extract_json_dict(result)
         
         # Step 3: Return combined response

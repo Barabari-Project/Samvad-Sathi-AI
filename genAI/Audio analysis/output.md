@@ -140,7 +140,9 @@ This analysis points to a speaker with a deep, male-range voice who speaks with 
 * **Speech Rate and Pacing:**
     * The pacing is **clear and steady**. The speaker articulates at a normal rate (`VoicedSegmentsPerSec`: 2.35), with a fairly even balance between spoken phrases and short pauses. This suggests a fluid delivery without noticeable rushing or long hesitations.
 
-**In summary: The speaker sounds like a man with a deep, slightly breathy voice who speaks clearly and confidently, using dynamic changes in volume to engage the listener.**
+**In summary: The speaker sounds like a man with a deep, slightly breathy voice who speaks clearly and confidently, using dynamic changes in volume to engage the listener.
 
-
-
+**Takeaways from the meeting 👉💬 
+[ ] Explore ways to improve the prompting and feedback generation using the extracted audio and text features. (Ahan M R)
+[ ] Benchmark the current performance of the tool and identify areas for improvement. (Smit Shah)
+[ ] Finalize the MVP/POC version of the tool and plan for the next phase of development. (Drumil Akhenia)
