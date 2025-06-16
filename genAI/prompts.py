@@ -67,38 +67,47 @@ Output format: JSON list with "question" and "category" keys.
 '''
 
 
-analyze_answer_template='''
+analyze_answer_template = '''
 Role: Expert Interview Analyst
 Context:
+- Target Role: {job_title} (Seniority: {level})
+- User's Resume Profile: "{user_profile}"
 
-- Target Role: {job_title}
-- Seniority Level: {level}
-- User's resume: {user_profile}
- 
-- Question: "{interview_question}"
-
-Candidate Response: "{user_response}"
+- Interview Question: "{interview_question}"
+- Candidate Response: "{user_response}"
 
 Evaluation Tasks:
+1. Rate dimensions 1-5 (5=excellent) **relative to profile and role expectations**:
+   - **Profile Alignment**: How well response maps to resume skills/experience (5=direct evidence)
+   - **Role Relevance**: Fit for {job_title} responsibilities (5=perfect match)
+   - **Seniority Appropriateness**: Depth expected for {level} level (5=exceeds level)
+   - **Evidence Quality**: Specificity of examples from profile (5=quantifiable proof)
+   - **Growth Demonstration**: Shows progression beyond resume (5=clear evolution)
 
-1. Rate each dimension 1-5 (5=excellent):
-    - Relevance: _
-    - Completeness: _
-    - Clarity: _
-    - Depth: _
-    - Authenticity: _
-    - Skill Demonstration: _
-2. Identify top 2 strengths with specific examples
-3. Identify top 2 improvement areas with actionable advice
-4. Provide overall feedback (1-2 sentences)
-5. Generate follow-up question (if needed)
+2. Strengths (Top 2): 
+   - Focus on **profile-specific advantages** (e.g., "Leveraged [resume skill] effectively in...")
+   - Highlight **role-critical strengths** (e.g., "Demonstrated {job_title}-critical skill in...")
+
+3. Improvements (Top 2):
+   - **Profile-grounded advice** (e.g., "Expand on [resume bullet point] with metrics...")
+   - **Role-specific gaps** (e.g., "For {level} role, add strategic perspective on...")
+
+4. Overall Feedback: Directly address **profile-to-role fit** (1-2 sentences)
+
+5. Follow-up Question: Probe **profile/role contradictions** or **resume opportunities**
 
 Output Format (JSON):
 {{
-"scores": {{dimension: score}},
-"strengths": ["strength1", "strength2"],
-"improvements": ["advice1", "advice2"],
-"overall_feedback": "text",
-"follow_up_question": "text"
+  "scores": {{
+    "Profile Alignment": _,
+    "Role Relevance": _,
+    "Seniority Appropriateness": _,
+    "Evidence Quality": _,
+    "Growth Demonstration": _
+  }},
+  "strengths": ["[Profile-specific strength] + resume evidence", "[Role-critical strength]"],
+  "improvements": ["[Profile-specific advice] + resume reference", "[Seniority-level gap]"],
+  "overall_feedback": "Explicit profile/role fit assessment",
+  "follow_up_question": "Question targeting resume/role alignment"
 }}
 '''
