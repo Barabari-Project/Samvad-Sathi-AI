@@ -15,7 +15,7 @@ Return JSON format with these keys:
 
 For each key, provide:  
 - `score` (1-5 scale: 1=Poor, 5=Excellent)  
-- `rationale` (2-3 sentence explanation with evidence, also )  
+- `rationale` (2-3 sentence explanation with evidence, also make sure it is Easy-to-understand English)  
 - `quotes` (1-3 representative text excerpts illustrating the assessment)  
 
 **Analysis Guidelines**  
