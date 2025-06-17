@@ -66,6 +66,10 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World"}
 
+@app.get("/abc"):
+async def read_abc():
+    return {"Hello":"ABC"}
+
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()  
