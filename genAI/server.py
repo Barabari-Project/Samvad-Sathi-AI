@@ -1,22 +1,17 @@
 from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
-from starlette.middleware.base import BaseHTTPMiddleware
 from typing import Optional
 from dotenv import load_dotenv
-import os
-from agents import Agent,Runner
 from prompts import extract_resume_template,gen_question_template,analyze_text_template,analyze_answer_template
 from pydantic import BaseModel
 import PyPDF2
-import io
-import json
-from json import JSONDecodeError
-import re
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
-import time
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
-import openai
+import json
+import time
+import io
+import os
 
 load_dotenv()
 dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
