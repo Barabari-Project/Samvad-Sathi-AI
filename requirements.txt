@@ -4,3 +4,4 @@ python-dotenv
 PyPDF2
 deepgram-sdk
 openai
+g2p-en
