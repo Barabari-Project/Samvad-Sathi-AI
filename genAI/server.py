@@ -8,6 +8,7 @@ import PyPDF2
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
+from g2p_en import G2p
 import json
 import time
 import io
@@ -16,6 +17,7 @@ import os
 load_dotenv()
 dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+g2p = G2p()
 
 def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperature: float = 0.7) -> str:
     try:
@@ -66,7 +68,7 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World"}
 
-@app.get("/abc"):
+@app.get("/abc")
 async def read_abc():
     return {"Hello":"ABC"}
 
@@ -164,11 +166,16 @@ async def transcribe_audio(file: UploadFile = File(...)):
         prompt="matlab, jaise ki, vagera-vagera, I'm like,you know what I mean, kind of, um, ah, huh, and so, so um, uh, and um, like um, so like, like it's, it's like, i mean, yeah, ok so, uh so, so uh, yeah so, you know, it's uh, uh and, and uh, like, kind",
         timestamp_granularities=["word"]
         )
+        transcription = transcription.model_dump()
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
+    
+    phonemes = g2p(transcription['text'])
 
-    return JSONResponse(content=transcription.model_dump())
+    transcription["expected phonems"] = "".join(phonemes)
+    
+    return JSONResponse(content=transcription)
     
 
 @app.post("/extract-resume-and-gen-questions")
