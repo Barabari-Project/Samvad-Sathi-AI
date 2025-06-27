@@ -2,7 +2,7 @@ from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional
 from dotenv import load_dotenv
-from prompts import extract_resume_template,gen_question_template,analyze_text_template,analyze_answer_template
+from prompts import extract_resume_template,gen_question_template,analyze_text_template,analyze_answer_template,extract_knowledge_set_template
 from pydantic import BaseModel
 import PyPDF2
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
@@ -13,25 +13,36 @@ import json
 import time
 import io
 import os
+from sarvamai import SarvamAI
+from paralinguistic import provide_pace_feedback
 
 load_dotenv()
+Sarvam_client = SarvamAI(
+    api_subscription_key=os.getenv("SARVAM_API_KEY"),
+)
+
 dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 g2p = G2p()
 
 def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperature: float = 0.7) -> str:
-    try:
-        messages = []
-        if system:
-            messages = [{"role":"system","content":system}]
-        messages.append({"role": "user", "content": prompt})
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=messages
-        )
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        return f"Error in call_llm func: {e}"
+    messages = []
+    if system:
+        messages = [{"role":"system","content":system}]
+    messages.append({"role": "user", "content": prompt})
+    if model == "gpt-4o-mini" or model == "gpt-4o":
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=messages
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            return f"Error in call_llm func: {e}"
+    elif model == "sarvam":
+        response = Sarvam_client.chat.completions(messages=messages,max_tokens=10_000)
+        response = response.choices[0].message.content
+        return response
     
 class TextRequest(BaseModel):
     text: str
@@ -68,10 +79,6 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World"}
 
-@app.get("/abc")
-async def read_abc():
-    return {"Hello":"ABC"}
-
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()  
@@ -104,7 +111,6 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
         text = text.strip()
         json_str = call_llm(system=extract_resume_template,prompt=text)
         dic = extract_json_dict(json_str)
-        # json_str = {k: str(v) for k, v in dic.items()}
         return JSONResponse(content=dic)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
@@ -147,7 +153,8 @@ async def transcribe_audio(file: UploadFile = File(...)):
         return JSONResponse(content={"transcript": transcript,"time":t1,"chars per sec":len(transcript)/t1})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
-    
+
+# 
 @app.post("/transcribe_whisper")
 async def transcribe_audio(file: UploadFile = File(...)):
     # Validate file extension
@@ -156,7 +163,7 @@ async def transcribe_audio(file: UploadFile = File(...)):
     
     audio_bytes = await file.read()
     buffer = io.BytesIO(audio_bytes)
-    buffer.name = file.filename  # Vital for OpenAI to accept it :contentReference[oaicite:2]{index=2}
+    buffer.name = file.filename
 
     try:
         transcription = client.audio.transcriptions.create(
@@ -170,10 +177,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
-    
-    phonemes = g2p(transcription['text'])
-
-    transcription["expected phonems"] = "".join(phonemes)
     
     return JSONResponse(content=transcription)
     
@@ -291,3 +294,21 @@ async def analyse_answer(user_profile:dictRequest = Body(...), payload: AnalyseA
     response = call_llm(prompt=prompt)
     json_res = extract_json_dict(response)
     return JSONResponse(content=json_res)
+
+@app.post('/get_knowledgeset')
+async def get_knowledgeset(user_profile:dictRequest = Body(...)):
+    user_profile = user_profile.profile
+    skills = user_profile.pop('skills')
+    skills = str(skills)
+    prompt = extract_knowledge_set_template.format(skills=skills)
+    res = call_llm(prompt=prompt)
+    res = extract_json_dict(res)
+    return JSONResponse(content=res)
+
+@app.post('/paralinguistic')
+async def measure_paralinguistic_features(words:dictRequest = Body()):
+    words = words.profile
+
+    res = provide_pace_feedback(words)
+    
+    return JSONResponse(content={"feedback":res})

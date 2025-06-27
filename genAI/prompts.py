@@ -38,6 +38,7 @@ your task is to extract json with keys
   "skills"
 
 from resume text. if information in resume is incomplete based on the keys, keep the values of key empty.
+make sure to extract all projects from resume irrespective to the heading under which its mentioned
 '''
 
 gen_question_template='''
@@ -66,7 +67,11 @@ ELSE (if n > 1):
 Output format: JSON list with "question" and "category" keys.
 '''
 
-
+# technincal depth and techninal relevenace , Seniority Appropriateness
+# elaborate on Seniority
+# YOE instead of level for Seniority Appropriateness
+# response should change according to the catagory of question
+# analyze_answer_template for overall interview
 analyze_answer_template = '''
 Role: Expert Interview Analyst
 Context:
@@ -77,7 +82,7 @@ Context:
 - Candidate Response: "{user_response}"
 
 Evaluation Tasks:
-1. Rate dimensions 1-5 (5=excellent) **relative to profile and role expectations**:
+1. Rate dimensions Score:(1-5) (5=excellent) **relative to profile and role expectations**:
    - **Profile Alignment**: How well response maps to resume skills/experience (5=direct evidence)
    - **Role Relevance**: Fit for {job_title} responsibilities (5=perfect match)
    - **Seniority Appropriateness**: Depth expected for {level} level (5=exceeds level)
@@ -109,5 +114,16 @@ Output Format (JSON):
   "improvements": ["[Profile-specific advice] + resume reference", "[Seniority-level gap]"],
   "overall_feedback": "Explicit profile/role fit assessment",
   "follow_up_question": "Question targeting resume/role alignment"
+}}
+'''
+
+extract_knowledge_set_template = '''
+list down top 5 core/important concepts from all the given skill in form of json  
+{skills}
+
+respond in json format:
+{{
+"skill1":[concept1,concept2,concept3 ...]
+"skill2:[...]
 }}
 '''
