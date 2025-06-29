@@ -14,8 +14,8 @@ import time
 import io
 import os
 from sarvamai import SarvamAI
-from genAI.pacing import provide_pace_feedback
-from genAI.pauses import analyze_pauses
+from pacing import provide_pace_feedback
+from pauses import analyze_pauses
 
 load_dotenv()
 Sarvam_client = SarvamAI(
@@ -306,7 +306,7 @@ async def get_knowledgeset(user_profile:dictRequest = Body(...)):
     res = extract_json_dict(res)
     return JSONResponse(content=res)
 
-@app.post('/misspronounciation-analysis')
+@app.post('/pace-analysis')
 async def measure_paralinguistic_features(words:dictRequest = Body()):
     words = words.profile
 

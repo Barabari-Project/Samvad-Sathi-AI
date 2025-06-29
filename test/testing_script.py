@@ -5,13 +5,13 @@ import os
 from tqdm import tqdm
 
 # Paths and URLs
-CSV_PATH = "Test_Cases.csv" # path to Samvad Sathi Test Cases
+CSV_PATH = "Test_Cases.csv"
 AUDIO_DIR = "audios"
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
-# Endpoint URLs
+# API Endpoints
 URL1 = "http://localhost:8000/transcribe_whisper"
-URL2 = "http://localhost:8000/misspronounciation-analysis"
+URL2 = "http://localhost:8000/pace-analysis"
 URL3 = "http://localhost:8000/pauses-analysis"
 
 # Load CSV
@@ -34,6 +34,7 @@ def get_gdrive_file_id(url):
 def download_audio(drive_url, filename):
     file_id = get_gdrive_file_id(drive_url)
     if file_id:
+        print(f"[INFO] Downloading from Google Drive: {file_id}")
         gdown.download(f"https://drive.google.com/uc?id={file_id}", filename, quiet=False)
         return os.path.exists(filename)
     return False
@@ -42,38 +43,54 @@ def download_audio(drive_url, filename):
 for i, row in tqdm(df.iterrows(), total=len(df)):
     url = row.get("Drive link (male)")
     if pd.isna(url) or url.strip() == "":
+        print(f"[SKIP] Row {i}: No drive link found.")
         continue
 
     audio_path = os.path.join(AUDIO_DIR, f"audio_{i}.wav")
 
+    print(f"\n[PROCESSING] Row {i} - Downloading Audio...")
     if not download_audio(url, audio_path):
+        print(f"[ERROR] Failed to download audio for row {i}")
         df.at[i, "transcript"] = "Download failed"
         continue
 
     try:
-        # URL1: Transcribe
+        # Step 1: Transcription
+        print(f"[INFO] Transcribing audio for row {i}...")
         with open(audio_path, "rb") as f:
             r1 = requests.post(URL1, files={"file": f})
         r1.raise_for_status()
-        transcript = r1.json()["words"]  # Assuming server returns: {"words": "text..."}
+        response_json = r1.json()
+        transcript = response_json["text"]
         df.at[i, "transcript"] = transcript
+        print(f"[SUCCESS] Transcript: {transcript}")
 
-        # Payload to URL2 and URL3
-        payload = {"profile": {"words": transcript}}
+        # Prepare payload
+        payload = {"profile": response_json}
 
-        # URL2: Pacing
+        # Step 2: Pacing
+        print(f"[INFO] Getting pacing for row {i}...")
         r2 = requests.post(URL2, json=payload)
         r2.raise_for_status()
-        df.at[i, "pacing"] = r2.text.strip()
+        res = r2.json()
+        pacing_result = res["feedback"]
+        df.at[i, "pacing"] = pacing_result
+        print(f"[SUCCESS] Pacing: {pacing_result}")
 
-        # URL3: Pauses
+        # Step 3: Pauses
+        print(f"[INFO] Getting pauses for row {i}...")
         r3 = requests.post(URL3, json=payload)
         r3.raise_for_status()
-        df.at[i, "pauses"] = r3.text.strip()
+        pauses_result = r3.json()
+        df.at[i, "pauses"] = pauses_result
+        print(f"[SUCCESS] Pauses: {pauses_result}")
 
     except Exception as e:
-        df.at[i, "transcript"] = f"Error: {e}"
+        error_msg = f"Error: {str(e)}"
+        print(f"[ERROR] Row {i}: {error_msg}")
+        df.at[i, "transcript"] = error_msg
 
-# Save final output
-df.to_csv("output_with_transcript_pacing_pauses.csv", index=False)
-print("Saved: output_with_transcript_pacing_pauses.csv")
+# Save final CSV
+output_csv = "output_with_transcript_pacing_pauses.csv"
+df.to_csv(output_csv, index=False)
+print(f"\n[SAVED] Output written to: {output_csv}")
