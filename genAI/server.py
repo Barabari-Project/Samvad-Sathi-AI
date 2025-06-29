@@ -14,7 +14,8 @@ import time
 import io
 import os
 from sarvamai import SarvamAI
-from paralinguistic import provide_pace_feedback,analyze_pauses
+from genAI.pacing import provide_pace_feedback
+from genAI.pauses import analyze_pauses
 
 load_dotenv()
 Sarvam_client = SarvamAI(
