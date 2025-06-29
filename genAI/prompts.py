@@ -127,3 +127,8 @@ respond in json format:
 "skill2:[...]
 }}
 '''
+
+
+# from string import Template
+# template = Template("Hello, my name is $name and I live in $city. I work as a $job.")
+# partial_filled = template.safe_substitute(name="Smit", city="Ahmedabad")

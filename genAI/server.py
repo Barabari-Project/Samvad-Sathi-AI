@@ -14,7 +14,7 @@ import time
 import io
 import os
 from sarvamai import SarvamAI
-from paralinguistic import provide_pace_feedback
+from paralinguistic import provide_pace_feedback,analyze_pauses
 
 load_dotenv()
 Sarvam_client = SarvamAI(
@@ -259,7 +259,7 @@ async def extract_resume_and_gen_questions(
             detail=f"Failed to process resume and generate questions: {str(e)}"
         )
         
-@app.post('/analyse-text')
+@app.post('/communication-based-analysis')
 async def analyse_text_response(payload: TextRequest):
     '''
         Evaluate the user-provided text across four key dimensions:  
@@ -279,7 +279,7 @@ class AnalyseAnswerRequest(BaseModel):
     target_job_role : str
     seniority_level : str
     
-@app.post("/analyse-answer")
+@app.post("/domain-base-analysis")
 async def analyse_answer(user_profile:dictRequest = Body(...), payload: AnalyseAnswerRequest = Body(...)):
     user_profile = user_profile.profile
     user_profile.pop('name')
@@ -305,10 +305,18 @@ async def get_knowledgeset(user_profile:dictRequest = Body(...)):
     res = extract_json_dict(res)
     return JSONResponse(content=res)
 
-@app.post('/paralinguistic')
+@app.post('/misspronounciation-analysis')
 async def measure_paralinguistic_features(words:dictRequest = Body()):
     words = words.profile
 
     res = provide_pace_feedback(words)
+    
+    return JSONResponse(content={"feedback":res})
+
+@app.post('/pauses-analysis')
+async def do_pauses_analysis(words:dictRequest):
+    words = words.profile
+    
+    res = analyze_pauses(words,call_llm=call_llm)
     
     return JSONResponse(content={"feedback":res})
