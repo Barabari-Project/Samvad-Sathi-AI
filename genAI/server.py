@@ -118,10 +118,6 @@ async def extract_resume_data(file: UploadFile) -> dict:
 
 
 def generate_questions(payload: gen_que_model) -> dict:
-    if payload.job_description:
-        payload.job_description = "- Job Requirements: " + payload.job_description
-    else:
-        payload.job_description = ''
 
     prompt = get_gen_que_prompt(
         resume=payload.extracted_resume,
@@ -201,7 +197,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
 
-# 
 @app.post("/transcribe_whisper")
 async def transcribe_audio(file: UploadFile = File(...)):
     # Validate file extension
@@ -289,3 +284,5 @@ async def do_pauses_analysis(words:dictRequest):
     res = analyze_pauses(words,call_llm=call_llm)
     
     return JSONResponse(content={"feedback":res})
+
+
