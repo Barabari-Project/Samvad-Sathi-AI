@@ -97,52 +97,83 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/extract-resume")
-async def extract_text_from_pdf(file: UploadFile = File(...)):
-    if not file.filename.endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
-
-    try:
-        contents = await file.read()
-        pdf_reader = PyPDF2.PdfReader(io.BytesIO(contents))
-        text = ""
-
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
-
-        text = text.strip()
-        json_str = call_llm(system=extract_resume_template,prompt=text)
-        dic = extract_json_dict(json_str)
-        return JSONResponse(content=dic)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
-    
 class gen_que_model(BaseModel):
     extracted_resume : dict
     job_role : Literal["Data Science","Frontend Developer","Backend Developer"]
     number_of_ques : int
     job_description : Optional[str]
     years_of_exp : int
-    
-@app.post("/gen-questions")
-async def gen_questions(payload:gen_que_model = Body(...)):
-    n = str(payload.number_of_ques)
-    
-    assert payload.job_role == "Data Science" or payload.job_role == "Frontend Developer" or payload.job_role == "Backend Developer"
+
+async def extract_resume_data(file: UploadFile) -> dict:
+    if not file.filename.endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+    try:
+        contents = await file.read()
+        pdf_reader = PyPDF2.PdfReader(io.BytesIO(contents))
+        text = "".join(page.extract_text() or "" for page in pdf_reader.pages).strip()
+        json_str = call_llm(system=extract_resume_template, prompt=text)
+        return extract_json_dict(json_str)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
+
+
+def generate_questions(payload: gen_que_model) -> dict:
     if payload.job_description:
         payload.job_description = "- Job Requirements: " + payload.job_description
     else:
         payload.job_description = ''
-    prompt = get_gen_que_prompt(resume=payload.extracted_resume,
-                                YOE=payload.years_of_exp,
-                                JD=payload.job_description,
-                                Role=payload.job_role,
-                                NOQ=payload.number_of_ques,
-                                )
-    system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
-    result = call_llm(system=system,prompt=prompt)
-    ex_json = extract_json_dict(result)
-    return JSONResponse(content=ex_json)
+
+    prompt = get_gen_que_prompt(
+        resume=payload.extracted_resume,
+        YOE=payload.years_of_exp,
+        JD=payload.job_description,
+        Role=payload.job_role,
+        NOQ=payload.number_of_ques,
+    )
+
+    system = "You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
+    result = call_llm(system=system, prompt=prompt)
+    return extract_json_dict(result)
+
+@app.post("/extract-and-generate")
+async def extract_and_generate_testing_api(
+    file: UploadFile = File(...),
+    job_role: Literal["Data Science", "Frontend Developer", "Backend Developer"] = ...,
+    number_of_ques: int = 5,
+    job_description: Optional[str] = None,
+    years_of_exp: int = 0
+):
+    # Step 1: extract resume
+    extracted_resume = await extract_resume_data(file)
+
+    # Step 2: build input model for gen_questions
+    payload = gen_que_model(
+        extracted_resume=extracted_resume,
+        job_role=job_role,
+        number_of_ques=number_of_ques,
+        job_description=job_description,
+        years_of_exp=years_of_exp
+    )
+
+    # Step 3: generate questions
+    questions = generate_questions(payload)
+
+    return JSONResponse(content={
+        "extracted_resume": extracted_resume,
+        "interview_questions": questions
+    })
+
+
+@app.post("/extract-resume")
+async def extract_text_from_pdf(file: UploadFile = File(...)):
+    extracted_resume = await extract_resume_data(file)
+    return JSONResponse(content=extracted_resume)
+
+@app.post('/generate-questions')
+async def gen_questions(payload:gen_que_model = Body(...)):
+    questions = generate_questions(payload)
+    return JSONResponse(content={"interview_questions": questions})
+    
 
 @app.post("/transcribe_nova_3")
 async def transcribe_audio(file: UploadFile = File(...)):
@@ -196,84 +227,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     
     return JSONResponse(content=transcription)
     
-
-@app.post("/extract-resume-and-gen-questions")
-async def extract_resume_and_gen_questions(
-    file: UploadFile = File(...),
-    target_job: str = Body(...),
-    number_of_ques: int = Body(...),
-    job_description: Optional[str] = Body(default=None)
-):
-    """
-    Combined endpoint that extracts resume data from PDF and generates interview questions
-    
-    Args:
-        file: PDF file containing the resume
-        target_job: Target job role for the candidate
-        number_of_ques: Number of questions to generate
-        job_description: Optional job description/requirements
-    
-    Returns:
-        JSON containing both extracted resume data and generated questions
-    """
-    
-    # Validate file type
-    if not file.filename.endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
-    
-    try:
-        # Step 1: Extract resume data from PDF
-        contents = await file.read()
-        pdf_reader = PyPDF2.PdfReader(io.BytesIO(contents))
-        text = ""
-        
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
-        
-        text = text.strip()
-        
-        # Extract structured resume data using the agent
-        json_str = call_llm(system=extract_resume_template,prompt=text)
-        resume_data = extract_json_dict(json_str)
-        
-        # Step 2: Generate questions based on extracted resume data
-        n = str(number_of_ques)
-        
-        if job_description:
-            job_description_formatted = "- Job Requirements: " + job_description
-        else:
-            job_description_formatted = ''
-        
-        prompt = gen_question_template.format(
-            n=n,
-            relevent_info=str(resume_data),
-            job_highlights=job_description_formatted,
-            target_role=target_job
-        )
-        
-        # Generate questions using the agent
-        system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
-        result = call_llm(system=system,prompt=prompt)
-        questions_data = extract_json_dict(result)
-        
-        # Step 3: Return combined response
-        response = {
-            "resume_data": resume_data,
-            "questions": questions_data,
-            "metadata": {
-                "target_job": target_job,
-                "number_of_questions": number_of_ques,
-                "has_job_description": job_description is not None
-            }
-        }
-        
-        return JSONResponse(content=response)
-        
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, 
-            detail=f"Failed to process resume and generate questions: {str(e)}"
-        )
         
 @app.post('/communication-based-analysis')
 async def analyse_text_response(payload: TextRequest):
