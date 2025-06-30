@@ -1,8 +1,9 @@
 from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
-from typing import Optional
+from typing import Optional,Literal
 from dotenv import load_dotenv
-from prompts import extract_resume_template,gen_question_template,analyze_text_template,analyze_answer_template,extract_knowledge_set_template
+from prompts.prompts import extract_resume_template,analyze_text_template,analyze_answer_template,extract_knowledge_set_template
+from prompts.gen_que_prompt import get_gen_que_prompt
 from pydantic import BaseModel
 import PyPDF2
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
@@ -115,15 +116,29 @@ async def extract_text_from_pdf(file: UploadFile = File(...)):
         return JSONResponse(content=dic)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
-        
+    
+class gen_que_model(BaseModel):
+    extracted_resume : dict
+    job_role : Literal["Data Science","Frontend Developer","Backend Developer"]
+    number_of_ques : int
+    job_description : Optional[str]
+    years_of_exp : int
+    
 @app.post("/gen-questions")
-async def gen_questions(user_profile:dictRequest,target_job:TextRequest,number_of_ques:intRequest,job_description:Optional[TextRequest] = Body(default=None)):
-    n = str(number_of_ques.num)
-    if job_description:
-        job_description = "- Job Requirements: " + job_description.text
+async def gen_questions(payload:gen_que_model = Body(...)):
+    n = str(payload.number_of_ques)
+    
+    assert payload.job_role == "Data Science" or payload.job_role == "Frontend Developer" or payload.job_role == "Backend Developer"
+    if payload.job_description:
+        payload.job_description = "- Job Requirements: " + payload.job_description
     else:
-        job_description = ''
-    prompt = gen_question_template.format(n=n,relevent_info=str(user_profile.profile),job_highlights=job_description,target_role=target_job.text)
+        payload.job_description = ''
+    prompt = get_gen_que_prompt(resume=payload.extracted_resume,
+                                YOE=payload.years_of_exp,
+                                JD=payload.job_description,
+                                Role=payload.job_role,
+                                NOQ=payload.number_of_ques,
+                                )
     system="You generate structured interview questions based on a candidate's profile and job role. Output must follow the given JSON format."
     result = call_llm(system=system,prompt=prompt)
     ex_json = extract_json_dict(result)
