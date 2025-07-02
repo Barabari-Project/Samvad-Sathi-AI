@@ -2,10 +2,11 @@ import pandas as pd
 import requests
 import gdown
 import os
+import concurrent.futures
 from tqdm import tqdm
 
 # Paths and URLs
-CSV_PATH = "Test_Cases.csv"
+CSV_PATH = "Test_Cases_1.csv"
 AUDIO_DIR = "audios"
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
@@ -13,6 +14,7 @@ os.makedirs(AUDIO_DIR, exist_ok=True)
 URL1 = "http://localhost:8000/transcribe_whisper"
 URL2 = "http://localhost:8000/pace-analysis"
 URL3 = "http://localhost:8000/pauses-analysis"
+URL4 = "http://localhost:8000/communication-based-analysis"
 
 # Load CSV
 df = pd.read_csv(CSV_PATH)
@@ -21,6 +23,7 @@ df = pd.read_csv(CSV_PATH)
 df["transcript"] = ""
 df["pacing"] = ""
 df["pauses"] = ""
+df["comunication-based-analysis"] = ""
 
 # Extract file ID from Google Drive link
 def get_gdrive_file_id(url):
@@ -38,6 +41,29 @@ def download_audio(drive_url, filename):
         gdown.download(f"https://drive.google.com/uc?id={file_id}", filename, quiet=False)
         return os.path.exists(filename)
     return False
+
+# Parallel step execution
+def process_analysis_requests(payload, transcript):
+    results = {}
+    def post_request(name, url, json_payload):
+        try:
+            r = requests.post(url, json=json_payload)
+            r.raise_for_status()
+            return name, r.json()
+        except Exception as e:
+            return name, f"Error: {str(e)}"
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(post_request, "pacing", URL2, payload),
+            executor.submit(post_request, "pauses", URL3, payload),
+            executor.submit(post_request, "communication", URL4, {"text": transcript})
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            name, result = future.result()
+            results[name] = result
+
+    return results
 
 # Process each row
 for i, row in tqdm(df.iterrows(), total=len(df)):
@@ -65,25 +91,18 @@ for i, row in tqdm(df.iterrows(), total=len(df)):
         df.at[i, "transcript"] = transcript
         print(f"[SUCCESS] Transcript: {transcript}")
 
-        # Prepare payload
+        # Step 2-4: Run parallel
+        print(f"[INFO] Running pacing, pauses, and communication analysis in parallel for row {i}...")
         payload = {"profile": response_json}
+        results = process_analysis_requests(payload, transcript)
 
-        # Step 2: Pacing
-        print(f"[INFO] Getting pacing for row {i}...")
-        r2 = requests.post(URL2, json=payload)
-        r2.raise_for_status()
-        res = r2.json()
-        pacing_result = res["feedback"]
-        df.at[i, "pacing"] = pacing_result
-        print(f"[SUCCESS] Pacing: {pacing_result}")
+        df.at[i, "pacing"] = results.get("pacing", {}).get("feedback", "Error or missing feedback")
+        df.at[i, "pauses"] = results.get("pauses", {})
+        df.at[i, "comunication-based-analysis"] = results.get("communication", {})
 
-        # Step 3: Pauses
-        print(f"[INFO] Getting pauses for row {i}...")
-        r3 = requests.post(URL3, json=payload)
-        r3.raise_for_status()
-        pauses_result = r3.json()
-        df.at[i, "pauses"] = pauses_result
-        print(f"[SUCCESS] Pauses: {pauses_result}")
+        print(f"[SUCCESS] Pacing: {df.at[i, 'pacing']}")
+        print(f"[SUCCESS] Pauses: {df.at[i, 'pauses']}")
+        print(f"[SUCCESS] Communication: {df.at[i, 'comunication-based-analysis']}")
 
     except Exception as e:
         error_msg = f"Error: {str(e)}"

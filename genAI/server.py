@@ -287,16 +287,3 @@ async def do_pauses_analysis(words:dictRequest):
     res = analyze_pauses(words,call_llm=call_llm)
     
     return JSONResponse(content={"feedback":res})
-
-
-# For each ques
-    # 3 anlysis
-    
-# pause sesion level. -> summer
-# paceing
-# domain
-# communication
-    
-# final report (15 feedbacks)
- 
-
