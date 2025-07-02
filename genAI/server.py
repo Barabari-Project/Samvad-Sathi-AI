@@ -249,7 +249,7 @@ async def analyse_answer(
     user_profile = str(user_profile)
     category,difficulty,question,hint = Interview_Question.values()
     
-    prompt = analyse_domain_template_v2.format(job_title=job_role,
+    prompt = analyse_domain_template.format(job_title=job_role,
                                           Years_of_experience=years_of_experience,
                                           Users_Resume_Profile=user_profile,
                                           Candidate_Response=answer,
