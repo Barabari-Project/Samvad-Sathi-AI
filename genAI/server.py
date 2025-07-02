@@ -2,7 +2,7 @@ from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional,Literal
 from dotenv import load_dotenv
-from prompts.prompts import extract_resume_template,analyze_text_template,analyze_answer_template,extract_knowledge_set_template
+from prompts.prompts import extract_resume_template,analyze_text_template,extract_knowledge_set_template,analyse_domain_template
 from prompts.gen_que_prompt import get_gen_que_prompt
 from pydantic import BaseModel
 import PyPDF2
@@ -235,26 +235,29 @@ async def analyse_text_response(payload: TextRequest):
     result = call_llm(system=analyze_text_template,prompt=payload.text)
     result = extract_json_dict(result)
     return {"feedback":result}
-
-
-class AnalyseAnswerRequest(BaseModel):
-    question : str
-    answer : str
-    target_job_role : str
-    seniority_level : str
     
 @app.post("/domain-base-analysis")
-async def analyse_answer(user_profile:dictRequest = Body(...), payload: AnalyseAnswerRequest = Body(...)):
-    user_profile = user_profile.profile
+async def analyse_answer(
+    user_profile : dict = Body(...),
+    answer : str = Body(...),
+    years_of_experience : int = Body(...),
+    Interview_Question : dict = Body(...),
+    job_role: Literal["Data Science", "Frontend Developer", "Backend Developer"] = Body(...),
+):
     user_profile.pop('name')
     user_profile.pop('contact')
     user_profile = str(user_profile)
+    category,difficulty,question,hint = Interview_Question.values()
     
-    prompt = analyze_answer_template.format(job_title=payload.target_job_role,
-                                          level=payload.seniority_level,
-                                          user_profile=user_profile,
-                                          interview_question=payload.question,
-                                          user_response=payload.answer)
+    prompt = analyse_domain_template_v2.format(job_title=job_role,
+                                          Years_of_experience=years_of_experience,
+                                          Users_Resume_Profile=user_profile,
+                                          Candidate_Response=answer,
+                                          category=category,
+                                          difficulty=difficulty,
+                                          question=question,
+                                          hint=hint
+                                          )
     response = call_llm(prompt=prompt)
     json_res = extract_json_dict(response)
     return JSONResponse(content=json_res)
@@ -285,4 +288,15 @@ async def do_pauses_analysis(words:dictRequest):
     
     return JSONResponse(content={"feedback":res})
 
+
+# For each ques
+    # 3 anlysis
+    
+# pause sesion level. -> summer
+# paceing
+# domain
+# communication
+    
+# final report (15 feedbacks)
+ 
 

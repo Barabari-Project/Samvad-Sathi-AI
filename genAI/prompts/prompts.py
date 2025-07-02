@@ -67,54 +67,112 @@ ELSE (if n > 1):
 Output format: JSON list with "question" and "category" keys.
 '''
 
-# technincal depth and techninal relevenace , Seniority Appropriateness
-# elaborate on Seniority
-# YOE instead of level for Seniority Appropriateness
-# response should change according to the catagory of question
-# analyze_answer_template for overall interview
-analyze_answer_template = '''
-Role: Expert Interview Analyst
-Context:
-- Target Role: {job_title} (Seniority: {level})
-- User's Resume Profile: "{user_profile}"
+analyse_domain_template = '''
+**Role**  
+You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate's domain knowledge based on their response to an interview question.
 
-- Interview Question: "{interview_question}"
-- Candidate Response: "{user_response}"
+---
 
-Evaluation Tasks:
-1. Rate dimensions Score:(1-5) (5=excellent) **relative to profile and role expectations**:
-   - **Profile Alignment**: How well response maps to resume skills/experience (5=direct evidence)
-   - **Role Relevance**: Fit for {job_title} responsibilities (5=perfect match)
-   - **Seniority Appropriateness**: Depth expected for {level} level (5=exceeds level)
-   - **Evidence Quality**: Specificity of examples from profile (5=quantifiable proof)
-   - **Growth Demonstration**: Shows progression beyond resume (5=clear evolution)
+### Instructions  
+1. **Category-Driven Analysis**  
+   - Analyze *only* the attributes relevant to the question's category:  
+     - **Technical**: Focus on Accuracy, Depth, Terminology, Examples.  
+     - **Behavioral**: Focus on Examples/Evidence, Depth, Relevance. *Ignore Terminology Usage*.  
+     - **Role-specific**: All attributes EXCEPT Terminology *unless* the question demands domain jargon.  
+     - **Resume-specific**: Prioritize Examples/Evidence and Accuracy (validate against `{Users_Resume_Profile}`).  
 
-2. Strengths (Top 2): 
-   - Focus on **profile-specific advantages** (e.g., "Leveraged [resume skill] effectively in...")
-   - Highlight **role-critical strengths** (e.g., "Demonstrated {job_title}-critical skill in...")
+2. **Hint Handling**  
+   - If a hint exists (`{hint}`), reward responses that explicitly follow it.  
+   - Example: A hint like "STAR method" expects Situation/Task/Action/Result structure.  
 
-3. Improvements (Top 2):
-   - **Profile-grounded advice** (e.g., "Expand on [resume bullet point] with metrics...")
-   - **Role-specific gaps** (e.g., "For {level} role, add strategic perspective on...")
+3. **Scoring (1-5 per Attribute)**  
+   - **Accuracy**: Factual correctness.  
+     - *5: Flawless, 3: Partially correct, 1: Incorrect*  
+   - **Depth of Understanding**: Nuance/complexity.  
+     - *5: Detailed tradeoffs, 3: Surface-level, 1: Vague*  
+   - **Relevance**: Addresses all question parts.  
+     - *5: Fully on-point, 3: Partial, 1: Off-topic*  
+   - **Examples/Evidence**: Concrete proof.  
+     - *5: Specific case studies, 3: Generic, 1: None*  
+   - **Terminology Usage** (Technical/Role-specific only):  
+     - *5: Precise jargon, 3: Minor errors, 1: Misused terms*  
 
-4. Overall Feedback: Directly address **profile-to-role fit** (1-2 sentences)
+4. **Resume Validation**  
+   - For Resume-specific questions, cross-check claims against `{Users_Resume_Profile}`. Flag inconsistencies.  
 
-5. Follow-up Question: Probe **profile/role contradictions** or **resume opportunities**
+---
 
-Output Format (JSON):
+### Examples of Analysis  
+#### Example 1: Technical Question (0 YOE)  
+**Question**:  
+*"Explain bias-variance tradeoff using a simple linear regression example. Hint: Visualize underfitting vs overfitting curves."*  
+**Response**:  
+*"High bias (underfitting) occurs when linear regression oversimplifies data. High variance (overfitting) happens with complex models memorizing noise."*  
+**Analysis**:  
+- **Accuracy**: 3/5 (Correct basics but misses linear regression example).  
+- **Depth**: 2/5 (No tradeoff mechanics or complexity impact).  
+- **Relevance**: 4/5 (Addresses core concepts).  
+- **Examples**: 1/5 (No regression example/visualization).  
+- **Terminology**: 5/5 (Correct terms).  
+- **Hint Followed?** No → Penalized Depth/Examples.  
+
+#### Example 2: Behavioral Question (4 YOE)  
+**Question**:  
+*"Describe resolving model fairness issues. Hint: Equal odds vs opportunity parity."*  
+**Response**:  
+*"We prioritized equal opportunity by adjusting thresholds for loan approvals, reducing false negatives in protected groups."*  
+**Analysis**:  
+- **Depth**: 5/5 (Nuanced fairness tradeoffs).  
+- **Examples**: 5/5 (Specific threshold strategy).  
+- **Relevance**: 5/5 (Uses hint's "opportunity" focus).  
+- *Terminology Skipped* (Behavioral category).  
+
+---
+
+### Context  
+- **Job Title**: `{job_title}`  
+- **Expected Seniority**: `{Years_of_experience}` years (e.g., Junior/Senior).  
+- **Candidate's Resume**:  
+  ```  
+  {Users_Resume_Profile}  
+  ```  
+- **Question Metadata**:  
+  - Category: `{category}`  
+  - Difficulty: `{difficulty}`  
+  - Hint: `{hint}`  
+
+---
+
+### Analysis Task  
+**Interview Question**:  
+"{question}"  
+
+**Candidate Response**:  
+"{Candidate_Response}"  
+
+**Your Analysis**:  
+**Return your analysis strictly in the following JSON format:**
 {{
-  "scores": {{
-    "Profile Alignment": _,
-    "Role Relevance": _,
-    "Seniority Appropriateness": _,
-    "Evidence Quality": _,
-    "Growth Demonstration": _
+  "category": "[category]",
+  "hint_addressed": true/false/null, // null if no hint
+  "attribute_scores": {{
+    "Accuracy": {{"score": number, "reason": string}},
+    "Depth of Understanding": {{"score": number, "reason": string}},
+    "Relevance": {{"score": number, "reason": string}},
+    "Examples/Evidence": {{"score": number, "reason": string}},
+    "Terminology Usage": {{"score": number, "reason": string}} // Omit if behavioral
   }},
-  "strengths": ["[Profile-specific strength] + resume evidence", "[Role-critical strength]"],
-  "improvements": ["[Profile-specific advice] + resume reference", "[Seniority-level gap]"],
-  "overall_feedback": "Explicit profile/role fit assessment",
-  "follow_up_question": "Question targeting resume/role alignment"
+  "overall_score": number, // sum of all score
+  "overall_feedback": "Concise strengths/weaknesses summary"
 }}
+
+---
+
+### Rules  
+- **No assumptions**: Base scores strictly on the response.  
+- **Hint bonus**: If a hint exists, +0.5 to Accuracy/Depth when followed (round down if .49).  
+- **Resume checks**: For Resume-specific questions, deduct -1 from Accuracy if claims contradict `{Users_Resume_Profile}`.  
+- **Be brutal**: Ignore fluff. Reward precision. Penalize vagueness.
 '''
 
 extract_knowledge_set_template = '''
