@@ -17,12 +17,14 @@ import os
 from sarvamai import SarvamAI
 from pacing import provide_pace_feedback
 from pauses import analyze_pauses
+import numpy as np
+import librosa
+
+
 
 load_dotenv()
-Sarvam_client = SarvamAI(
-    api_subscription_key=os.getenv("SARVAM_API_KEY"),
-)
 
+Sarvam_client = SarvamAI(api_subscription_key=os.getenv("SARVAM_API_KEY"))
 dg_client = DeepgramClient(os.getenv("DEEPGRAM_API_KEY"))
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 g2p = G2p()
@@ -50,7 +52,7 @@ class TextRequest(BaseModel):
     text: str
     
 class dictRequest(BaseModel):
-    profile : dict
+    dict : dict
     
 class intRequest(BaseModel):
     num : int
@@ -196,6 +198,26 @@ async def transcribe_audio(file: UploadFile = File(...)):
         return JSONResponse(content={"transcript": transcript,"time":t1,"chars per sec":len(transcript)/t1})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
+    
+def estimate_fluency_proxy(audio_bytes, transcript):
+    # Load audio from bytes
+    audio_buffer = io.BytesIO(audio_bytes)
+    audio_buffer.seek(0)
+    y, sr = librosa.load(audio_buffer, sr=None)
+    
+    # Get voiced intervals
+    intervals = librosa.effects.split(y, top_db=30)
+    voiced_time_sec = sum([(end - start) / sr for start, end in intervals])
+    
+    word_count = len(transcript.strip().split())
+    
+    # Avoid division by zero
+    if voiced_time_sec == 0:
+        return 0, False
+    
+    wpm = word_count / (voiced_time_sec / 60)
+    is_fluent = 90 <= wpm <= 200
+    return round(wpm, 2), is_fluent
 
 @app.post("/transcribe_whisper")
 async def transcribe_audio(file: UploadFile = File(...)):
@@ -209,33 +231,48 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
     try:
         transcription = client.audio.transcriptions.create(
-        model="whisper-1", 
+        model="gpt-4o-transcribe", 
         file=buffer, 
-        response_format="verbose_json", # verbose_json
+        response_format="json", # verbose_json
         prompt="matlab, jaise ki, vagera-vagera, I'm like,you know what I mean, kind of, um, ah, huh, and so, so um, uh, and um, like um, so like, like it's, it's like, i mean, yeah, ok so, uh so, so uh, yeah so, you know, it's uh, uh and, and uh, like, kind",
-        timestamp_granularities=["word"]
+        # timestamp_granularities=["word"]
+        include=["logprobs"]
         )
         transcription = transcription.model_dump()
+        new_transcript = ''
+        excluded = ''
+        for item in transcription['logprobs']:
+            item["prob"] = np.exp(item["logprob"])
+            if item['prob'] > 0.6:
+                new_transcript += item['token']
+            else:
+                excluded += item['token']
+        
+        transcription['new_transcript'] = new_transcript
+        transcription['excluded'] = excluded
+    
+        wpm, is_fluent = estimate_fluency_proxy(audio_bytes, new_transcript)
+        transcription['fluency'] = {
+            "wpm": float(wpm),
+            "is_fluent": bool(is_fluent),
+            "note": "Fluent" if is_fluent else "Too slow or too fast"
+        }
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
     
     return JSONResponse(content=transcription)
     
-        
-@app.post('/communication-based-analysis')
-async def analyse_text_response(payload: TextRequest):
-    '''
-        Evaluate the user-provided text across four key dimensions:  
-        1. Clarity 
-        2. Vocabulary richness  
-        3. Grammar & syntax  
-        4. Structure & flow  
-    '''
-    result = call_llm(system=analyze_text_template,prompt=payload.text)
-    result = extract_json_dict(result)
-    return {"feedback":result}
-    
+@app.post('/get_knowledgeset')
+async def get_knowledgeset(user_profile:dictRequest = Body(...)):
+    user_profile = user_profile.dict
+    skills = user_profile.pop('skills')
+    skills = str(skills)
+    prompt = extract_knowledge_set_template.format(skills=skills)
+    res = call_llm(prompt=prompt)
+    res = extract_json_dict(res)
+    return JSONResponse(content=res)
+
 @app.post("/domain-base-analysis")
 async def analyse_answer(
     user_profile : dict = Body(...),
@@ -262,28 +299,82 @@ async def analyse_answer(
     json_res = extract_json_dict(response)
     return JSONResponse(content=json_res)
 
-@app.post('/get_knowledgeset')
-async def get_knowledgeset(user_profile:dictRequest = Body(...)):
-    user_profile = user_profile.profile
-    skills = user_profile.pop('skills')
-    skills = str(skills)
-    prompt = extract_knowledge_set_template.format(skills=skills)
-    res = call_llm(prompt=prompt)
-    res = extract_json_dict(res)
-    return JSONResponse(content=res)
+@app.post('/communication-based-analysis')
+async def analyse_communication_features(answer:str = Body(...)):
+    '''
+        Evaluate the user-provided text across four key dimensions:  
+        1. Clarity 
+        2. Vocabulary richness  
+        3. Grammar & syntax  
+        4. Structure & flow  
+    '''
+    result = call_llm(system=analyze_text_template,prompt=answer)
+    result = extract_json_dict(result)
+    return {"feedback":result}
 
 @app.post('/pace-analysis')
-async def measure_paralinguistic_features(words:dictRequest = Body()):
-    words = words.profile
-
-    res = provide_pace_feedback(words)
-    
+async def measure_pace_features(words_timestamp:dict = Body()):
+    res = provide_pace_feedback(words_timestamp)
     return JSONResponse(content={"feedback":res})
 
 @app.post('/pauses-analysis')
-async def do_pauses_analysis(words:dictRequest):
-    words = words.profile
-    
-    res = analyze_pauses(words,call_llm=call_llm)
-    
+async def measure_pause_analysis(words_timestamp:dict = Body(...)):    
+    res = analyze_pauses(words_timestamp,call_llm=call_llm)
     return JSONResponse(content={"feedback":res})
+
+import asyncio
+
+@app.post("/complete-analysis")
+async def complete_analysis(
+    user_profile: dict = Body(...),
+    answer: str = Body(...),
+    years_of_experience: int = Body(...),
+    Interview_Question: dict = Body(...),
+    words_timestamp: dict = Body(...),
+    job_role: Literal["Data Science", "Frontend Developer", "Backend Developer"] = Body(...),
+):
+    user_profile.pop('name', None)
+    user_profile.pop('contact', None)
+    user_profile_str = str(user_profile)
+    category, difficulty, question, hint = Interview_Question.values()
+
+    # Prepare prompt for domain analysis
+    domain_prompt = analyse_domain_template.format(
+        job_title=job_role,
+        Years_of_experience=years_of_experience,
+        Users_Resume_Profile=user_profile_str,
+        Candidate_Response=answer,
+        category=category,
+        difficulty=difficulty,
+        question=question,
+        hint=hint
+    )
+
+    async def domain_analysis():
+        response = await asyncio.to_thread(call_llm, prompt=domain_prompt)
+        return extract_json_dict(response)
+
+    async def communication_analysis():
+        response = await asyncio.to_thread(call_llm, system=analyze_text_template, prompt=answer)
+        return extract_json_dict(response)
+
+    async def pace_analysis():
+        return provide_pace_feedback(words_timestamp)
+
+    async def pause_analysis():
+        return analyze_pauses(words_timestamp, call_llm=call_llm)
+
+    # Run all tasks concurrently
+    domain_task, comm_task, pace_task, pause_task = await asyncio.gather(
+        domain_analysis(),
+        communication_analysis(),
+        pace_analysis(),
+        pause_analysis()
+    )
+
+    return JSONResponse(content={
+        "domain_analysis": domain_task,
+        "communication_analysis": comm_task,
+        "pace_analysis": pace_task,
+        "pause_analysis": pause_task
+    })

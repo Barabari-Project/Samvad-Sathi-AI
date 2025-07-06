@@ -24,7 +24,7 @@ def transcribe_audio(path):
         prompt="matlab, jaise ki, vagera-vagera, I'm like,you know what I mean, kind of, um, ah, huh, and so, so um, uh, and um, like um, so like, like it's, it's like, i mean, yeah, ok so, uh so, so uh, yeah so, you know, it's uh, uh and, and uh, like, kind",
     )
 
-    return transcription.text
+    return transcription
 
 def generate_reference_phoneme(reference_text):
     text = Punctuation(';:,.!"?()').remove(reference_text)
@@ -42,17 +42,10 @@ def generate_reference_phoneme(reference_text):
 # genAI/misspronounciation/dataset/achyut_pizza_false.wav
 # 
 # reference_text = 'I love eating pizza while watching documentaries about rural India'
-recorded_phoneme = 'aɪloːuːtɪŋbizɐwaɪlwɔtʃɪŋdɔkimənttidʒɐbɔtɡɹuːɾəlɪndiɐ' ; case='smit_pizza_false.wav' ; sr=1
-recorded_phoneme = 'aɪlɔmitiŋpizavaɪlwɔtʃiŋdɔkjumɛntəɾizəbɔlbrulərindja' ; case = 'achyut_pizza_false.wav' ; sr=2
-recorded_phoneme = 'aɪlaʊɪtɪŋpizavaɪlvɔtɪŋdɔkʊmɛntɪsɐbaʊtəzuːɾɐlindiɐ' ; case = 'yash_pizza_true.wav' ; sr=3
-recorded_phoneme = 'aɪlɔisiŋpidzawaɪlvɔtʃiŋdɔkkumɛntədisəvɔltruːralindja' ; case = 'achyut_pizza_true.wav' ; sr=4
-recorded_phoneme = 'aɪloʊwitɪŋpitdʒawɑːrwɔtʃɪŋdəkmənfɪzɪbɑːltruːəlɪndiɐ' ; case = 'smit_pizza_true.wav' ; sr=5
-recorded_phoneme = 'aɪlɔitɪŋpizabaɪlvɔdʒɪŋdɔkjʊmɛntɹisɐbaʊtruːrəlɪndiɐ' ; case = 'yash_pizza_false.wav' ; sr=6
-recorded_phoneme = 'aɪlʌviːtɪŋpiːsɚwaɪlwɔtʃɪŋdɔkjʊmɛntɹizɐbɑːtɹuːɹɚlɪndɪɐ' ; case = 'elven_pizza_true.wav' ; sr=7
 
+import pandas as pd
 
-
-reference_text = transcribe_audio('dataset/'+case)
+phoneme_data = pd.read_csv('dataset/dataset.csv')
 
 
 # recorded_phoneme = 'aɪloʊtiŋpiːzɐwaɪlwɔtɪŋdɔkkjʊməntɹizɐbaʊtruːrəlɪndiɐ'
@@ -62,13 +55,15 @@ reference_text = transcribe_audio('dataset/'+case)
 # recorded_phoneme = 'ðəɛndʒɪnjɪrsʌbmɪtədðədeɪdaripɔtɔnvɛrnɛsdi'
 # Took 5.673489332199097 seconds to retrieve logits. 0.17625837318925403 chars per sec
 
+
+
 lexicon, ref_words = generate_reference_phoneme(reference_text)
 reference_phoneme =' '.join([phon for w, phon in lexicon])
 # print(reference_phoneme)
 # print(recorded_phoneme)
 
 
-from sequence_align.pairwise import hirschberg, needleman_wunsch
+from sequence_align.pairwise import needleman_wunsch
 seq_a = reference_phoneme
 seq_b = list(recorded_phoneme.replace(' ',''))
 
@@ -189,7 +184,7 @@ def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperat
             messages = [{"role":"system","content":system}]
         messages.append({"role": "user", "content": prompt})
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=messages
         )
         return response.choices[0].message.content.strip()

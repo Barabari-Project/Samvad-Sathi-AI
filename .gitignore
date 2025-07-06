@@ -1,6 +1,7 @@
 __pycache__
 .env
 Test_cases.csv
+*.DS_Store
 *.mp3
 *.wav
 *.m4a
