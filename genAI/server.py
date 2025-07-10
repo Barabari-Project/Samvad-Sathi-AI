@@ -380,4 +380,18 @@ async def complete_analysis(
 
 @app.post('/final-report')
 def genarate_final_report(Session_analysis:dict = Body(...)):
-    analysis_list = Session_analysis['']
+    analysis_list = Session_analysis['analysis']
+    pause_list = [analysis['pause_analysis'] for analysis in analysis_list]
+    pace_list = [analysis['pace_analysis'] for analysis in analysis_list]
+    communication_list = [analysis['communication_analysis'] for analysis in analysis_list]
+    domian = [analysis['domain_analysis'] for analysis in analysis_list]
+    analysis_list = None
+    
+    Speech_Structure_Fluency = [{"pace":i,"pause":j,"communication":k} for i,j,k in zip(pace_list,pause_list,communication_list)]
+    
+    report = {"knowledge_competence":domian,
+              "Speech_Structure_Fluency": Speech_Structure_Fluency}
+    
+    return JSONResponse(content=report)
+    
+    
