@@ -1,0 +1,116 @@
+[
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Explain the purpose of cross-validation in machine learning. Provide a simple example scenario where you'd use k-fold cross-validation.",
+    "hint": "Focus on preventing overfitting and data partitioning strategies."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "How would you handle missing values in a dataset containing both numerical and categorical variables? Discuss trade-offs between different imputation methods.",
+    "hint": "Consider domain-specific impacts and mention at least three techniques (e.g., mean imputation, KNN, MICE)."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "Design an A/B testing framework for a new recommendation algorithm. Include how you'd determine sample size, select metrics, and handle false discovery rates.",
+    "hint": "Reference statistical power, sequential testing, and Bonferroni correction."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Write a SQL query to find the second-highest salary from an 'employees' table.",
+    "hint": "Use window functions (RANK/DENSE_RANK) or subquery with LIMIT/OFFSET."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "Explain why L2 regularization prevents overfitting differently than L1 regularization. When would you choose one over the other?",
+    "hint": "Discuss geometric interpretations (circle vs. diamond) and feature selection implications."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "How would you deploy a real-time fraud detection model serving 100k requests/second? Address scaling, monitoring, and failure recovery.",
+    "hint": "Mention containerization, load balancing, and circuit breakers."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Easy",
+    "question": "Describe a time you resolved a conflict within a team. What steps did you take to reach consensus?",
+    "hint": "Structure response using STAR method (Situation, Task, Action, Result)."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Medium",
+    "question": "Tell me about a project where you had to prioritize competing tasks. How did you decide what to focus on first?",
+    "hint": "Reference ROI analysis or Eisenhower Matrix."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Hard",
+    "question": "You discover your model disproportionately impacts marginalized groups. What steps would you take before deployment?",
+    "hint": "Discuss bias audits, fairness metrics, and stakeholder communication."
+  },
+  {
+    "category": "Role-specific",
+    "difficulty": "Easy",
+    "question": "What evaluation metrics would you use for an imbalanced binary classification problem (e.g., fraud detection)?",
+    "hint": "Avoid accuracy; suggest precision-recall curve/F1-score."
+  },
+  {
+    "category": "Role-specific",
+    "difficulty": "Medium",
+    "question": "How would you implement continuous retraining for a production NLP model experiencing concept drift?",
+    "hint": "Reference canary deployments and embedding similarity monitoring."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Easy",
+    "question": "Your resume mentions a project using XGBoost. What hyperparameters did you tune, and how did they affect performance?",
+    "hint": "Discuss learning rate, max_depth, and early stopping."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Hard",
+    "question": "You listed experience with PySpark. Explain how you'd optimize a join operation between two 10TB datasets.",
+    "hint": "Mention partitioning strategies and broadcast joins."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "Compare PCA and t-SNE for dimensionality reduction. When would each be inappropriate?",
+    "hint": "Address linear vs. nonlinear assumptions and computational complexity."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Easy",
+    "question": "How do you explain technical machine learning concepts to non-technical stakeholders?",
+    "hint": "Provide a concrete analogy example."
+  },
+  {
+    "category": "Role-specific",
+    "difficulty": "Hard",
+    "question": "Design a feature store architecture for a real-time recommendation system. Include data validation and versioning.",
+    "hint": "Discuss online/offline stores and point-in-time correctness."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "What's the central limit theorem, and why is it important for hypothesis testing?",
+    "hint": "Connect to sampling distributions and normality assumptions."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Medium",
+    "question": "Your resume shows a 6-month gap between roles. What skills did you develop during this period?",
+    "hint": "Highlight relevant coursework/certifications."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "How would you debug a production model whose performance degraded suddenly without feature drift?",
+    "hint": "Propose checking data pipeline integrity and dependency conflicts."
+  }
+]

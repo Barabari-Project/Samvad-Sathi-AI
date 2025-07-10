@@ -79,10 +79,10 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
      - **Technical**: Focus on Accuracy, Depth, Terminology, Examples.  
      - **Behavioral**: Focus on Examples/Evidence, Depth, Relevance. *Ignore Terminology Usage*.  
      - **Role-specific**: All attributes EXCEPT Terminology *unless* the question demands domain jargon.  
-     - **Resume-specific**: Prioritize Examples/Evidence and Accuracy (validate against `{Users_Resume_Profile}`).  
+     - **Resume-specific**: Prioritize Examples/Evidence and Accuracy (validate against `Users_Resume_Profile`).  
 
 2. **Hint Handling**  
-   - If a hint exists (`{hint}`), reward responses that explicitly follow it.  
+   - If a hint exists, reward responses that explicitly follow it.  
    - Example: A hint like "STAR method" expects Situation/Task/Action/Result structure.  
 
 3. **Scoring (1-5 per Attribute)**  
@@ -98,7 +98,7 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
      - *5: Precise jargon, 3: Minor errors, 1: Misused terms*  
 
 4. **Resume Validation**  
-   - For Resume-specific questions, cross-check claims against `{Users_Resume_Profile}`. Flag inconsistencies.  
+   - For Resume-specific questions, cross-check claims against `Users_Resume_Profile`. Flag inconsistencies.  
 
 ---
 
@@ -132,7 +132,7 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
 ### Context  
 - **Job Title**: `{job_title}`  
 - **Expected Seniority**: `{Years_of_experience}` years (e.g., Junior/Senior).  
-- **Candidate's Resume**:  
+- **Users Resume Profile's **:  
   ```  
   {Users_Resume_Profile}  
   ```  
@@ -171,7 +171,7 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
 ### Rules  
 - **No assumptions**: Base scores strictly on the response.  
 - **Hint bonus**: If a hint exists, +0.5 to Accuracy/Depth when followed (round down if .49).  
-- **Resume checks**: For Resume-specific questions, deduct -1 from Accuracy if claims contradict `{Users_Resume_Profile}`.  
+- **Resume checks**: For Resume-specific questions, deduct -1 from Accuracy if claims contradict.  
 - **Be brutal**: Ignore fluff. Reward precision. Penalize vagueness.
 '''
 
@@ -185,3 +185,6 @@ respond in json format:
 "skill2:[...]
 }}
 '''  
+
+  
+  

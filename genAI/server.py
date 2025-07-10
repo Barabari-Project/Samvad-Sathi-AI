@@ -1,7 +1,6 @@
 from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional,Literal
-from dotenv import load_dotenv
 from prompts.prompts import extract_resume_template,analyze_text_template,extract_knowledge_set_template,analyse_domain_template
 from prompts.gen_que_prompt import get_gen_que_prompt
 from pydantic import BaseModel
@@ -21,7 +20,7 @@ import numpy as np
 import librosa
 
 
-
+from dotenv import load_dotenv
 load_dotenv()
 
 Sarvam_client = SarvamAI(api_subscription_key=os.getenv("SARVAM_API_KEY"))
@@ -231,32 +230,32 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
     try:
         transcription = client.audio.transcriptions.create(
-        model="gpt-4o-transcribe", 
+        model="whisper-1", 
         file=buffer, 
-        response_format="json", # verbose_json
+        response_format="verbose_json",
         prompt="matlab, jaise ki, vagera-vagera, I'm like,you know what I mean, kind of, um, ah, huh, and so, so um, uh, and um, like um, so like, like it's, it's like, i mean, yeah, ok so, uh so, so uh, yeah so, you know, it's uh, uh and, and uh, like, kind",
-        # timestamp_granularities=["word"]
-        include=["logprobs"]
+        timestamp_granularities=["word"]
+        # include=["logprobs"]
         )
         transcription = transcription.model_dump()
-        new_transcript = ''
-        excluded = ''
-        for item in transcription['logprobs']:
-            item["prob"] = np.exp(item["logprob"])
-            if item['prob'] > 0.6:
-                new_transcript += item['token']
-            else:
-                excluded += item['token']
+        # new_transcript = ''
+        # excluded = ''
+        # for item in transcription['logprobs']:
+        #     item["prob"] = np.exp(item["logprob"])
+        #     if item['prob'] > 0.6:
+        #         new_transcript += item['token']
+        #     else:
+        #         excluded += item['token']
         
-        transcription['new_transcript'] = new_transcript
-        transcription['excluded'] = excluded
+        # transcription['new_transcript'] = new_transcript
+        # transcription['excluded'] = excluded
     
-        wpm, is_fluent = estimate_fluency_proxy(audio_bytes, new_transcript)
-        transcription['fluency'] = {
-            "wpm": float(wpm),
-            "is_fluent": bool(is_fluent),
-            "note": "Fluent" if is_fluent else "Too slow or too fast"
-        }
+        # wpm, is_fluent = estimate_fluency_proxy(audio_bytes, new_transcript)
+        # transcription['fluency'] = {
+        #     "wpm": float(wpm),
+        #     "is_fluent": bool(is_fluent),
+        #     "note": "Fluent" if is_fluent else "Too slow or too fast"
+        # }
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
@@ -378,3 +377,7 @@ async def complete_analysis(
         "pace_analysis": pace_task,
         "pause_analysis": pause_task
     })
+
+# @app.post('/final-report')
+# def genarate_final_report(Session_analysis:dict = Body(...)):
+    

@@ -1,0 +1,104 @@
+[
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Explain what RESTful API means and list 3 key characteristics.",
+    "hint": "Mention statelessness, resource-based endpoints, and standard HTTP methods."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "What's the difference between SQL and NoSQL databases? Provide one use case for each.",
+    "hint": "Compare structure vs flexibility; mention transactions vs scalability needs."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Describe what ACID properties mean in database transactions.",
+    "hint": "Atomicity, Consistency, Isolation, Durability - explain each briefly."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Write pseudocode for binary search. What's its time complexity?",
+    "hint": "Divide-and-conquer approach; O(log n) complexity."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "What is database indexing and how does it improve query performance?",
+    "hint": "Analogize to book index; mention faster lookups vs write overhead."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "How would you prevent SQL injection attacks in a Python/Flask application?",
+    "hint": "Parameterized queries ORM usage - not string concatenation."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "Design database schema for a blog platform with users, posts, and comments.",
+    "hint": "Minimum 3 tables with primary/foreign keys; normalize relationships."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "Explain CAP theorem. Which two properties would you prioritize for a banking app?",
+    "hint": "Consistency, Availability, Partition tolerance; banking needs CP."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "How would you implement rate limiting for an API (100 requests/minute per user)?",
+    "hint": "Token bucket/sliding window algorithm; mention distributed systems challenges."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "Design a cache system for product listings that updates every 5 minutes.",
+    "hint": "TTL implementation; cache invalidation strategy; concurrency handling."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Easy",
+    "question": "Describe a technical challenge you faced during your coursework. How did you resolve it?",
+    "hint": "STAR method (Situation, Task, Action, Result); focus on problem-solving steps."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Medium",
+    "question": "How would you handle conflicting feedback from senior engineers on your code design?",
+    "hint": "Emphasize seeking clarification, objective evaluation, and collaborative resolution."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Hard",
+    "question": "Tell me about a time you had to learn a new technology quickly. What was your process?",
+    "hint": "Structured learning approach (documentation, projects, communities); measurable outcome."
+  },
+  {
+    "category": "Role-specific",
+    "difficulty": "Medium",
+    "question": "How would you design a service to generate unique order IDs during high traffic?",
+    "hint": "Distributed systems solution (UUID, Snowflake ID); avoid DB sequence bottlenecks."
+  },
+  {
+    "category": "Role-specific",
+    "difficulty": "Hard",
+    "question": "What strategies would you use to debug a production API suddenly returning 500 errors?",
+    "hint": "Log analysis, monitoring tools, error tracking; rollback vs hotfix decision process."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Easy",
+    "question": "Your resume mentions a Flask project. Explain how you implemented authentication.",
+    "hint": "Session/JWT-based auth; password hashing (bcrypt); endpoint protection."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Medium",
+    "question": "For your e-commerce project, how did you ensure database consistency during inventory updates?",
+    "hint": "Transaction usage; optimistic/pessimistic locking; race condition prevention."
+  }
+]

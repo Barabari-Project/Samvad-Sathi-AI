@@ -421,8 +421,8 @@ backend_context = '''
 '''
 
 
-def get_gen_que_prompt(resume:str,YOE:int,JD,Role:str,NOQ:int):
-   assert Role == "Data Science" or Role == "Frontend Developer" or Role == "Backend Developer"
+def get_gen_que_prompt(resume:str,YOE,JD,Role:str,NOQ:int):
+  #  assert Role == "Data Science" or Role == "Frontend Developer" or Role == "Backend Developer"
    if JD:
          JD = "- Job Requirements: " + JD
    else:
@@ -508,3 +508,4 @@ ml_resume = '''
 
 
 
+# print(get_gen_que_prompt(resume="# RESUME #",YOE="# YEARS_OF_Experience #",Role="Frontend Developer",NOQ=0,JD=''))

@@ -1,0 +1,86 @@
+[
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "Explain how `useState` works in React for a simple counter component.",
+    "hint": "Describe the initial state setup, state update function, and re-rendering behavior."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "How would you optimize a slow-rendering list of 10,000 items in React?",
+    "hint": "Mention virtualization (e.g., React Window), memoization, and avoiding inline functions."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Hard",
+    "question": "Design a real-time collaborative text editor using WebSockets and React. Discuss conflict resolution.",
+    "hint": "Reference Operational Transform (OT) or CRDTs for sync, and WebSocket event handling."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Easy",
+    "question": "What accessibility attributes would you add to a modal dialog?",
+    "hint": "Include `aria-modal`, `aria-labelledby`, `role='dialog'`, and focus trapping."
+  },
+  {
+    "category": "Technical",
+    "difficulty": "Medium",
+    "question": "Debug a hydration mismatch error in Next.js SSR. What strategies would you use?",
+    "hint": "Check browser-specific APIs, date formatting, or CSS-in-JS mismatches during server render."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Easy",
+    "question": "Describe a time you received constructive feedback. How did you respond?",
+    "hint": "Use STAR method: Specific feedback, Action taken, Result of improvement."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Medium",
+    "question": "How would you handle a disagreement with a designer about UI implementation?",
+    "hint": "Reference data (e.g., usability tests), trade-offs, and collaborative compromise."
+  },
+  {
+    "category": "Behavioral",
+    "difficulty": "Hard",
+    "question": "Tell me about a technical decision you advocated for that was initially rejected.",
+    "hint": "Explain risk analysis, proof-of-concept results, and stakeholder persuasion tactics."
+  },
+  {
+    "category": "Role-specific (UX-Focused Frontend)",
+    "difficulty": "Easy",
+    "question": "How would you ensure a button component meets UX best practices?",
+    "hint": "Include visual feedback (hover/focus states), size (min 44x44px), and semantic HTML."
+  },
+  {
+    "category": "Role-specific (UX-Focused Frontend)",
+    "difficulty": "Hard",
+    "question": "Design a responsive navigation system for a complex enterprise app with 100+ routes.",
+    "hint": "Propose mega-menus, progressive disclosure, keyboard navigation, and analytics tracking."
+  },
+  {
+    "category": "Role-specific (Performance Specialist)",
+    "difficulty": "Medium",
+    "question": "How would you reduce Cumulative Layout Shift (CLS) on a media-heavy page?",
+    "hint": "Reserve aspect ratios for images, preload fonts, and avoid dynamic content above existing content."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Easy",
+    "question": "Your resume mentions a React weather app. How did you manage API error handling?",
+    "hint": "Describe user-facing fallbacks (e.g., placeholder data) and error boundaries."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Medium",
+    "question": "You migrated a legacy jQuery app to React. How did you handle global event listeners?",
+    "hint": "Reference refactoring to React hooks or cleanup in `useEffect` to prevent memory leaks."
+  },
+  {
+    "category": "Resume-specific",
+    "difficulty": "Hard",
+    "question": "Your resume says you reduced bundle size by 40%. What specific techniques did you use?",
+    "hint": "Mention code-splitting, tree-shaking, asset optimization, and dependency analysis."
+  }
+]
