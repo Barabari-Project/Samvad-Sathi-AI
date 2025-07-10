@@ -378,6 +378,6 @@ async def complete_analysis(
         "pause_analysis": pause_task
     })
 
-# @app.post('/final-report')
-# def genarate_final_report(Session_analysis:dict = Body(...)):
-    
+@app.post('/final-report')
+def genarate_final_report(Session_analysis:dict = Body(...)):
+    analysis_list = Session_analysis['']

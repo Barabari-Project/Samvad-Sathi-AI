@@ -1,0 +1,1147 @@
+{
+  "user_profile": {
+    "name": "Smit Shah",
+    "contact": {
+      "phone": "+91 7990391454",
+      "email": "smitshah084@gmail.com",
+      "linkedin": "linkedin.com/in/smit-shah-856b75266/",
+      "github": "https://github.com/smitshah084"
+    },
+    "education": {
+      "degree": "Bachelor of Technology in Computer Engineering",
+      "institution": "Dharamsinh Desai University, Nadiad, India",
+      "expected_graduation": "May 2026",
+      "CPI": "7.69 / 10"
+    },
+    "experience": [
+      {
+        "title": "AI Engineer (Freelance)",
+        "company": "The Barabari Collective",
+        "duration": "June 2025 – Present",
+        "responsibilities": [
+          "Spearheading the development of an AI-based interview assessment system with modules for resume parsing, adaptive question generation, and multi-modal evaluation.",
+          "Engineering a speech analysis module to evaluate fluency, pacing, filler words, and tone using openSMILE and custom signal processing.",
+          "Optimizing the system for mixed-language Indian speakers to enhance accuracy and deliver personalized feedback."
+        ]
+      },
+      {
+        "title": "AI/ML Team Member",
+        "company": "GDSC DDU Chapter",
+        "duration": "2023–2024",
+        "responsibilities": [
+          "Conducted an online session on the fundamentals of Machine Learning, teaching core concepts and practical applications to a diverse audience."
+        ]
+      }
+    ],
+    "certifications": [
+      "Finalist in Smart India Hackathon 2023 for the project Chatbot for Power Substation Queries using RAG and Python.",
+      "Participated in the Innovation Design and Entrepreneurship Bootcamp (May 2024) organized by AICTE and the Ministry of Education’s Innovation Cell.",
+      "Secured rank 972 out of 74,000 participants in the Amazon ML Challenge 2024 with a project on Fine-tuning microsoft/ﬂorence using Transformers and PyTorch.",
+      "Built a Neural Network from Scratch in core Python without ML using any libraries.",
+      "2nd Place (Rs. 2,000) in poster-making competition at A.idea – Where Innovation Meets AI, hosted by CSI DDU.",
+      "Advanced Learning Algorithms – DeepLearning.AI",
+      "Introduction to TensorFlow for AI, ML and DL – DeepLearning.AI",
+      "Supervised Machine Learning – Stanford University"
+    ],
+    "projects": [
+      {
+        "name": "ChatGPT 2 (124M)",
+        "description": "Trained and implemented from scratch in Pytorch",
+        "technologies": [
+          "Python",
+          "PyTorch",
+          "AWS"
+        ],
+        "details": [
+          "Winner of Bhashathon 2025, won a cash prize of Rs. 50,000.",
+          "Developed a multilingual next-token prediction model for six Indian languages.",
+          "Implemented and trained a GPT-2 model (124M parameters) from scratch in PyTorch.",
+          "Trained a SentencePiece unigram tokenizer (vocab size: 50,304) optimized for Indic languages and low-memory systems using reservoir sampling and chunk-based streaming.",
+          "Implemented end-to-end data preprocessing pipeline with parallelized processing, deduplication, and language-specific normalization across a 73 GB dataset (3.2B tokens).",
+          "Achieved a token generation speed of 56K tokens/sec on an AWS G5, NVIDIA A10G GPU; processed 4.1B tokens using gradient accumulation to manage memory constraints."
+        ]
+      }
+    ],
+    "skills": [
+      "Python",
+      "C++",
+      "JavaScript",
+      "PyTorch",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "FAISS",
+      "scikit-learn",
+      "Flask",
+      "FastAPI",
+      "Express.js",
+      "TensorFlow",
+      "Git",
+      "AWS",
+      "Linux",
+      "SentencePiece",
+      "OpenAI",
+      "OpenAI-Agents",
+      "Deepgram",
+      "openSMILE"
+    ]
+  },
+  "answer": "of, yeah, so um, one technical challenge was like, ODIA language, you know, it had, like, way less data than others, so, model was like, kind of struggling to learn it properly, I'm like, you know, the loss was, and all, loss was high and all, and um, it had, just wasn't working good, so um, we tried to, like, fix that by making batches balanced, like, you know, make sure each batch had thoda-thoda from every language, so like, even if ODIA ka data kam tha, it still came in training, I mean, it helped, kind of, but not fully, cause data hi kam tha, you know what I mean, and so, um, yeah, so, training the model itself was like, tough, it's, it's like, our first time training something this big, memory ka kaafi issue de raha tha, and GPU be limited tha, so, um, we did, like, the gradient accumulation and stuff, and processed data in chunks, like, um, small parts, so it doesn't crash or something, so, like, haan, it was kind of difficult, but, I mean, we did jugaad, and somehow trained it, and yeah, I learned a lot, but still, like, next time we can do better, you know what I mean.",
+  "years_of_experience": 0,
+  "Interview_Question": {
+      "category": "Resume-specific",
+      "difficulty": "Easy",
+      "question": "Can you elaborate on your experience with the ChatGPT 2 project? What challenges did you face when implementing the multilingual model?",
+      "hint": "Expect comments on parallel processing and normalization."
+    },
+  "words_timestamp": {
+    "words": [
+    {
+      "end": 2.4800000190734863,
+      "start": 1.7599999904632568,
+      "word": "of"
+    },
+    {
+      "end": 2.4800000190734863,
+      "start": 2.4800000190734863,
+      "word": "yeah"
+    },
+    {
+      "end": 3.1600000858306885,
+      "start": 2.4800000190734863,
+      "word": "so"
+    },
+    {
+      "end": 4.619999885559082,
+      "start": 3.1600000858306885,
+      "word": "um"
+    },
+    {
+      "end": 4.860000133514404,
+      "start": 4.619999885559082,
+      "word": "one"
+    },
+    {
+      "end": 5.21999979019165,
+      "start": 4.860000133514404,
+      "word": "technical"
+    },
+    {
+      "end": 5.699999809265137,
+      "start": 5.21999979019165,
+      "word": "challenge"
+    },
+    {
+      "end": 6.239999771118164,
+      "start": 5.699999809265137,
+      "word": "was"
+    },
+    {
+      "end": 7.599999904632568,
+      "start": 6.239999771118164,
+      "word": "like"
+    },
+    {
+      "end": 7.960000038146973,
+      "start": 7.820000171661377,
+      "word": "ODIA"
+    },
+    {
+      "end": 8.399999618530273,
+      "start": 7.960000038146973,
+      "word": "language"
+    },
+    {
+      "end": 8.819999694824219,
+      "start": 8.800000190734863,
+      "word": "you"
+    },
+    {
+      "end": 9.119999885559082,
+      "start": 8.819999694824219,
+      "word": "know"
+    },
+    {
+      "end": 10.15999984741211,
+      "start": 9.920000076293945,
+      "word": "it"
+    },
+    {
+      "end": 10.579999923706055,
+      "start": 10.15999984741211,
+      "word": "had"
+    },
+    {
+      "end": 11.239999771118164,
+      "start": 10.800000190734863,
+      "word": "like"
+    },
+    {
+      "end": 11.819999694824219,
+      "start": 11.579999923706055,
+      "word": "way"
+    },
+    {
+      "end": 12.039999961853027,
+      "start": 11.819999694824219,
+      "word": "less"
+    },
+    {
+      "end": 12.420000076293945,
+      "start": 12.039999961853027,
+      "word": "data"
+    },
+    {
+      "end": 12.779999732971191,
+      "start": 12.420000076293945,
+      "word": "than"
+    },
+    {
+      "end": 13.279999732971191,
+      "start": 12.779999732971191,
+      "word": "others"
+    },
+    {
+      "end": 14.279999732971191,
+      "start": 13.319999694824219,
+      "word": "so"
+    },
+    {
+      "end": 14.720000267028809,
+      "start": 14.319999694824219,
+      "word": "model"
+    },
+    {
+      "end": 15.140000343322754,
+      "start": 14.720000267028809,
+      "word": "was"
+    },
+    {
+      "end": 15.600000381469727,
+      "start": 15.140000343322754,
+      "word": "like"
+    },
+    {
+      "end": 16.18000030517578,
+      "start": 15.979999542236328,
+      "word": "kind"
+    },
+    {
+      "end": 16.420000076293945,
+      "start": 16.18000030517578,
+      "word": "of"
+    },
+    {
+      "end": 16.68000030517578,
+      "start": 16.420000076293945,
+      "word": "struggling"
+    },
+    {
+      "end": 17.020000457763672,
+      "start": 16.68000030517578,
+      "word": "to"
+    },
+    {
+      "end": 17.219999313354492,
+      "start": 17.020000457763672,
+      "word": "learn"
+    },
+    {
+      "end": 17.559999465942383,
+      "start": 17.219999313354492,
+      "word": "it"
+    },
+    {
+      "end": 17.84000015258789,
+      "start": 17.559999465942383,
+      "word": "properly"
+    },
+    {
+      "end": 19.280000686645508,
+      "start": 18.31999969482422,
+      "word": "I'm"
+    },
+    {
+      "end": 19.559999465942383,
+      "start": 19.280000686645508,
+      "word": "like"
+    },
+    {
+      "end": 19.799999237060547,
+      "start": 19.719999313354492,
+      "word": "you"
+    },
+    {
+      "end": 20.040000915527344,
+      "start": 19.799999237060547,
+      "word": "know"
+    },
+    {
+      "end": 20.899999618530273,
+      "start": 20.040000915527344,
+      "word": "the"
+    },
+    {
+      "end": 21.239999771118164,
+      "start": 20.899999618530273,
+      "word": "loss"
+    },
+    {
+      "end": 21.799999237060547,
+      "start": 21.239999771118164,
+      "word": "was"
+    },
+    {
+      "end": 22.31999969482422,
+      "start": 21.799999237060547,
+      "word": "and"
+    },
+    {
+      "end": 23.15999984741211,
+      "start": 22.31999969482422,
+      "word": "all"
+    },
+    {
+      "end": 23.84000015258789,
+      "start": 23.84000015258789,
+      "word": "loss"
+    },
+    {
+      "end": 24.100000381469727,
+      "start": 23.84000015258789,
+      "word": "was"
+    },
+    {
+      "end": 24.34000015258789,
+      "start": 24.100000381469727,
+      "word": "high"
+    },
+    {
+      "end": 24.5,
+      "start": 24.34000015258789,
+      "word": "and"
+    },
+    {
+      "end": 25.3799991607666,
+      "start": 24.5,
+      "word": "all"
+    },
+    {
+      "end": 25.760000228881836,
+      "start": 25.479999542236328,
+      "word": "and"
+    },
+    {
+      "end": 26.459999084472656,
+      "start": 25.760000228881836,
+      "word": "um"
+    },
+    {
+      "end": 27.739999771118164,
+      "start": 27.280000686645508,
+      "word": "it"
+    },
+    {
+      "end": 28.280000686645508,
+      "start": 27.739999771118164,
+      "word": "had"
+    },
+    {
+      "end": 29.360000610351562,
+      "start": 29.200000762939453,
+      "word": "just"
+    },
+    {
+      "end": 29.760000228881836,
+      "start": 29.360000610351562,
+      "word": "wasn't"
+    },
+    {
+      "end": 30.239999771118164,
+      "start": 29.760000228881836,
+      "word": "working"
+    },
+    {
+      "end": 30.959999084472656,
+      "start": 30.239999771118164,
+      "word": "good"
+    },
+    {
+      "end": 31.799999237060547,
+      "start": 30.959999084472656,
+      "word": "so"
+    },
+    {
+      "end": 32.720001220703125,
+      "start": 31.799999237060547,
+      "word": "um"
+    },
+    {
+      "end": 33.939998626708984,
+      "start": 32.720001220703125,
+      "word": "we"
+    },
+    {
+      "end": 34.2599983215332,
+      "start": 33.939998626708984,
+      "word": "tried"
+    },
+    {
+      "end": 34.959999084472656,
+      "start": 34.2599983215332,
+      "word": "to"
+    },
+    {
+      "end": 36.15999984741211,
+      "start": 35.119998931884766,
+      "word": "like"
+    },
+    {
+      "end": 36.380001068115234,
+      "start": 36.15999984741211,
+      "word": "fix"
+    },
+    {
+      "end": 36.779998779296875,
+      "start": 36.380001068115234,
+      "word": "that"
+    },
+    {
+      "end": 37.119998931884766,
+      "start": 36.779998779296875,
+      "word": "by"
+    },
+    {
+      "end": 37.599998474121094,
+      "start": 37.119998931884766,
+      "word": "making"
+    },
+    {
+      "end": 38.2400016784668,
+      "start": 37.599998474121094,
+      "word": "batches"
+    },
+    {
+      "end": 38.599998474121094,
+      "start": 38.2400016784668,
+      "word": "balanced"
+    },
+    {
+      "end": 40.47999954223633,
+      "start": 39.220001220703125,
+      "word": "like"
+    },
+    {
+      "end": 40.65999984741211,
+      "start": 40.5,
+      "word": "you"
+    },
+    {
+      "end": 40.97999954223633,
+      "start": 40.65999984741211,
+      "word": "know"
+    },
+    {
+      "end": 41.560001373291016,
+      "start": 41.2400016784668,
+      "word": "make"
+    },
+    {
+      "end": 41.959999084472656,
+      "start": 41.560001373291016,
+      "word": "sure"
+    },
+    {
+      "end": 42.68000030517578,
+      "start": 41.959999084472656,
+      "word": "each"
+    },
+    {
+      "end": 42.939998626708984,
+      "start": 42.68000030517578,
+      "word": "batch"
+    },
+    {
+      "end": 43.47999954223633,
+      "start": 42.939998626708984,
+      "word": "had"
+    },
+    {
+      "end": 44.060001373291016,
+      "start": 43.47999954223633,
+      "word": "thoda"
+    },
+    {
+      "end": 44.060001373291016,
+      "start": 44.060001373291016,
+      "word": "thoda"
+    },
+    {
+      "end": 44.65999984741211,
+      "start": 44.060001373291016,
+      "word": "from"
+    },
+    {
+      "end": 45.119998931884766,
+      "start": 44.65999984741211,
+      "word": "every"
+    },
+    {
+      "end": 45.47999954223633,
+      "start": 45.119998931884766,
+      "word": "language"
+    },
+    {
+      "end": 47.380001068115234,
+      "start": 46.41999816894531,
+      "word": "so"
+    },
+    {
+      "end": 47.7599983215332,
+      "start": 47.380001068115234,
+      "word": "like"
+    },
+    {
+      "end": 48.15999984741211,
+      "start": 47.86000061035156,
+      "word": "even"
+    },
+    {
+      "end": 48.84000015258789,
+      "start": 48.15999984741211,
+      "word": "if"
+    },
+    {
+      "end": 49.15999984741211,
+      "start": 48.84000015258789,
+      "word": "ODIA"
+    },
+    {
+      "end": 49.380001068115234,
+      "start": 49.15999984741211,
+      "word": "ka"
+    },
+    {
+      "end": 49.81999969482422,
+      "start": 49.380001068115234,
+      "word": "data"
+    },
+    {
+      "end": 50.47999954223633,
+      "start": 49.81999969482422,
+      "word": "kam"
+    },
+    {
+      "end": 50.70000076293945,
+      "start": 50.47999954223633,
+      "word": "tha"
+    },
+    {
+      "end": 51.540000915527344,
+      "start": 51.2400016784668,
+      "word": "it"
+    },
+    {
+      "end": 52.060001373291016,
+      "start": 51.540000915527344,
+      "word": "still"
+    },
+    {
+      "end": 52.439998626708984,
+      "start": 52.060001373291016,
+      "word": "came"
+    },
+    {
+      "end": 52.65999984741211,
+      "start": 52.439998626708984,
+      "word": "in"
+    },
+    {
+      "end": 53.08000183105469,
+      "start": 52.65999984741211,
+      "word": "training"
+    },
+    {
+      "end": 54.15999984741211,
+      "start": 53.08000183105469,
+      "word": "I"
+    },
+    {
+      "end": 54.41999816894531,
+      "start": 54.15999984741211,
+      "word": "mean"
+    },
+    {
+      "end": 55.220001220703125,
+      "start": 54.41999816894531,
+      "word": "it"
+    },
+    {
+      "end": 55.540000915527344,
+      "start": 55.220001220703125,
+      "word": "helped"
+    },
+    {
+      "end": 55.900001525878906,
+      "start": 55.880001068115234,
+      "word": "kind"
+    },
+    {
+      "end": 56.41999816894531,
+      "start": 55.900001525878906,
+      "word": "of"
+    },
+    {
+      "end": 56.86000061035156,
+      "start": 56.63999938964844,
+      "word": "but"
+    },
+    {
+      "end": 57.2599983215332,
+      "start": 56.86000061035156,
+      "word": "not"
+    },
+    {
+      "end": 57.619998931884766,
+      "start": 57.2599983215332,
+      "word": "fully"
+    },
+    {
+      "end": 59.119998931884766,
+      "start": 58.939998626708984,
+      "word": "cause"
+    },
+    {
+      "end": 59.720001220703125,
+      "start": 59.119998931884766,
+      "word": "data"
+    },
+    {
+      "end": 59.880001068115234,
+      "start": 59.720001220703125,
+      "word": "hi"
+    },
+    {
+      "end": 60.099998474121094,
+      "start": 59.880001068115234,
+      "word": "kam"
+    },
+    {
+      "end": 60.2599983215332,
+      "start": 60.099998474121094,
+      "word": "tha"
+    },
+    {
+      "end": 61.060001373291016,
+      "start": 60.900001525878906,
+      "word": "you"
+    },
+    {
+      "end": 61.15999984741211,
+      "start": 61.060001373291016,
+      "word": "know"
+    },
+    {
+      "end": 61.36000061035156,
+      "start": 61.15999984741211,
+      "word": "what"
+    },
+    {
+      "end": 61.540000915527344,
+      "start": 61.36000061035156,
+      "word": "I"
+    },
+    {
+      "end": 61.70000076293945,
+      "start": 61.540000915527344,
+      "word": "mean"
+    },
+    {
+      "end": 63.2599983215332,
+      "start": 61.86000061035156,
+      "word": "and"
+    },
+    {
+      "end": 63.720001220703125,
+      "start": 63.2599983215332,
+      "word": "so"
+    },
+    {
+      "end": 64.87999725341797,
+      "start": 63.900001525878906,
+      "word": "um"
+    },
+    {
+      "end": 66.68000030517578,
+      "start": 66.54000091552734,
+      "word": "yeah"
+    },
+    {
+      "end": 67.45999908447266,
+      "start": 66.68000030517578,
+      "word": "so"
+    },
+    {
+      "end": 67.73999786376953,
+      "start": 67.5999984741211,
+      "word": "training"
+    },
+    {
+      "end": 68.41999816894531,
+      "start": 67.73999786376953,
+      "word": "the"
+    },
+    {
+      "end": 68.73999786376953,
+      "start": 68.41999816894531,
+      "word": "model"
+    },
+    {
+      "end": 69.33999633789062,
+      "start": 68.73999786376953,
+      "word": "itself"
+    },
+    {
+      "end": 69.4000015258789,
+      "start": 69.33999633789062,
+      "word": "was"
+    },
+    {
+      "end": 70.36000061035156,
+      "start": 69.4000015258789,
+      "word": "like"
+    },
+    {
+      "end": 71,
+      "start": 70.9000015258789,
+      "word": "tough"
+    },
+    {
+      "end": 73.08000183105469,
+      "start": 71,
+      "word": "it's"
+    },
+    {
+      "end": 73.66000366210938,
+      "start": 73.08000183105469,
+      "word": "it's"
+    },
+    {
+      "end": 74.16000366210938,
+      "start": 73.66000366210938,
+      "word": "like"
+    },
+    {
+      "end": 75.33999633789062,
+      "start": 74.9800033569336,
+      "word": "our"
+    },
+    {
+      "end": 75.62000274658203,
+      "start": 75.33999633789062,
+      "word": "first"
+    },
+    {
+      "end": 75.9000015258789,
+      "start": 75.62000274658203,
+      "word": "time"
+    },
+    {
+      "end": 76.26000213623047,
+      "start": 75.9000015258789,
+      "word": "training"
+    },
+    {
+      "end": 76.73999786376953,
+      "start": 76.26000213623047,
+      "word": "something"
+    },
+    {
+      "end": 77.04000091552734,
+      "start": 76.73999786376953,
+      "word": "this"
+    },
+    {
+      "end": 77.80000305175781,
+      "start": 77.04000091552734,
+      "word": "big"
+    },
+    {
+      "end": 78.91999816894531,
+      "start": 78.41999816894531,
+      "word": "memory"
+    },
+    {
+      "end": 80.18000030517578,
+      "start": 78.91999816894531,
+      "word": "ka"
+    },
+    {
+      "end": 80.5999984741211,
+      "start": 80.18000030517578,
+      "word": "kaafi"
+    },
+    {
+      "end": 81.12000274658203,
+      "start": 80.5999984741211,
+      "word": "issue"
+    },
+    {
+      "end": 81.30000305175781,
+      "start": 81.12000274658203,
+      "word": "de"
+    },
+    {
+      "end": 81.58000183105469,
+      "start": 81.30000305175781,
+      "word": "raha"
+    },
+    {
+      "end": 81.76000213623047,
+      "start": 81.58000183105469,
+      "word": "tha"
+    },
+    {
+      "end": 83.27999877929688,
+      "start": 82.55999755859375,
+      "word": "and"
+    },
+    {
+      "end": 83.4800033569336,
+      "start": 83.27999877929688,
+      "word": "GPU"
+    },
+    {
+      "end": 83.76000213623047,
+      "start": 83.4800033569336,
+      "word": "be"
+    },
+    {
+      "end": 84.22000122070312,
+      "start": 83.76000213623047,
+      "word": "limited"
+    },
+    {
+      "end": 84.4800033569336,
+      "start": 84.22000122070312,
+      "word": "tha"
+    },
+    {
+      "end": 85.81999969482422,
+      "start": 85.37999725341797,
+      "word": "so"
+    },
+    {
+      "end": 87.04000091552734,
+      "start": 86.22000122070312,
+      "word": "um"
+    },
+    {
+      "end": 87.22000122070312,
+      "start": 87.04000091552734,
+      "word": "we"
+    },
+    {
+      "end": 87.41999816894531,
+      "start": 87.22000122070312,
+      "word": "did"
+    },
+    {
+      "end": 87.77999877929688,
+      "start": 87.77999877929688,
+      "word": "like"
+    },
+    {
+      "end": 88.31999969482422,
+      "start": 88.18000030517578,
+      "word": "the"
+    },
+    {
+      "end": 88.5999984741211,
+      "start": 88.31999969482422,
+      "word": "gradient"
+    },
+    {
+      "end": 89.36000061035156,
+      "start": 88.5999984741211,
+      "word": "accumulation"
+    },
+    {
+      "end": 89.76000213623047,
+      "start": 89.36000061035156,
+      "word": "and"
+    },
+    {
+      "end": 90.30000305175781,
+      "start": 89.76000213623047,
+      "word": "stuff"
+    },
+    {
+      "end": 91.66000366210938,
+      "start": 90.62000274658203,
+      "word": "and"
+    },
+    {
+      "end": 92.4000015258789,
+      "start": 91.66000366210938,
+      "word": "processed"
+    },
+    {
+      "end": 93,
+      "start": 92.4000015258789,
+      "word": "data"
+    },
+    {
+      "end": 93.83999633789062,
+      "start": 93,
+      "word": "in"
+    },
+    {
+      "end": 93.83999633789062,
+      "start": 93.83999633789062,
+      "word": "chunks"
+    },
+    {
+      "end": 95.30000305175781,
+      "start": 94.5199966430664,
+      "word": "like"
+    },
+    {
+      "end": 97.26000213623047,
+      "start": 95.80000305175781,
+      "word": "um"
+    },
+    {
+      "end": 97.30000305175781,
+      "start": 97.26000213623047,
+      "word": "small"
+    },
+    {
+      "end": 97.77999877929688,
+      "start": 97.30000305175781,
+      "word": "parts"
+    },
+    {
+      "end": 98.19999694824219,
+      "start": 97.9800033569336,
+      "word": "so"
+    },
+    {
+      "end": 98.45999908447266,
+      "start": 98.19999694824219,
+      "word": "it"
+    },
+    {
+      "end": 98.81999969482422,
+      "start": 98.45999908447266,
+      "word": "doesn't"
+    },
+    {
+      "end": 99.19999694824219,
+      "start": 98.81999969482422,
+      "word": "crash"
+    },
+    {
+      "end": 99.45999908447266,
+      "start": 99.19999694824219,
+      "word": "or"
+    },
+    {
+      "end": 99.81999969482422,
+      "start": 99.45999908447266,
+      "word": "something"
+    },
+    {
+      "end": 101.23999786376953,
+      "start": 99.81999969482422,
+      "word": "so"
+    },
+    {
+      "end": 102.04000091552734,
+      "start": 101.66000366210938,
+      "word": "like"
+    },
+    {
+      "end": 103.0999984741211,
+      "start": 102.5,
+      "word": "haan"
+    },
+    {
+      "end": 103.4800033569336,
+      "start": 103.16000366210938,
+      "word": "it"
+    },
+    {
+      "end": 104.18000030517578,
+      "start": 103.4800033569336,
+      "word": "was"
+    },
+    {
+      "end": 104.45999908447266,
+      "start": 104.18000030517578,
+      "word": "kind"
+    },
+    {
+      "end": 104.72000122070312,
+      "start": 104.45999908447266,
+      "word": "of"
+    },
+    {
+      "end": 105.0999984741211,
+      "start": 104.72000122070312,
+      "word": "difficult"
+    },
+    {
+      "end": 105.55999755859375,
+      "start": 105.31999969482422,
+      "word": "but"
+    },
+    {
+      "end": 106.13999938964844,
+      "start": 105.87999725341797,
+      "word": "I"
+    },
+    {
+      "end": 106.36000061035156,
+      "start": 106.13999938964844,
+      "word": "mean"
+    },
+    {
+      "end": 106.94000244140625,
+      "start": 106.58000183105469,
+      "word": "we"
+    },
+    {
+      "end": 107.27999877929688,
+      "start": 106.94000244140625,
+      "word": "did"
+    },
+    {
+      "end": 107.73999786376953,
+      "start": 107.27999877929688,
+      "word": "jugaad"
+    },
+    {
+      "end": 108.81999969482422,
+      "start": 108.33999633789062,
+      "word": "and"
+    },
+    {
+      "end": 109.27999877929688,
+      "start": 108.81999969482422,
+      "word": "somehow"
+    },
+    {
+      "end": 109.62000274658203,
+      "start": 109.27999877929688,
+      "word": "trained"
+    },
+    {
+      "end": 110.26000213623047,
+      "start": 109.62000274658203,
+      "word": "it"
+    },
+    {
+      "end": 110.63999938964844,
+      "start": 110.30000305175781,
+      "word": "and"
+    },
+    {
+      "end": 110.86000061035156,
+      "start": 110.63999938964844,
+      "word": "yeah"
+    },
+    {
+      "end": 112.16000366210938,
+      "start": 111.13999938964844,
+      "word": "I"
+    },
+    {
+      "end": 112.33999633789062,
+      "start": 112.16000366210938,
+      "word": "learned"
+    },
+    {
+      "end": 112.73999786376953,
+      "start": 112.33999633789062,
+      "word": "a"
+    },
+    {
+      "end": 112.77999877929688,
+      "start": 112.73999786376953,
+      "word": "lot"
+    },
+    {
+      "end": 113.44000244140625,
+      "start": 113.19999694824219,
+      "word": "but"
+    },
+    {
+      "end": 113.83999633789062,
+      "start": 113.44000244140625,
+      "word": "still"
+    },
+    {
+      "end": 114.73999786376953,
+      "start": 114.0999984741211,
+      "word": "like"
+    },
+    {
+      "end": 114.95999908447266,
+      "start": 114.73999786376953,
+      "word": "next"
+    },
+    {
+      "end": 115.27999877929688,
+      "start": 114.95999908447266,
+      "word": "time"
+    },
+    {
+      "end": 115.54000091552734,
+      "start": 115.27999877929688,
+      "word": "we"
+    },
+    {
+      "end": 115.73999786376953,
+      "start": 115.54000091552734,
+      "word": "can"
+    },
+    {
+      "end": 116.05999755859375,
+      "start": 115.73999786376953,
+      "word": "do"
+    },
+    {
+      "end": 116.31999969482422,
+      "start": 116.05999755859375,
+      "word": "better"
+    },
+    {
+      "end": 116.5999984741211,
+      "start": 116.54000091552734,
+      "word": "you"
+    },
+    {
+      "end": 116.72000122070312,
+      "start": 116.5999984741211,
+      "word": "know"
+    },
+    {
+      "end": 116.91999816894531,
+      "start": 116.72000122070312,
+      "word": "what"
+    },
+    {
+      "end": 117.0999984741211,
+      "start": 116.91999816894531,
+      "word": "I"
+    },
+    {
+      "end": 117.19999694824219,
+      "start": 117.0999984741211,
+      "word": "mean"
+    }
+  ]
+  },
+  "job_role": "Data Science"
+}

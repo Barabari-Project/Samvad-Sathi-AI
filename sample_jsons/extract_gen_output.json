@@ -1,0 +1,203 @@
+{
+  "extracted_resume": {
+    "name": "Smit Shah",
+    "contact": {
+      "phone": "+91 7990391454",
+      "email": "smitshah084@gmail.com",
+      "linkedin": "linkedin.com/in/smit-shah-856b75266",
+      "github": "github.com/smitshah084",
+      "twitter": "x.com/SmitShah084"
+    },
+    "education": {
+      "institution": "Dharamsinh Desai University, Nadiad, India",
+      "degree": "Bachelor of Technology in Computer Engineering",
+      "expected_graduation": "May 2026",
+      "CPI": "7.69 / 10"
+    },
+    "experience": [
+      {
+        "role": "AI Engineer (Freelance)",
+        "organization": "The Barabari Collective",
+        "duration": "June 2025 – Present",
+        "details": [
+          "Spearheading the development of an AI-based interview assessment system with modules for resume parsing, adaptive question generation, and multi-modal evaluation.",
+          "Engineering a speech analysis module to evaluate fluency, pacing, filler words, and tone using openSMILE and custom signal processing.",
+          "Optimizing the system for mixed-language Indian speakers to enhance accuracy and deliver personalized feedback.",
+          "Project is ongoing under a freelance contract with a total value of Rs. 50,000."
+        ]
+      },
+      {
+        "role": "AI/ML Team Member",
+        "organization": "GDSC DDU Chapter",
+        "duration": "2023–2024",
+        "details": [
+          "Conducted an online session on the fundamentals of Machine Learning, teaching core concepts and practical applications to a diverse audience."
+        ]
+      }
+    ],
+    "certifications": [
+      "Advanced Learning Algorithms – DeepLearning.AI",
+      "Introduction to TensorFlow for AI, ML and DL – DeepLearning.AI",
+      "Supervised Machine Learning – Stanford University"
+    ],
+    "projects": [
+      {
+        "title": "ChatGPT 2 (124M)",
+        "details": [
+          "Trained and implemented from scratch in Pytorch | Python, PyTorch, AWS",
+          "Winner of Bhashathon 2025, won a cash prize of Rs. 50,000.",
+          "Developed a multilingual next-token prediction model for six Indian languages.",
+          "Implemented and trained a GPT-2 model (124M parameters) from scratch in PyTorch.",
+          "Trained a SentencePiece unigram tokenizer (vocab size: 50,304) optimized for Indic languages and low-memory systems using reservoir sampling and chunk-based streaming.",
+          "Implemented end-to-end data preprocessing pipeline with parallelized processing, deduplication, and language-specific normalization across a 73 GB dataset (3.2B tokens).",
+          "Achieved a token generation speed of 56K tokens/sec on an AWS G5, NVIDIA A10G GPU; processed 4.1B tokens using gradient accumulation to manage memory constraints."
+        ]
+      },
+      {
+        "title": "Chatbot for Power Substation Queries",
+        "details": [
+          "Finalist in Smart India Hackathon 2023 for the project; selected among top 7 out of 139 submissions for the Grand Finale."
+        ]
+      },
+      {
+        "title": "Fine-tuning microsoft/florence using Transformers and PyTorch",
+        "details": [
+          "Secured rank 972 out of 74,000 participants in the Amazon ML Challenge 2024."
+        ]
+      },
+      {
+        "title": "Neural Network from Scratch",
+        "details": [
+          "Built a Neural Network from Scratch in core Python without ML using any libraries."
+        ]
+      },
+      {
+        "title": "A.idea – Where Innovation Meets AI",
+        "details": [
+          "2nd Place (Rs. 2,000) in poster-making competition hosted by CSI DDU."
+        ]
+      }
+    ],
+    "skills": [
+      "Python",
+      "C++",
+      "JavaScript",
+      "PyTorch",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "FAISS",
+      "scikit-learn",
+      "Flask",
+      "FastAPI",
+      "Express.js",
+      "TensorFlow",
+      "Git",
+      "AWS",
+      "Linux",
+      "SentencePiece",
+      "OpenAI",
+      "OpenAI-Agents",
+      "Deepgram",
+      "openSMILE"
+    ]
+  },
+  "interview_questions": [
+    {
+      "category": "Technical",
+      "difficulty": "Easy",
+      "question": "What is the difference between supervised and unsupervised learning? Can you provide an example of each?",
+      "hint": "Focus on basic definitions and common algorithms."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Easy",
+      "question": "Can you explain what overfitting is in the context of machine learning and suggest two methods to prevent it?",
+      "hint": "Think about regularization techniques and data splitting."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Easy",
+      "question": "Write a Python function to calculate the mean and median of a list of numbers. What is the significance of these statistics?",
+      "hint": "Consider edge cases like empty lists."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Medium",
+      "question": "Explain the intuition behind the gradient descent algorithm. How does it apply to training machine learning models?",
+      "hint": "Discuss the concept of minimizing a loss function."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Medium",
+      "question": "How would you implement a decision tree classifier from scratch? What key components would you need to consider?",
+      "hint": "Review splitting criteria and stopping conditions."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Medium",
+      "question": "What are SQL window functions? Can you give an example of a use case where they might be beneficial?",
+      "hint": "Consider ranking or cumulative calculations."
+    },
+    {
+      "category": "Behavioral",
+      "difficulty": "Medium",
+      "question": "Describe a group project where you had to work with team members from diverse backgrounds. How did you ensure effective collaboration?",
+      "hint": "Use the STAR method to structure your response."
+    },
+    {
+      "category": "Behavioral",
+      "difficulty": "Medium",
+      "question": "Tell me about a time you faced a significant challenge while working on a project. What strategies did you use to overcome it?",
+      "hint": "Quantify your results if possible."
+    },
+    {
+      "category": "Role-specific",
+      "difficulty": "Medium",
+      "question": "Given your experience in developing AI-based systems, how would you assess the effectiveness of an AI model in real-time applications?",
+      "hint": "Consider metrics like accuracy, latency, and user feedback."
+    },
+    {
+      "category": "Role-specific",
+      "difficulty": "Medium",
+      "question": "What techniques would you apply to ensure a high-quality multi-modal evaluation system for assessing interview candidates?",
+      "hint": "Think about integrating different data types like audio, text, and video."
+    },
+    {
+      "category": "Resume-specific",
+      "difficulty": "Easy",
+      "question": "In your project 'ChatGPT 2 (124M)', how did you handle data preprocessing for your large dataset? What challenges did you face?",
+      "hint": "Expect comments on parallel processing and normalization."
+    },
+    {
+      "category": "Resume-specific",
+      "difficulty": "Medium",
+      "question": "Your role as an AI Engineer involves an interview assessment system. What specific methods did you use for resume parsing?",
+      "hint": "Mention techniques like keyword extraction or NLP."
+    },
+    {
+      "category": "Resume-specific",
+      "difficulty": "Easy",
+      "question": "You participated in the Smart India Hackathon with your chatbot project. What was the primary function of your chatbot?",
+      "hint": "Focus on the problem it was designed to solve."
+    },
+    {
+      "category": "Resume-specific",
+      "difficulty": "Medium",
+      "question": "You have a certification in Advanced Learning Algorithms. Can you explain the significance of algorithms in machine learning over raw data?",
+      "hint": "Discuss model performance improvement and interpretability."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Easy",
+      "question": "Define what a confusion matrix is and explain its components. How can it help in evaluating a classification model?",
+      "hint": "Ensure to mention true positives, false positives, etc."
+    },
+    {
+      "category": "Technical",
+      "difficulty": "Medium",
+      "question": "What are some common metrics used to evaluate regression models? Can you explain at least two?",
+      "hint": "Discuss metrics like RMSE and R-squared."
+    }
+  ]
+}
