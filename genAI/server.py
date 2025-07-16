@@ -384,13 +384,50 @@ def genarate_final_report(Session_analysis:dict = Body(...)):
     pause_list = [analysis['pause_analysis'] for analysis in analysis_list]
     pace_list = [analysis['pace_analysis'] for analysis in analysis_list]
     communication_list = [analysis['communication_analysis'] for analysis in analysis_list]
-    domian = [analysis['domain_analysis'] for analysis in analysis_list]
+    domian_list = [analysis['domain_analysis'] for analysis in analysis_list]
     analysis_list = None
     
     Speech_Structure_Fluency = [{"pace":i,"pause":j,"communication":k} for i,j,k in zip(pace_list,pause_list,communication_list)]
     
-    report = {"knowledge_competence":domian,
+    report = {"Summery":None,
+        "knowledge_competence":domian_list,
               "Speech_Structure_Fluency": Speech_Structure_Fluency}
+    
+
+    acc_sum,dou_sum,rel_sum,example_sum = 0,0,0,0
+    for domain in domian_list:
+        acc_sum += domain["attribute_scores"]["Accuracy"]["score"]
+        dou_sum += domain["attribute_scores"]["Depth of Understanding"]["score"]
+        example_sum += domain["attribute_scores"]["Examples/Evidence"]["score"]
+        rel_sum += domain["attribute_scores"]["Relevance"]["score"]    
+    
+    clarity_sum,vocabulary_sum,grammar_sum,structure_sum = 0,0,0,0
+    for comm in communication_list:
+        clarity_sum += comm["clarity"]["score"]
+        vocabulary_sum += comm["vocabulary_richness"]["score"]
+        grammar_sum += comm["grammar_syntax"]["score"]
+        structure_sum += comm["structure_flow"]["score"]
+    
+    scores = {"scores":{
+        "knowledge_competence": {
+            "Accuracy":acc_sum,
+            "Depth of Understanding":dou_sum,
+            "Examples/Evidence":example_sum,
+            "Relevance":rel_sum
+            },
+        "Speech_Structure_Fluency":{
+            "clarity":clarity_sum,
+            "vocabulary_richness":vocabulary_sum,
+            "grammar_syntax":grammar_sum,
+            "structure_flow":structure_sum
+        }
+    }}
+    
+    
+    
+    report['Summery'] = {
+        "Scores":scores,
+    }
     
     return JSONResponse(content=report)
     
