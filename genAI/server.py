@@ -1,7 +1,7 @@
 from fastapi import FastAPI,UploadFile, File, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional,Literal
-from prompts.prompts import extract_resume_template,analyze_text_template,extract_knowledge_set_template,analyse_domain_template
+from prompts.prompts import extract_resume_template,analyze_text_template,extract_knowledge_set_template,analyse_domain_template,Final_Summary_template
 from prompts.gen_que_prompt import get_gen_que_prompt
 from pydantic import BaseModel
 import PyPDF2
@@ -18,6 +18,8 @@ from pacing import provide_pace_feedback
 from pauses import analyze_pauses
 import numpy as np
 import librosa
+import statistics
+from typing import List, Dict
 
 
 from dotenv import load_dotenv
@@ -383,15 +385,14 @@ async def complete_analysis(
 @app.post('/final-report')
 def genarate_final_report(Session_analysis:dict = Body(...)):
     analysis_list = Session_analysis['analysis']
-    print(analysis_list)
-    num_ques = len(analysis_list)
+    if not analysis_list:
+        return {"error": "No analysis data provided"}
     questions_list = [analysis["Question"] for analysis in analysis_list]
     answers_list = [analysis["Answer"] for analysis in analysis_list]
     pause_list = [analysis['pause_analysis'] for analysis in analysis_list]
     pace_list = [analysis['pace_analysis'] for analysis in analysis_list]
     communication_list = [analysis['communication_analysis'] for analysis in analysis_list]
     domian_list = [analysis['domain_analysis'] for analysis in analysis_list]
-    analysis_list = None
     
     Speech_Structure_Fluency = [{"pace":i,"pause":j,"communication":k} for i,j,k in zip(pace_list,pause_list,communication_list)]
     
@@ -399,113 +400,23 @@ def genarate_final_report(Session_analysis:dict = Body(...)):
             "knowledge_competence":domian_list,
               "Speech_Structure_Fluency": Speech_Structure_Fluency
               }
-    
-    domain_attribute_prompt_template = '''
-    ###
-    <Question-{num}>
-    {question}
-    
-    <ANS-{num}>
-    {answer}
-    
-    <{attribute} analysis>
-    {analysis}
-    '''
 
     acc_sum,dou_sum,rel_sum,example_sum = 0,0,0,0
-    acc_rea,dou_rea,rel_rea,example_rea = "","","",""
-    for ix,(question,answer,domain) in enumerate(zip(questions_list,answers_list,domian_list)):
+    for domain in domian_list:
         acc_sum += domain["attribute_scores"]["Accuracy"]["score"]
         dou_sum += domain["attribute_scores"]["Depth of Understanding"]["score"]
         example_sum += domain["attribute_scores"]["Examples/Evidence"]["score"]
         rel_sum += domain["attribute_scores"]["Relevance"]["score"]
-        
-        acc_rea += domain_attribute_prompt_template.format(
-            num=str(ix),
-            question=question,
-            answer=answer,
-            attribute="accuracy",
-            analysis=domain["attribute_scores"]["Accuracy"]["reason"])
-        
-        dou_rea += domain_attribute_prompt_template.format(
-            num=str(ix),
-            question=question,
-            answer=answer,
-            attribute="depth of understanding",
-            analysis=domain["attribute_scores"]["Depth of Understanding"]["reason"]
-        )
 
-        rel_rea += domain_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="relevance",
-            question=question,
-            answer=answer,
-            analysis=domain["attribute_scores"]["Relevance"]["reason"]
-        )
-
-        example_rea += domain_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="examples/evidence",
-            question=question,
-            answer=answer,
-            analysis=domain["attribute_scores"]["Examples/Evidence"]["reason"]
-        )
-        
-    comm_attribute_prompt_template = '''
-    ###
-    <Question-{num}>
-    
-    <answer>
-    {answer}
-    
-    <Qoutes>
-    {Qoutes}
-    
-    <{attribute}-analysis>
-    {analysis}
-    '''
     
     clarity_sum,vocabulary_sum,grammar_sum,structure_sum = 0,0,0,0
-    clarity_rea,vocab_rea,grammar_rea,struct_rea = "","","",""
     for comm in communication_list:
         clarity_sum += comm["clarity"]["score"]
         vocabulary_sum += comm["vocabulary_richness"]["score"]
         grammar_sum += comm["grammar_syntax"]["score"]
         structure_sum += comm["structure_flow"]["score"]
             
-        clarity_rea += comm_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="clarity",
-            answer=answer,
-            analysis=comm["clarity"]["rationale"],
-            Qoutes=comm["clarity"]["quotes"]
-        )
-
-        vocab_rea += comm_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="vocabulary richness",
-            answer=answer,
-            analysis=comm["vocabulary_richness"]["rationale"],
-            Qoutes=comm["vocabulary_richness"]["quotes"]
-        )
-
-        grammar_rea += comm_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="grammar and syntax",
-            answer=answer,
-            analysis=comm["grammar_syntax"]["rationale"],
-            Qoutes=comm["grammar_syntax"]["quotes"]
-        )
-
-        struct_rea += comm_attribute_prompt_template.format(
-            num=str(ix),
-            attribute="structure and flow",
-            answer=answer,
-            analysis=comm["structure_flow"]["rationale"],
-            Qoutes=comm["structure_flow"]["quotes"]
-        )
-            
-    scores = {"scores":{
+    scores = {
         "knowledge_competence": {
             "Accuracy":acc_sum,
             "Depth of Understanding":dou_sum,
@@ -518,175 +429,7 @@ def genarate_final_report(Session_analysis:dict = Body(...)):
             "grammar_syntax":grammar_sum,
             "structure_flow":structure_sum
         }
-    }}
-    
-    # Thresholds
-    strength_threshold = 2.5
-
-    # Initialize output lists
-    strengths = []
-    areas_for_improvement = []
-
-    # Traverse each category and attribute
-    for category, attributes in scores["scores"].items():
-        for attr, total_score in attributes.items():
-            avg_score = total_score / num_ques
-            if avg_score >= strength_threshold:
-                strengths.append(attr)
-            else:
-                areas_for_improvement.append(attr)
-
-    # # Print or use results
-    # print(scores)
-    # print("Strengths:", strengths)
-    # print("Areas for Improvement:", areas_for_improvement)
-    
-     
-            
-    
-    report['Summery'] = {
-        "Scores":scores,
     }
-    
-    return JSONResponse(content=report)
-    
-    
-import statistics
-from typing import List, Dict
-
-@app.post('/final-report-2')
-def generate_final_report(Session_analysis: dict = Body(...)):
-    analysis_list = Session_analysis['analysis']
-    if not analysis_list:
-        return {"error": "No analysis data provided"}
-
-    # Initialize aggregation structures
-    knowledge_attributes = {
-        'Accuracy': [],
-        'Depth of Understanding': [],
-        'Relevance': [],
-        'Examples/Evidence': []
-    }
-    communication_attributes = {
-        'clarity': [],
-        'vocabulary_richness': [],
-        'grammar_syntax': [],
-        'structure_flow': []
-    }
-    wpm_values = []
-    rushed_pause_percentages = []
-    all_knowledge_feedbacks = []
-    all_comm_feedbacks = []
-
-    # Process each analysis entry
-    for entry in analysis_list:
-        # Domain analysis aggregation
-        domain = entry['domain_analysis']
-        for attr, info in domain['attribute_scores'].items():
-            knowledge_attributes[attr].append(info['score'])
-        all_knowledge_feedbacks.append(domain['overall_feedback'])
-        
-        # Communication analysis aggregation
-        comm = entry['communication_analysis']
-        for category in communication_attributes.keys():
-            communication_attributes[category].append(comm[category]['score'])
-            all_comm_feedbacks.append(comm[category]['rationale'])
-        
-        # Pace analysis extraction
-        pace_str = entry['pace_analysis']
-        if "Your average pace:" in pace_str:
-            wpm_line = next(line for line in pace_str.split('\n') if "Your average pace:" in line)
-            wpm_values.append(float(wpm_line.split(":")[2].split()[0]))
-        
-        # Pause analysis extraction
-        pause = entry['pause_analysis']
-        rushed_pct = float(pause['distribution']['rushed'].strip('%'))
-        rushed_pause_percentages.append(rushed_pct)
-
-    # Calculate averages
-    avg_knowledge_scores = {attr: statistics.mean(scores) for attr, scores in knowledge_attributes.items()}
-    avg_comm_scores = {attr: statistics.mean(scores) for attr, scores in communication_attributes.items()}
-    avg_wpm = statistics.mean(wpm_values) if wpm_values else 0
-    avg_rushed_pause = statistics.mean(rushed_pause_percentages) if rushed_pause_percentages else 0
-
-    # Prepare LLM prompt
-    prompt = f"""
-Generate a comprehensive interview performance report using the following aggregated metrics:
-
-=== KNOWLEDGE PERFORMANCE ===
-Average Scores (1-5 scale):
-- Accuracy: {avg_knowledge_scores['Accuracy']:.1f}
-- Depth of Understanding: {avg_knowledge_scores['Depth of Understanding']:.1f}
-- Relevance: {avg_knowledge_scores['Relevance']:.1f}
-- Examples/Evidence: {avg_knowledge_scores['Examples/Evidence']:.1f}
-
-Key Feedback Themes:
-{chr(10).join('- ' + fb for fb in all_knowledge_feedbacks)}
-
-=== COMMUNICATION PERFORMANCE ===
-Average Scores (1-5 scale):
-- Clarity: {avg_comm_scores['clarity']:.1f}
-- Vocabulary: {avg_comm_scores['vocabulary_richness']:.1f}
-- Grammar: {avg_comm_scores['grammar_syntax']:.1f}
-- Structure: {avg_comm_scores['structure_flow']:.1f}
-
-Key Feedback Themes:
-{chr(10).join('- ' + fb for fb in all_comm_feedbacks)}
-
-=== SPEECH METRICS ===
-- Average Words/Minute: {avg_wpm:.1f} (Target: 120-150 WPM)
-- Rushed Transitions: {avg_rushed_pause:.1f}% of phrases
-
-=== REPORT STRUCTURE ===
-🧾 Final Summary (with Actionable Steps)
-
-✅ Strengths
-Knowledge-Related:
-- Highlight demonstrated technical understanding
-- Note relevant terminology usage
-- Mention strongest knowledge attributes
-
-Speech Fluency-Related:
-- Identify effective communication patterns
-- Note positive aspects of pacing/structure
-- Highlight vocabulary strengths
-
-❌ Areas for Improvement
-Knowledge-Related:
-- Point out conceptual gaps
-- Identify areas needing deeper examples
-- Note inconsistencies in explanations
-
-Speech Fluency-Related:
-- Highlight filler word usage
-- Note grammar/syntax challenges
-- Identify structural issues
-- Address pacing concerns
-
-🎯 Actionable Steps
-For Knowledge Development:
-- Create 2-3 specific study recommendations based on knowledge gaps
-- Suggest practical exercise types
-
-For Speech & Structure:
-- Recommend 2-3 targeted fluency exercises
-- Include specific grammar/structure drills
-- Provide pacing improvement strategies
-"""
-
-    # Generate final report using LLM
-    report = call_llm(prompt)
-    print(prompt)
-    return {"report": report}
-
-import statistics
-from typing import List, Dict
-
-@app.post('/final-report-v4')
-def generate_final_report(Session_analysis: dict = Body(...)):
-    analysis_list = Session_analysis['analysis']
-    if not analysis_list:
-        return {"error": "No analysis data provided"}
 
     # Initialize enhanced aggregation structures
     knowledge_attributes = {
@@ -775,55 +518,18 @@ def generate_final_report(Session_analysis: dict = Body(...)):
             comm_section += f"  • {rationale}\n"
         comm_section += "\n"
     
-    prompt = f"""
-Generate a comprehensive interview performance report using the following detailed metrics:
+    prompt = Final_Summary_template.format(
+        knowledge_section=knowledge_section,
+        comm_section=comm_section,
+        avg_wpm=avg_wpm,
+        avg_rushed_pause=avg_rushed_pause,
+    )
 
-{knowledge_section}
-
-{comm_section}
-
-=== SPEECH METRICS ===
-- Average Words/Minute: {avg_wpm:.1f} (Target: 120-150 WPM)
-- Rushed Transitions: {avg_rushed_pause:.1f}% of phrases
-
-=== REPORT STRUCTURE ===
-🧾 Final Summary (with Actionable Steps)
-
-✅ Strengths
-Knowledge-Related:
-- Highlight demonstrated technical understanding with specific examples from quotes
-- Note relevant terminology usage from example quotes
-- Mention strongest knowledge attributes based on reason analysis
-
-Speech Fluency-Related:
-- Identify effective communication patterns from positive examples
-- Note positive aspects of pacing/structure from metrics
-- Highlight vocabulary strengths from example quotes
-
-❌ Areas for Improvement
-Knowledge-Related:
-- Point out conceptual gaps using specific reasons
-- Identify areas needing deeper examples using feedback context
-- Note inconsistencies in explanations using example quotes
-
-Speech Fluency-Related:
-- Highlight filler word usage with specific quotes
-- Note grammar/syntax challenges with example errors
-- Identify structural issues using rationales
-- Address pacing concerns using WPM metrics
-
-🎯 Actionable Steps
-For Knowledge Development:
-- Create 2-3 specific study recommendations based on knowledge gaps and reasons
-- Suggest practical exercise types using feedback context
-
-For Speech & Structure:
-- Recommend 2-3 targeted fluency exercises using specific quotes
-- Include specific grammar/structure drills based on error examples
-- Provide pacing improvement strategies using WPM analysis
-"""
-
-    # Generate final report using LLM
-    report = call_llm(prompt,model="gpt-4o")
-    print(prompt)
-    return {"report": report}
+    Final_Summary = call_llm(prompt,model="gpt-4o")
+    
+    report['Summery'] = {
+        "Scores":scores,
+        "Final Summary":Final_Summary
+    }
+    
+    return JSONResponse(content=report)

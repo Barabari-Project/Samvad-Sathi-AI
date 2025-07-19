@@ -187,4 +187,50 @@ respond in json format:
 '''  
 
   
-  
+Final_Summary_template = """
+Generate a comprehensive interview performance report using the following detailed metrics:
+
+{knowledge_section}
+
+{comm_section}
+
+=== SPEECH METRICS ===
+- Average Words/Minute: {avg_wpm:.1f} (Target: 120-150 WPM)
+- Rushed Transitions: {avg_rushed_pause:.1f}% of phrases
+
+=== REPORT STRUCTURE ===
+🧾 Final Summary (with Actionable Steps)
+
+✅ Strengths
+Knowledge-Related:
+- Highlight demonstrated technical understanding with specific examples from quotes
+- Note relevant terminology usage from example quotes
+- Mention strongest knowledge attributes based on reason analysis
+
+Speech Fluency-Related:
+- Identify effective communication patterns from positive examples
+- Note positive aspects of pacing/structure from metrics
+- Highlight vocabulary strengths from example quotes
+
+❌ Areas for Improvement
+Knowledge-Related:
+- Point out conceptual gaps using specific reasons
+- Identify areas needing deeper examples using feedback context
+- Note inconsistencies in explanations using example quotes
+
+Speech Fluency-Related:
+- Highlight filler word usage with specific quotes
+- Note grammar/syntax challenges with example errors
+- Identify structural issues using rationales
+- Address pacing concerns using WPM metrics
+
+🎯 Actionable Steps
+For Knowledge Development:
+- Create 2-3 specific study recommendations based on knowledge gaps and reasons
+- Suggest practical exercise types using feedback context
+
+For Speech & Structure:
+- Recommend 2-3 targeted fluency exercises using specific quotes
+- Include specific grammar/structure drills based on error examples
+- Provide pacing improvement strategies using WPM analysis
+"""
