@@ -422,7 +422,7 @@ backend_context = '''
 
 
 def get_gen_que_prompt(resume:str,YOE,JD,Role:str,NOQ:int):
-  #  assert Role == "Data Science" or Role == "Frontend Developer" or Role == "Backend Developer"
+   assert Role == "Data Science" or Role == "Frontend Developer" or Role == "Backend Developer"
    if JD:
          JD = "- Job Requirements: " + JD
    else:
