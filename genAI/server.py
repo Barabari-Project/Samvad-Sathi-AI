@@ -315,6 +315,18 @@ async def analyse_communication_features(answer:str = Body(...)):
 
 @app.post('/pace-analysis')
 async def measure_pace_features(words_timestamp:dict = Body()):
+    '''
+    Description:
+    gives pace analysis of individual answer
+    
+    input:
+    output of transcribe whisper api
+    
+    output:
+    {
+        'feedback':str
+    }
+    '''
     res = provide_pace_feedback(words_timestamp)
     return JSONResponse(content={"feedback":res})
 
@@ -384,6 +396,23 @@ async def complete_analysis(
 
 @app.post('/final-report')
 def genarate_final_report(Session_analysis:dict = Body(...)):
+    '''
+    Description:
+    genarates final report at session level
+    
+    Input:
+    {
+        "analysis":[ele1,ele2...]
+    }
+    here each ele is output of complete analysis api for each questions in session
+    
+    Output:
+    {
+        "Summery":{},
+        "knowledge_competence":{},
+        "Speech_Structure_Fluency":{}
+    }
+    '''
     analysis_list = Session_analysis['analysis']
     if not analysis_list:
         return {"error": "No analysis data provided"}
