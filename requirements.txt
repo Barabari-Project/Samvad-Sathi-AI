@@ -7,3 +7,5 @@ openai
 g2p-en
 gdown
 sarvamai
+librosa
+python-multipart
