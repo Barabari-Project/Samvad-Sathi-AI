@@ -1,4 +1,4 @@
-
+import pdb
 
 # -------------
 #  Pause analysis utilities
@@ -28,6 +28,178 @@
 
 import json
 from typing import Dict, List
+
+# ---------------------------------------------------------------------------
+# Public helper – suggest_pauses ------------------------------------------------
+# ---------------------------------------------------------------------------
+# This lightweight wrapper around the LLM is intentionally **self-contained** so
+# that projects can call ``pauses.suggest_pauses`` without having to prepare the
+# entire, more complex ``analyze_pauses`` pipeline.  The function takes the raw
+# Whisper/Deepgram *verbose_json* dictionary, extracts the ``words`` list and
+# asks the LLM to insert explicit "[PAUSE]" tokens where a short pause would
+# improve clarity or emphasis.
+#
+# To keep the wider package fully offline-capable the implementation falls back
+# to a no-op stub when a global ``call_llm`` helper is **not** available (for
+# example inside the automated test runner that has no network access).  In
+# that case the model is simply skipped and the function returns an empty list
+# which is still a perfectly valid – albeit rather boring – suggestion set.
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# NOTE: *call_llm* is an optional override so that callers such as the main
+# ``analyze_pauses`` pipeline – which already carries an explicit LLM wrapper
+# argument – can forward it directly without polluting the global namespace.
+# ---------------------------------------------------------------------------
+
+
+def suggest_pauses(asr_output: dict, call_llm=None) -> List[int]:
+    """Return word indices where a brief pause *before* the word is advised.
+
+    Parameters
+    ----------
+    asr_output : dict
+        Whisper / Deepgram *verbose_json* transcript – must contain a top-level
+        ``"words"`` list where each item has the keys ``start``, ``end`` and
+        ``word``.
+
+    Returns
+    -------
+    list[int]
+        Zero-based indices into ``words`` that indicate recommended pause
+        boundaries.  The index refers to the *following* word so callers can
+        insert a break **before** that token when rendering subtitles or
+        generating coaching feedback.
+    """
+
+    # ------------------------------------------------------------------
+    # 0. Basic validation ------------------------------------------------
+    words = asr_output.get("words", [])
+    if not words:
+        print("Words Empty Line 80")
+        return []
+
+    # ------------------------------------------------------------------
+    # 1. Build the LLM prompt -------------------------------------------
+    # ------------------------------------------------------------------
+    transcript = " ".join(w["word"] for w in words)
+
+    example_input = "My name is bond James Bond"
+    example_output = "My name is bond [PAUSE] James Bond"
+
+    prompt = (
+        "You are an expert in spoken communication. Analyze this transcript "
+        "and insert \"[PAUSE]\" tokens where brief pauses would improve "
+        "clarity, emphasis, or natural flow. Follow these rules:\n\n"
+        "1. PRESERVE all original words exactly as given\n"
+        "2. ONLY insert \"[PAUSE]\" tokens – no other changes\n"
+        "3. Insert pauses only at natural break points:\n"
+        "   - Before important words for emphasis\n"
+        "   - Between logical thought groups\n"
+        "   - After conjunctions or transitional phrases\n"
+        "   - Before appositives or clarifying information\n"
+        "4. Never add punctuation or modify words\n"
+        "5. Never insert a pause before the first word\n\n"
+        f"Example Input: \"{example_input}\"\n"
+        f"Example Output: \"{example_output}\"\n\n"
+        "Now process this transcript:\n"
+        f"\"{transcript}\"\n\n"
+        "Output ONLY the modified transcript with \"[PAUSE]\" tokens. "
+        "Do not include any other text or explanations."
+    )
+
+    # ------------------------------------------------------------------
+    # 2. Call the LLM (if available) ------------------------------------
+    # ------------------------------------------------------------------
+    # The main FastAPI service injects a convenience wrapper called
+    # ``call_llm`` into the global namespace.  When the module is executed in
+    # isolation – for instance inside a CI environment or during unit tests –
+    # this helper may be missing.  We therefore attempt to locate it first and
+    # fall back to a stub that simply returns the *unmodified* transcript so
+    # that this function stays side-effect free and never crashes due to the
+    # absence of network connectivity.
+
+    _call_llm = call_llm if callable(call_llm) else globals().get("call_llm")
+
+    if callable(_call_llm):
+        try:
+            response = _call_llm(prompt).strip().strip('"')
+            print("LINE 127")
+            print(response)
+        except Exception:
+            # Any error – network, model, rate limit – gracefully degrade.
+            response = transcript.strip('"')
+    else:
+        # Offline / test mode – skip LLM
+        print("WARNING SKIPING THE [PAUSE] RECOMMENDATION")
+        response = transcript
+
+    # ------------------------------------------------------------------
+    # 3. Derive pause indices by aligning tokens ------------------------
+    # ------------------------------------------------------------------
+    return _find_pause_indices(words, response)
+
+def _find_pause_indices(original_words: List[dict], paused_transcript: str) -> List[int]:
+    """Compare *paused_transcript* with *original_words* to locate [PAUSE] tags.
+
+    The helper performs a simple token-by-token alignment, tolerant to minor
+    mismatches that can happen when the LLM accidentally drops or duplicates a
+    word.  Whenever a \"[PAUSE]\" token is encountered **and** the following
+    response token matches the *current* original word we record the index.  A
+    pause marker that appears right at the end of the string is ignored as it
+    cannot be mapped to a *following* word.
+    """
+
+    # pdb.set_trace()
+    original_tokens = [w["word"] for w in original_words]
+    response_tokens = paused_transcript.split()
+
+    pause_indices: List[int] = []
+    orig_idx = 0
+    resp_idx = 0
+
+    while orig_idx < len(original_tokens) and resp_idx < len(response_tokens):
+        token = response_tokens[resp_idx]
+
+        if token == "[PAUSE]":
+            # Look-ahead: next response token *should* correspond to the current
+            # original word. If it does, we mark the current orig_idx as the
+            # boundary *after* the previous word (i.e. before the current
+            # word).  We explicitly skip index 0 so callers never pause before
+            # the first word.
+            resp_idx += 1  # advance to next response token
+
+            if resp_idx >= len(response_tokens):
+                break  # dangling [PAUSE] at the very end – ignore
+
+            if response_tokens[resp_idx] == original_tokens[orig_idx]:
+                if orig_idx > 0:
+                    pause_indices.append(orig_idx)
+            # Whether or not the word matched, we continue the outer loop – no
+            # increment of orig_idx here because we still need to consume the
+            # current original token in the next iteration.
+            continue
+
+        # Regular token: try to align with current original token -------------
+        if token == original_tokens[orig_idx]:
+            orig_idx += 1
+            resp_idx += 1
+        else:
+            # Mismatch – advance only the *response* pointer.  This heuristic
+            # lets us recover from minor hallucinations without completely
+            # derailing the alignment.
+            resp_idx += 1
+
+    # Ensure uniqueness & stable ordering
+    seen = set()
+    deduped: List[int] = []
+    for idx in pause_indices:
+        if idx not in seen:
+            seen.add(idx)
+            deduped.append(idx)
+
+    return deduped
 
 
 # ---------------------------------------------------------------------------
@@ -63,7 +235,7 @@ def _extract_pauses(words: List[dict]) -> List[dict]:
     return pauses
 
 
-def analyze_pauses(asr_output: dict, call_llm):
+def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
     """Analyse pauses and generate actionable feedback.
 
     Parameters
@@ -103,62 +275,133 @@ def analyze_pauses(asr_output: dict, call_llm):
     pauses = _extract_pauses(words)
 
     # ------------------------------------------------------------------
-    # 2. Ask the LLM for richer linguistic context (punctuation, tags…)
+    # 2. Derive **recommended pause indices** via LLM helper -------------
     # ------------------------------------------------------------------
-    # Collect a simple list of tokens to keep the prompt short.
-    word_list = [w["word"] for w in words]
-
-    llm_prompt = (
-        "Analyze this interview transcript. Perform:\n"
-        "1. Add punctuation at natural boundaries\n"
-        "2. Identify disfluencies (fillers, repetitions)\n"
-        "3. Extract important technical terms\n"
-        "4. Mark sentence boundaries\n\n"
-        "Return JSON with:\n"
-        "- 'punctuated_text': string with punctuation\n"
-        "- 'words': list of dicts with keys: 'index', 'word', 'punctuation', 'tag'\n"
-        "- 'technical_terms': list of important terms\n\n"
-        f"Transcript: {word_list}"
-    )
 
     try:
-        llm_output_raw = call_llm(llm_prompt)
-        llm_output = json.loads(llm_output_raw)
+        recommended_pause_indices = suggest_pauses(asr_output, call_llm)
+        print("LINE 282")
+        print(recommended_pause_indices)
     except Exception:
-        # If the LLM call fails, continue with minimal context.
-        llm_output = {}
-
-    word_tags = {w.get("index"): w for w in llm_output.get("words", [])}
+        # Any issue – fall back to an empty list so downstream logic keeps
+        # working without interruption.
+        print("WARNING ANALYZE PAUSES > recommended_pause_indices is not realised as expected. LINE 287")
+        recommended_pause_indices = []
 
     # ------------------------------------------------------------------
     # 3. Classify pauses ---------------------------------------------------
+    # ------------------------------------------------------------------
+    # Dynamic thresholding based on the *speaker's own* statistics --------
+    # ------------------------------------------------------------------
+    # A one-size-fits-all threshold (e.g. “long pause > 3 s”) implicitly
+    # assumes ~120 WPM which breaks down for very quick or very slow
+    # speakers.  Instead of hard-coding numbers we derive **all** pause
+    # categories from the observed distribution in the current answer.
+    #
+    #   • rushed      – shorter than the 25-th percentile (Q1)
+    #   • long        – longer than the 75-th percentile (Q3) *and* at least
+    #                   1 s so that tiny datasets do not cause absurdisms.
+    #   • strategic   – between 0.8×median .. 1.5×median (roughly
+    #                   “noticeable but not disruptive”) *and* before an
+    #                   important technical term **or** a new sentence.
+    #
+    # When there are fewer than 8 pauses (very short answers) the quartile
+    # estimation becomes unstable.  In that case we fall back to a secondary
+    # heuristic based on words-per-minute (WPM) ‑ the previous, simpler
+    # implementation – so we never fully lose coverage.
+    # ------------------------------------------------------------------
+
+    import statistics
+
+    pause_durations = [p["duration"] for p in pauses]
+
+    # Helper: fallback WPM-scaled numbers ---------------------------------
+    def _wpm_scaled_thresholds() -> tuple[float, float, float, float]:
+        """Return (long_thr, rushed_thr, strategic_min, strategic_max)."""
+
+        total_words = len(words)
+        if words:
+            total_time = words[-1]["end"] - words[0]["start"]
+        else:
+            total_time = 0.0
+
+        if total_time <= 0:
+            wpm = 120  # assume average rate
+        else:
+            wpm = (total_words / total_time) * 60
+
+        scale = 120 / wpm if wpm > 0 else 1.0
+
+        long_thr = min(4.0, max(1.5, 3.0 * scale))
+        rushed_thr = max(0.05, min(0.5, 0.2 * scale))
+        strat_min = max(0.4, 0.8 * scale)
+        strat_max = min(3.0, 1.5 * scale)
+        return long_thr, rushed_thr, strat_min, strat_max
+
+    # Determine thresholds -------------------------------------------------
+    if len(pause_durations) >= 8:
+        # Use robust Tukey's five-number summary for larger datasets
+        try:
+            q1, q3 = statistics.quantiles(pause_durations, n=4)[0], statistics.quantiles(pause_durations, n=4)[2]
+        except Exception:
+            # Very unlikely, but keep the code safe
+            print("WARNING analyze_pauses > Determine thresholds > statistics.quatiles > no quntiles found")
+            q1 = q3 = None
+
+        if q1 is not None and q3 is not None:
+            median_p = statistics.median(pause_durations)
+
+            rushed_threshold = q1 # max(0.05, q1)  # never classify <50 ms as rushed silence – it's basically overlap
+            long_threshold = q3 # max(1.0, q3)     # require ≥1 s even if Q3 is tiny (for micro-answers)
+            # strategic is a band around the median – noticeable but not disruptive
+            strategic_min = min(0.3, 0.8 * median_p) # 0.8 * median_p #
+            strategic_max = max(1, 1.5 * median_p) # 1.5 * median_p #
+            print("long_threshold, rushed_threshold, strategic_min, strategic_max")
+            print(long_threshold, rushed_threshold, strategic_min, strategic_max)
+        else:
+            long_threshold, rushed_threshold, strategic_min, strategic_max = _wpm_scaled_thresholds()
+    else:
+        # Not enough data → revert to WPM-based scaling
+        print("WARNING VERY SHORT ANSWER > shifting to _WPM_SCALED_THRESHOLD")
+        long_threshold, rushed_threshold, strategic_min, strategic_max = _wpm_scaled_thresholds()
+
     long_pauses: List[Dict] = []
     rushed_pauses: List[Dict] = []
     strategic_pauses: List[Dict] = []
+    
 
     for pause in pauses:
-        i = pause["index"]
-        next_word_tag = word_tags.get(i + 1, {})
+        i = pause["index"]  # index of the word *before* the pause
 
-        # Long pause (> 3 s)
-        if pause["duration"] > 3.0:
-            long_pauses.append(pause)
-
-        # Rushed (< 0.2 s) not at a natural boundary
-        elif pause["duration"] < 0.2:
-            current_tag = word_tags.get(i, {})
-            if not (
-                current_tag.get("punctuation") in {",", ".", "?", "!"}
-                or current_tag.get("tag") == "filler"
-            ):
-                rushed_pauses.append(pause)
-
-        # Strategic (0.8-1.5 s before important term/sentence start)
-        elif 0.8 <= pause["duration"] <= 1.5:
-            if "technical" in next_word_tag.get("tag", "") or "sentence_start" in next_word_tag.get(
-                "tag", ""
-            ):
+        # --------------------------------------------------------------
+        # Determine basic categories via duration thresholds ----------
+        # --------------------------------------------------------------
+        # 3. Strategic – lies inside the *noticeable but not disruptive* band
+        #    AND was explicitly suggested by the LLM.
+        if (i + 1) in recommended_pause_indices:
+            if strategic_min <= pause["duration"] <= strategic_max:
                 strategic_pauses.append(pause)
+            else:
+                print("missed startigic pause here")
+                print(i)
+                print(pause["before_word"])
+                print(f"Expeceted pause duration between {strategic_min} and {strategic_max}")
+                print(f"measure pause {pause['duration']}")
+            continue
+
+        if pause["duration"] > long_threshold:
+            # 1. Long pause – noticeably disruptive
+            long_pauses.append(pause)
+            continue
+
+        if pause["duration"] < rushed_threshold:
+            # 2. Potentially rushed – only flag when not part of a recommended
+            #    strategic break (the LLM might still suggest a very short
+            #    hesitation before emphasis, especially in quick speech).
+            if (i + 1) not in recommended_pause_indices:
+                rushed_pauses.append(pause)
+            continue
+        
 
     # ------------------------------------------------------------------
     # 4. Build deterministic feedback (examples, distribution)  -----------
@@ -168,12 +411,12 @@ def analyze_pauses(asr_output: dict, call_llm):
         "long": (
             long_pauses,
             "⚠️ Long pause ({duration:.1f}s) after '{before_word}' at {timestamp}: consider a short linking phrase to keep the flow.",
-            f"{len(long_pauses)} overly long pauses (>3 s)",
+            f"{len(long_pauses)} overly long pauses (> {long_threshold:.1f}s)",
         ),
         "rushed": (
             rushed_pauses,
             "⚠️ Rushed transition ({duration:.1f}s) between '{before_word}' → '{after_word}' at {timestamp}: add a tiny pause so listeners can follow.",
-            f"{len(rushed_pauses)} rushed transitions (<0.2 s)",
+            f"{len(rushed_pauses)} rushed transitions (< {rushed_threshold:.1f}s)",
         ),
         "strategic": (
             strategic_pauses,
@@ -200,6 +443,8 @@ def analyze_pauses(asr_output: dict, call_llm):
             "strategic": f"{len(strategic_pauses) / total_pauses:.1%}",
             "normal": f"{(total_pauses - len(long_pauses) - len(rushed_pauses) - len(strategic_pauses)) / total_pauses:.1%}",
         }
+        
+    
 
     if not feedback["overview"]:
         feedback["overview"] = "Good pause management overall"
@@ -243,12 +488,12 @@ def analyze_pauses(asr_output: dict, call_llm):
     score = 3
     try:
         llm_response_raw = call_llm(coaching_prompt)
-        llm_json = json.loads(llm_response_raw)
+        llm_json = extract_json_dict(llm_response_raw)
         actionable_feedback = llm_json.get("actionable_feedback", actionable_feedback)
         score = int(llm_json.get("score", score))
-    except Exception:
+    except Exception as e:
         # If the LLM call fails or returns invalid JSON, fall back to heuristic scoring
-        print("Falling to heuristic scoring")
+        print("Falling to heuristic scoring ",e)
         long_pct = float(feedback["distribution"].get("long", "0%")[:-1])
         rushed_pct = float(feedback["distribution"].get("rushed", "0%")[:-1])
         strategic_pct = float(feedback["distribution"].get("strategic", "0%")[:-1])
@@ -284,7 +529,9 @@ def analyze_pauses(asr_output: dict, call_llm):
 if __name__ == "__main__":
     import os
 
-    sample_path = os.path.join(os.path.dirname(__file__), "../sample_jsons/transcribe_output_my_answer.json")
+    # sample_path = os.path.join(os.path.dirname(__file__), "../sample_jsons/transcribe_output_my_answer.json")
+    sample_path = os.path.join(os.path.dirname(__file__), "pauses_input_samples/bond_pause_x.json")
+    
     if os.path.exists(sample_path):
         with open(sample_path) as _f:
             sample_json = json.load(_f)
@@ -312,6 +559,22 @@ if __name__ == "__main__":
                 return response.choices[0].message.content.strip()
             except Exception as e:
                 return f"Error in call_llm func: {e}"
+            
+    def extract_json_dict(text: str):
+        try:
+            start = min(
+                (text.index('{') if '{' in text else float('inf')),
+                (text.index('[') if '[' in text else float('inf'))
+            )
+            end = max(
+                (text.rindex('}') + 1 if '}' in text else -1),
+                (text.rindex(']') + 1 if ']' in text else -1)
+            )
+            json_str = text[start:end]
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            print(text)
+            print(json_str)
+            raise ValueError(f"Invalid JSON found: {e}")
         
-    print(json.dumps(analyze_pauses(sample_json, call_llm), indent=2))
-
+    print(json.dumps(analyze_pauses(sample_json, call_llm, extract_json_dict), indent=2))

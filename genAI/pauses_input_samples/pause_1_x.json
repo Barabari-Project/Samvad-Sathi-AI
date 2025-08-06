@@ -1,0 +1,232 @@
+{
+    "words": [
+        {
+            "word": "You",
+            "start": 2.984,
+            "end": 3.124,
+            "score": 0.503
+        },
+        {
+            "word": "know,",
+            "start": 3.164,
+            "end": 3.325,
+            "score": 0.9
+        },
+        {
+            "word": "sometimes",
+            "start": 4.867,
+            "end": 5.508,
+            "score": 0.895
+        },
+        {
+            "word": "it's",
+            "start": 5.788,
+            "end": 5.989,
+            "score": 0.767
+        },
+        {
+            "word": "not",
+            "start": 6.029,
+            "end": 6.389,
+            "score": 0.891
+        },
+        {
+            "word": "what",
+            "start": 6.85,
+            "end": 7.03,
+            "score": 0.879
+        },
+        {
+            "word": "we",
+            "start": 7.151,
+            "end": 7.271,
+            "score": 0.968
+        },
+        {
+            "word": "say,",
+            "start": 7.351,
+            "end": 7.631,
+            "score": 0.944
+        },
+        {
+            "word": "but",
+            "start": 8.873,
+            "end": 9.014,
+            "score": 0.946
+        },
+        {
+            "word": "how",
+            "start": 9.614,
+            "end": 9.775,
+            "score": 0.997
+        },
+        {
+            "word": "we",
+            "start": 9.855,
+            "end": 9.995,
+            "score": 0.966
+        },
+        {
+            "word": "say",
+            "start": 10.055,
+            "end": 10.276,
+            "score": 0.86
+        },
+        {
+            "word": "it.",
+            "start": 10.316,
+            "end": 12.399,
+            "score": 0.66
+        },
+        {
+            "word": "A",
+            "start": 12.419,
+            "end": 12.459,
+            "score": 0.923
+        },
+        {
+            "word": "well-paced",
+            "start": 12.539,
+            "end": 13.521,
+            "score": 0.916
+        },
+        {
+            "word": "pause",
+            "start": 13.741,
+            "end": 14.102,
+            "score": 0.778
+        },
+        {
+            "word": "can",
+            "start": 14.963,
+            "end": 15.163,
+            "score": 0.974
+        },
+        {
+            "word": "make",
+            "start": 15.283,
+            "end": 15.524,
+            "score": 0.761
+        },
+        {
+            "word": "the",
+            "start": 15.644,
+            "end": 15.764,
+            "score": 0.974
+        },
+        {
+            "word": "listener",
+            "start": 15.824,
+            "end": 16.365,
+            "score": 0.818
+        },
+        {
+            "word": "lean",
+            "start": 16.626,
+            "end": 16.906,
+            "score": 0.871
+        },
+        {
+            "word": "in",
+            "start": 17.247,
+            "end": 17.327,
+            "score": 0.879
+        },
+        {
+            "word": "and",
+            "start": 18.729,
+            "end": 18.829,
+            "score": 0.97
+        },
+        {
+            "word": "truly",
+            "start": 18.909,
+            "end": 19.25,
+            "score": 0.912
+        },
+        {
+            "word": "listen.",
+            "start": 19.31,
+            "end": 22.214,
+            "score": 0.979
+        },
+        {
+            "word": "So",
+            "start": 22.234,
+            "end": 22.375,
+            "score": 0.936
+        },
+        {
+            "word": "next",
+            "start": 22.435,
+            "end": 22.655,
+            "score": 0.901
+        },
+        {
+            "word": "time",
+            "start": 22.715,
+            "end": 22.956,
+            "score": 0.929
+        },
+        {
+            "word": "you",
+            "start": 23.016,
+            "end": 23.136,
+            "score": 0.951
+        },
+        {
+            "word": "speak,",
+            "start": 23.196,
+            "end": 23.496,
+            "score": 0.89
+        },
+        {
+            "word": "try",
+            "start": 24.979,
+            "end": 25.179,
+            "score": 0.661
+        },
+        {
+            "word": "this.",
+            "start": 25.219,
+            "end": 25.439,
+            "score": 0.859
+        },
+        {
+            "word": "Say",
+            "start": 26.441,
+            "end": 26.661,
+            "score": 0.911
+        },
+        {
+            "word": "less,",
+            "start": 26.722,
+            "end": 27.042,
+            "score": 0.901
+        },
+        {
+            "word": "but",
+            "start": 28.584,
+            "end": 28.765,
+            "score": 0.99
+        },
+        {
+            "word": "say",
+            "start": 29.686,
+            "end": 29.866,
+            "score": 0.984
+        },
+        {
+            "word": "to",
+            "start": 29.907,
+            "end": 30.007,
+            "score": 0.828
+        },
+        {
+            "word": "them.",
+            "start": 30.047,
+            "end": 30.207,
+            "score": 0.608
+        }
+    ]
+}

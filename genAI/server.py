@@ -332,7 +332,7 @@ async def measure_pace_features(words_timestamp:dict = Body()):
 
 @app.post('/pauses-analysis')
 async def measure_pause_analysis(words_timestamp:dict = Body(...)):    
-    res = analyze_pauses(words_timestamp,call_llm=call_llm)
+    res = analyze_pauses(words_timestamp,call_llm=call_llm,extract_json_dict=extract_json_dict)
     return JSONResponse(content={"feedback":res})
 
 import asyncio
