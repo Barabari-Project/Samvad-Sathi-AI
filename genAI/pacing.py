@@ -1,4 +1,20 @@
 def calculate_pace_metrics(words):
+    """
+    Calculates detailed pace metrics from a list of word timestamps.
+
+    Args:
+        words (list): List of dicts, each with 'start', 'end', and 'word' keys representing word timings.
+
+    Returns:
+        dict: {
+            'avg_wpm': float,         # Average words per minute
+            'too_slow_pct': float,    # Percentage of time speaking too slow (<105 WPM)
+            'ideal_pct': float,       # Percentage of time at ideal pace (105-170 WPM)
+            'too_fast_pct': float,    # Percentage of time speaking too fast (>170 WPM)
+            'segments': list          # List of segments with pace classification and text
+        }
+        or None if insufficient data.
+    """
     # Handle invalid words and zero-duration words
     valid_words = []
     for w in words:

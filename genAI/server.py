@@ -31,6 +31,18 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 g2p = G2p()
 
 def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperature: float = 0.7) -> str:
+    """
+    Calls the specified language model (OpenAI or Sarvam) with a prompt and optional system message.
+
+    Args:
+        prompt (str): The user prompt to send to the model.
+        system (str, optional): System instructions for the model.
+        model (str): Model name ("gpt-4o-mini", "gpt-4o", or "sarvam").
+        temperature (float): Sampling temperature for model output.
+
+    Returns:
+        str: The model's response as a string.
+    """
     messages = []
     if system:
         messages = [{"role":"system","content":system}]
@@ -61,6 +73,18 @@ class intRequest(BaseModel):
     
     
 def extract_json_dict(text: str):
+    """
+    Extracts and parses the first valid JSON object or array from a string.
+
+    Args:
+        text (str): Text containing JSON.
+
+    Returns:
+        dict or list: Parsed JSON object or array.
+
+    Raises:
+        ValueError: If no valid JSON is found.
+    """
     try:
         start = min(
             (text.index('{') if '{' in text else float('inf')),
@@ -108,6 +132,18 @@ class gen_que_model(BaseModel):
     years_of_exp : int
 
 async def extract_resume_data(file: UploadFile) -> dict:
+    """
+    Extracts structured resume data from a PDF file using LLM.
+
+    Args:
+        file (UploadFile): PDF resume file.
+
+    Returns:
+        dict: Extracted resume data.
+
+    Raises:
+        HTTPException: If file is not PDF or extraction fails.
+    """
     if not file.filename.endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
     try:
@@ -121,7 +157,20 @@ async def extract_resume_data(file: UploadFile) -> dict:
 
 
 def generate_questions(payload: gen_que_model) -> dict:
+    """
+    Generates interview questions using candidate's resume and job details.
 
+    Args:
+        payload (gen_que_model): Candidate profile and job info.
+            extracted_resume : dict
+            job_role : Literal["Data Science","Frontend Developer","Backend Developer"]
+            number_of_ques : int
+            job_description : Optional[str]
+            years_of_exp : 
+            
+    Returns:
+        dict: Generated interview questions in structured format.
+    """
     prompt = get_gen_que_prompt(
         resume=payload.extracted_resume,
         YOE=payload.years_of_exp,
@@ -142,6 +191,19 @@ async def extract_and_generate_testing_api(
     job_description: Optional[str] = None,
     years_of_exp: int = 0
 ):
+    """
+    Extracts resume data from a PDF and generates interview questions.
+
+    Args:
+        file (UploadFile): PDF resume file.
+        job_role (str): Job role for interview questions.
+        number_of_ques (int): Number of questions to generate.
+        job_description (str, optional): Job description.
+        years_of_exp (int): Years of experience.
+
+    Returns:
+        JSONResponse: Extracted resume and generated interview questions.
+    """
     # Step 1: extract resume
     extracted_resume = await extract_resume_data(file)
 
@@ -165,17 +227,44 @@ async def extract_and_generate_testing_api(
 
 @app.post("/extract-resume")
 async def extract_text_from_pdf(file: UploadFile = File(...)):
+    """
+    Extracts structured resume data from a PDF file.
+
+    Args:
+        file (UploadFile): PDF resume file.
+
+    Returns:
+        JSONResponse: Extracted resume data.
+    """
     extracted_resume = await extract_resume_data(file)
     return JSONResponse(content=extracted_resume)
 
 @app.post('/generate-questions')
 async def gen_questions(payload:gen_que_model = Body(...)):
+    """
+    Generates interview questions based on resume and job role.
+
+    Args:
+        payload (gen_que_model): Resume and job details.
+
+    Returns:
+        JSONResponse: Generated interview questions.
+    """
     questions = generate_questions(payload)
     return JSONResponse(content={"interview_questions": questions})
     
 
 @app.post("/transcribe_nova_3")
 async def transcribe_audio(file: UploadFile = File(...)):
+    """
+    Transcribes audio using Deepgram Nova-3 model. (Not optimal For our use case)
+
+    Args:
+        file (UploadFile): MP3 audio file.
+
+    Returns:
+        JSONResponse: Transcript, processing time, and chars per second.
+    """
     if not file.filename.lower().endswith(".mp3"):
         raise HTTPException(status_code=400, detail="Only .mp3 files are supported.")
 
@@ -201,6 +290,16 @@ async def transcribe_audio(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Transcription failed: {e}")
     
 def estimate_fluency_proxy(audio_bytes, transcript):
+    """
+    Estimates speech fluency using audio and transcript.
+
+    Args:
+        audio_bytes (bytes): Raw audio data.
+        transcript (str): Transcript of the audio.
+
+    Returns:
+        tuple: (Words per minute (float), is_fluent (bool))
+    """
     # Load audio from bytes
     audio_buffer = io.BytesIO(audio_bytes)
     audio_buffer.seek(0)
@@ -222,6 +321,15 @@ def estimate_fluency_proxy(audio_bytes, transcript):
 
 @app.post("/transcribe_whisper")
 async def transcribe_audio(file: UploadFile = File(...)):
+    """
+    Transcribes audio using OpenAI Whisper model.
+
+    Args:
+        file (UploadFile): Supported audio file (.mp3, .wav, .m4a, .flac).
+
+    Returns:
+        JSONResponse: Detailed transcription output.
+    """
     # Validate file extension
     if not file.filename.lower().endswith((".mp3", ".wav", ".m4a", ".flac")):
         raise HTTPException(status_code=400, detail="Unsupported audio format")
@@ -266,6 +374,15 @@ async def transcribe_audio(file: UploadFile = File(...)):
     
 @app.post('/get_knowledgeset')
 async def get_knowledgeset(user_profile:dictRequest = Body(...)):
+    """
+    Extracts knowledge set from user profile skills.
+
+    Args:
+        user_profile (dictRequest): User profile with skills.
+
+    Returns:
+        JSONResponse: Extracted knowledge set.
+    """
     user_profile = user_profile.dict_
     skills = user_profile.pop('skills')
     skills = str(skills)
@@ -282,6 +399,19 @@ async def analyse_answer(
     Interview_Question : dict = Body(...),
     job_role: Literal["Data Science", "Frontend Developer", "Backend Developer"] = Body(...),
 ):
+    """
+    Analyzes candidate's answer for domain knowledge.
+
+    Args:
+        user_profile (dict): User profile.
+        answer (str): Candidate's answer.
+        years_of_experience (int): Years of experience.
+        Interview_Question (dict): Interview question details.
+        job_role (str): Job role.
+
+    Returns:
+        JSONResponse: Domain analysis feedback.
+    """
     user_profile.pop('name')
     user_profile.pop('contact')
     user_profile = str(user_profile)
@@ -308,6 +438,13 @@ async def analyse_communication_features(answer:str = Body(...)):
         2. Vocabulary richness  
         3. Grammar & syntax  
         4. Structure & flow  
+        
+        Args:
+            answer (str): Candidate's answer.
+
+        Returns:
+            dict: Communication feedback.
+    """
     '''
     result = call_llm(system=analyze_text_template,prompt=answer)
     result = extract_json_dict(result)
@@ -331,7 +468,16 @@ async def measure_pace_features(words_timestamp:dict = Body()):
     return JSONResponse(content={"feedback":res})
 
 @app.post('/pauses-analysis')
-async def measure_pause_analysis(words_timestamp:dict = Body(...)):    
+async def measure_pause_analysis(words_timestamp:dict = Body(...)): 
+    """
+    Analyzes pauses in spoken answer using word timestamps.
+
+    Args:
+        words_timestamp (dict): Word-level timestamp data.
+
+    Returns:
+        JSONResponse: Pause feedback.
+    """   
     res = analyze_pauses(words_timestamp,call_llm=call_llm,extract_json_dict=extract_json_dict)
     return JSONResponse(content={"feedback":res})
 
@@ -346,6 +492,20 @@ async def complete_analysis(
     words_timestamp: dict = Body(...),
     job_role: Literal["Data Science", "Frontend Developer", "Backend Developer"] = Body(...),
 ):
+    """
+    Performs complete analysis of candidate's answer including domain, communication, pace, and pauses.
+
+    Args:
+        user_profile (dict): User profile.
+        answer (str): Candidate's answer.
+        years_of_experience (int): Years of experience.
+        Interview_Question (dict): Interview question details.
+        words_timestamp (dict): Word-level timestamp data.
+        job_role (str): Job role.
+
+    Returns:
+        JSONResponse: Aggregated analysis results.
+    """
     user_profile.pop('name', None)
     user_profile.pop('contact', None)
     user_profile_str = str(user_profile)
