@@ -535,7 +535,7 @@ async def complete_analysis(
         return provide_pace_feedback(words_timestamp)
 
     async def pause_analysis():
-        return analyze_pauses(words_timestamp, call_llm=call_llm)
+        return analyze_pauses(words_timestamp, call_llm=call_llm,extract_json_dict=extract_json_dict)
 
     # Run all tasks concurrently
     domain_task, comm_task, pace_task, pause_task = await asyncio.gather(

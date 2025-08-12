@@ -184,3 +184,66 @@ def provide_pace_feedback(input_dict):
 # {
 #   "feedback": "Quantitative Feedback:\nWords Per Minute (WPM): Your average pace: 108.1 WPM\nBenchmarking: Aim for 120-150 WPM in interviews\n\nPace Range Classification:\n- Too Slow: Your pace was slow 25.2% of the time\n- Ideal: You spoke at ideal pace for 47.7% of the time\n- Too Fast: Your pace exceeded 170 WPM for 0.9% of the time\n\nDetailed Pace Segments:\n\nToo slow segments:\n- [00:02 - 00:04]: so um one\n- [00:05 - 00:06]: was like\n- [00:24 - 00:32]: all and um it had just wasn't working good so um we\n- [01:00 - 01:06]: you know what I mean and so um yeah so\n- [01:07 - 01:12]: the model itself was like tough it's\n- [01:21 - 01:22]: tha and\n- [01:28 - 01:33]: accumulation and stuff and processed data in\n\nIdeal segments:\n- [00:07 - 00:18]: ODIA language you know it had like way less data than others so model was like kind of struggling to learn it properly I'm\n- [00:19 - 00:23]: you know the loss was and all\n- [00:33 - 00:34]: we tried to\n- [00:35 - 00:37]: like fix that by making batches\n- [00:39 - 00:42]: like you know make sure each batch\n- [00:46 - 00:50]: so like even if ODIA ka data kam tha\n- [00:51 - 00:53]: still came in training I\n- [00:54 - 01:00]: it helped kind of but not fully cause data hi kam tha\n- [01:18 - 01:21]: memory ka kaafi issue de raha tha\n- [01:23 - 01:24]: be limited tha\n- [01:25 - 01:27]: so um we did\n- [01:34 - 01:38]: like um small parts so it doesn't\n- [01:41 - 01:51]: like haan it was kind of difficult but I mean we did jugaad and somehow trained it and yeah I\n\nToo fast segments:\n- [01:51 - 01:57]: I learned a lot but still like next time we can do better you know what I mean\n"
 # }
+
+
+# ---------------------------------------------------------------------------
+# Demonstration block (executed only when run directly) ---------------------
+# ---------------------------------------------------------------------------
+if __name__ == "__main__":
+    import os
+    from pathlib import Path
+    from openai import OpenAI
+    import json
+    import os
+
+    from dotenv import load_dotenv
+    load_dotenv()
+
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    def call_llm(prompt: str, system:str = None,model: str = "gpt-4o-mini", temperature: float = 0.7) -> str:
+        messages = []
+        if system:
+            messages = [{"role":"system","content":system}]
+        messages.append({"role": "user", "content": prompt})
+        if model == "gpt-4o-mini" or model == "gpt-4o":
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=messages
+                )
+                return response.choices[0].message.content.strip()
+            except Exception as e:
+                return f"Error in call_llm func: {e}"
+            
+    def extract_json_dict(text: str):
+        try:
+            start = min(
+                (text.index('{') if '{' in text else float('inf')),
+                (text.index('[') if '[' in text else float('inf'))
+            )
+            end = max(
+                (text.rindex('}') + 1 if '}' in text else -1),
+                (text.rindex(']') + 1 if ']' in text else -1)
+            )
+            json_str = text[start:end]
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            print(text)
+            print(json_str)
+            raise ValueError(f"Invalid JSON found: {e}")
+        
+    samples_dir = Path(__file__).with_suffix("").parent / "pauses_input_samples"
+    
+    json_files = sorted(samples_dir.glob("*.json"))
+
+    if not json_files:
+        raise SystemExit("No sample transcripts found in pauses_input_samples/.")
+
+    for sample_path in json_files:
+        print("########", sample_path)
+        with sample_path.open() as f:
+            asr_output = json.load(f)
+        # print(asr_output)
+        print(json.dumps(calculate_pace_metrics(asr_output['words']), indent=2))
+        print()
