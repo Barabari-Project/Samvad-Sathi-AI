@@ -1,0 +1,160 @@
+{
+    "words": [
+        {
+            "word": "This",
+            "start": 0.183,
+            "end": 0.384,
+            "score": 0.506
+        },
+        {
+            "word": "is",
+            "start": 0.404,
+            "end": 0.505,
+            "score": 0.682
+        },
+        {
+            "word": "how",
+            "start": 0.565,
+            "end": 0.767,
+            "score": 0.693
+        },
+        {
+            "word": "big",
+            "start": 0.827,
+            "end": 1.049,
+            "score": 0.895
+        },
+        {
+            "word": "of",
+            "start": 1.109,
+            "end": 1.21,
+            "score": 0.608
+        },
+        {
+            "word": "an",
+            "start": 1.27,
+            "end": 1.33,
+            "score": 0.954
+        },
+        {
+            "word": "impact",
+            "start": 1.391,
+            "end": 1.834,
+            "score": 0.879
+        },
+        {
+            "word": "can",
+            "start": 2.136,
+            "end": 2.397,
+            "score": 0.872
+        },
+        {
+            "word": "pause",
+            "start": 2.619,
+            "end": 2.961,
+            "score": 0.927
+        },
+        {
+            "word": "make.",
+            "start": 3.021,
+            "end": 3.524,
+            "score": 0.667
+        },
+        {
+            "word": "I'm",
+            "start": 3.545,
+            "end": 3.625,
+            "score": 0.353
+        },
+        {
+            "word": "excited",
+            "start": 3.706,
+            "end": 4.128,
+            "score": 0.567
+        },
+        {
+            "word": "to",
+            "start": 4.209,
+            "end": 4.31,
+            "score": 0.952
+        },
+        {
+            "word": "announce",
+            "start": 4.39,
+            "end": 4.793,
+            "score": 0.965
+        },
+        {
+            "word": "the",
+            "start": 4.913,
+            "end": 5.034,
+            "score": 0.865
+        },
+        {
+            "word": "brand",
+            "start": 5.115,
+            "end": 5.437,
+            "score": 0.779
+        },
+        {
+            "word": "new",
+            "start": 5.477,
+            "end": 5.859,
+            "score": 0.566
+        },
+        {
+            "word": "iPhone.",
+            "start": 5.88,
+            "end": 6.202,
+            "score": 0.641
+        },
+        {
+            "word": "I'm",
+            "start": 6.604,
+            "end": 6.725,
+            "score": 0.559
+        },
+        {
+            "word": "excited",
+            "start": 6.946,
+            "end": 7.228,
+            "score": 0.345
+        },
+        {
+            "word": "to",
+            "start": 7.269,
+            "end": 7.389,
+            "score": 0.988
+        },
+        {
+            "word": "announce",
+            "start": 7.45,
+            "end": 7.792,
+            "score": 0.74
+        },
+        {
+            "word": "the",
+            "start": 7.832,
+            "end": 7.933,
+            "score": 0.696
+        },
+        {
+            "word": "brand",
+            "start": 7.973,
+            "end": 8.356,
+            "score": 0.603
+        },
+        {
+            "word": "new",
+            "start": 8.376,
+            "end": 8.436,
+            "score": 0.0
+        },
+        {
+            "word": "iPhone.",
+            "start": 8.456,
+            "end": 8.758,
+            "score": 0.393
+        }
+    ]
+}

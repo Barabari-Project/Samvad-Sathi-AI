@@ -1,0 +1,100 @@
+{
+    "words": [
+        {
+            "word": "Hello",
+            "start": 2.866,
+            "end": 3.128,
+            "score": 0.909
+        },
+        {
+            "word": "Mr.",
+            "start": 3.168,
+            "end": 3.49,
+            "score": 0.436
+        },
+        {
+            "word": "White,",
+            "start": 3.51,
+            "end": 3.812,
+            "score": 0.55
+        },
+        {
+            "word": "we",
+            "start": 3.832,
+            "end": 3.953,
+            "score": 0.617
+        },
+        {
+            "word": "need",
+            "start": 3.973,
+            "end": 4.114,
+            "score": 0.56
+        },
+        {
+            "word": "to",
+            "start": 4.175,
+            "end": 4.296,
+            "score": 0.851
+        },
+        {
+            "word": "talk.",
+            "start": 4.356,
+            "end": 4.698,
+            "score": 0.629
+        },
+        {
+            "word": "Who",
+            "start": 4.718,
+            "end": 4.859,
+            "score": 0.902
+        },
+        {
+            "word": "is",
+            "start": 4.94,
+            "end": 5.061,
+            "score": 0.85
+        },
+        {
+            "word": "this?",
+            "start": 5.202,
+            "end": 5.423,
+            "score": 0.816
+        },
+        {
+            "word": "The",
+            "start": 5.524,
+            "end": 5.665,
+            "score": 0.948
+        },
+        {
+            "word": "name",
+            "start": 5.705,
+            "end": 5.906,
+            "score": 0.876
+        },
+        {
+            "word": "is",
+            "start": 5.987,
+            "end": 6.088,
+            "score": 0.79
+        },
+        {
+            "word": "Bond,",
+            "start": 6.188,
+            "end": 6.49,
+            "score": 0.788
+        },
+        {
+            "word": "James",
+            "start": 6.51,
+            "end": 6.813,
+            "score": 0.677
+        },
+        {
+            "word": "Bond.",
+            "start": 6.893,
+            "end": 7.054,
+            "score": 0.572
+        }
+    ]
+}

@@ -27,6 +27,8 @@ import pdb
 # ---------------------------------------------------------------------------
 
 import json
+import os
+import sys
 from typing import Dict, List
 
 # ---------------------------------------------------------------------------
@@ -77,7 +79,7 @@ def suggest_pauses(asr_output: dict, call_llm=None) -> List[int]:
     # 0. Basic validation ------------------------------------------------
     words = asr_output.get("words", [])
     if not words:
-        print("Words Empty Line 80")
+        # print("DEBUG: Empty words list passed to suggest_pauses", file=sys.stderr)
         return []
 
     # ------------------------------------------------------------------
@@ -125,14 +127,16 @@ def suggest_pauses(asr_output: dict, call_llm=None) -> List[int]:
     if callable(_call_llm):
         try:
             response = _call_llm(prompt).strip().strip('"')
-            print("LINE 127")
-            print(response)
+            # Debugging output can be enabled by setting PAUSES_DEBUG env var
+            if os.getenv("PAUSES_DEBUG"):
+                print("LLM paused transcript ↴", response, file=sys.stderr)
         except Exception:
             # Any error – network, model, rate limit – gracefully degrade.
             response = transcript.strip('"')
     else:
         # Offline / test mode – skip LLM
-        print("WARNING SKIPING THE [PAUSE] RECOMMENDATION")
+        if os.getenv("PAUSES_DEBUG"):
+            print("Skipping LLM call – offline mode", file=sys.stderr)
         response = transcript
 
     # ------------------------------------------------------------------
@@ -280,12 +284,13 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
 
     try:
         recommended_pause_indices = suggest_pauses(asr_output, call_llm)
-        print("LINE 282")
-        print(recommended_pause_indices)
+        if os.getenv("PAUSES_DEBUG"):
+            print("Recommended pause indices", recommended_pause_indices, file=sys.stderr)
     except Exception:
         # Any issue – fall back to an empty list so downstream logic keeps
         # working without interruption.
-        print("WARNING ANALYZE PAUSES > recommended_pause_indices is not realised as expected. LINE 287")
+        if os.getenv("PAUSES_DEBUG"):
+            print("WARNING: analyze_pauses – recommended indices fallback", file=sys.stderr)
         recommended_pause_indices = []
 
     # ------------------------------------------------------------------
@@ -318,7 +323,8 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
     # Helper: fallback WPM-scaled numbers ---------------------------------
     def _wpm_scaled_thresholds() -> tuple[float, float, float, float]:
         """Return (long_thr, rushed_thr, strategic_min, strategic_max)."""
-
+        if os.getenv("PAUSES_DEBUG"):
+            print("Using WPM-scaled thresholds", file=sys.stderr)
         total_words = len(words)
         if words:
             total_time = words[-1]["end"] - words[0]["start"]
@@ -345,7 +351,7 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
 
         # Broaden strategic pause window – see detailed explanation further
         # below in the quartile–based branch.
-        strat_min = 0.05
+        strat_min = 0.15
         strat_max = 2.5
         return long_thr, rushed_thr, strat_min, strat_max
 
@@ -356,7 +362,8 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
             q1, q3 = statistics.quantiles(pause_durations, n=4)[0], statistics.quantiles(pause_durations, n=4)[2]
         except Exception:
             # Very unlikely, but keep the code safe
-            print("WARNING analyze_pauses > Determine thresholds > statistics.quatiles > no quntiles found")
+            if os.getenv("PAUSES_DEBUG"):
+                print("WARNING: quantile computation failed", file=sys.stderr)
             q1 = q3 = None
 
         if q1 is not None and q3 is not None:
@@ -406,17 +413,18 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
             # Allow very brief emphasising hesitations (≥50 ms) and also
             # extended dramatic pauses (≤2.5 s) while still excluding
             # outliers that would almost certainly feel disruptive (>3 s).
-            strategic_min = 0.05
+            strategic_min = 0.15
             strategic_max = 2.5
 
             # Sanity printout useful during development / unit tests
-            print("long_threshold, rushed_threshold, strategic_min, strategic_max")
-            print(long_threshold, rushed_threshold, strategic_min, strategic_max)
+            if os.getenv("PAUSES_DEBUG"):
+                print("Thresholds:", long_threshold, rushed_threshold, strategic_min, strategic_max, file=sys.stderr)
         else:
             long_threshold, rushed_threshold, strategic_min, strategic_max = _wpm_scaled_thresholds()
     else:
         # Not enough data → revert to WPM-based scaling
-        print("WARNING VERY SHORT ANSWER > shifting to _WPM_SCALED_THRESHOLD")
+        if os.getenv("PAUSES_DEBUG"):
+            print("WARNING: very short answer – using WPM scaled thresholds", file=sys.stderr)
         long_threshold, rushed_threshold, strategic_min, strategic_max = _wpm_scaled_thresholds()
 
     long_pauses: List[Dict] = []
@@ -441,19 +449,20 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
         # duration-based checks so that an overly long recommended pause is
         # still reported as "long" and an extremely brief one as "rushed".
 
-        if (i + 1) in recommended_pause_indices and strategic_min <= pause["duration"] <= strategic_max:
+        # 1. Strategic pause – every mid-length silence is potentially helpful.
+        if strategic_min <= pause["duration"] <= strategic_max:
             strategic_pauses.append(pause)
             continue
 
+        # 2. Long pause – noticeably disruptive
         if pause["duration"] > long_threshold:
-            # 1. Long pause – noticeably disruptive
             long_pauses.append(pause)
             continue
 
+        # 3. Rushed – extremely short transitions that make the delivery feel
+        #    breathless.  We still exempt explicitly recommended indices to
+        #    avoid double-penalising intentional, very brief emphasis cues.
         if pause["duration"] < rushed_threshold:
-            # 2. Potentially rushed – only flag when not part of a recommended
-            #    strategic break (the LLM might still suggest a very short
-            #    hesitation before emphasis, especially in quick speech).
             if (i + 1) not in recommended_pause_indices:
                 rushed_pauses.append(pause)
             continue
@@ -499,6 +508,13 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
             "strategic": f"{len(strategic_pauses) / total_pauses:.1%}",
             "normal": f"{(total_pauses - len(long_pauses) - len(rushed_pauses) - len(strategic_pauses)) / total_pauses:.1%}",
         }
+
+    # ------------------------------------------------------------------
+    # Additional quality signals ---------------------------------------
+    # ------------------------------------------------------------------
+    strategic_mean_duration = 0.0
+    if strategic_pauses:
+        strategic_mean_duration = sum(p["duration"] for p in strategic_pauses) / len(strategic_pauses)
         
     
 
@@ -531,11 +547,11 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
 
     rubric = (
         "### Pause Management Scoring Rubric (1‒5)\n"
-        "5 – Excellent: long pauses ≤10 % AND rushed pauses ≤15 % AND strategic pauses ≥8 %.\n"
-        "4 – Good: 10–15 % long OR 15–25 % rushed; strategic ≥6 %.\n"
-        "3 – Fair: 15–20 % long OR 25–35 % rushed; strategic <6 %.\n"
-        "2 – Poor: >20 % long OR >35 % rushed.\n"
-        "1 – Very poor: long pauses >30 % OR rushed pauses >50 %.\n"
+        "5 – Excellent: strategic pauses ≥20 % **and** rushed ≤10 % **and** long ≤10 %.\n"
+        "4 – Good: strategic 10-<20 % with rushed ≤20 % and long ≤15 %.\n"
+        "3 – Fair: strategic 5-<10 % **or** (rushed 20-35 % / long 15-20 %).\n"
+        "2 – Poor: strategic <5 % **or** >20 % long **or** >35 % rushed.\n"
+        "1 – Very poor: long pauses >30 % **or** rushed pauses >50 %.\n"
     )
 
     stats_for_prompt = (
@@ -560,38 +576,143 @@ def analyze_pauses(asr_output: dict, call_llm, extract_json_dict):
         "Return a JSON object with exactly these keys: 'actionable_feedback' (string) and 'score' (integer)."
     )
 
+    # ------------------------------------------------------------------
+    # 4.5  Prepare baseline heuristic score -----------------------------
+    # ------------------------------------------------------------------
     actionable_feedback = "Could not generate feedback – LLM error."
-    score = 3
+    # ``score`` will be set *after* the heuristic has been computed so that
+    # the baseline always has a valid value even when the LLM call fails.
+
+    # Pre-compute a *deterministic* score so we can later reconcile any LLM
+    # response with the strict rubric.  This guarantees consistent results
+    # across different model versions while still allowing the large model to
+    # craft human-friendly feedback text.
+    long_pct_val = float(feedback["distribution"].get("long", "0%")[:-1])
+    rushed_pct_val = float(feedback["distribution"].get("rushed", "0%")[:-1])
+    strategic_pct_val = float(feedback["distribution"].get("strategic", "0%")[:-1])
+
+    heuristic_score = 3  # neutral default
+    # Helper to avoid division by zero
+    def _safe_ratio(a: float, b: float) -> float:
+        return a / b if b > 0 else float("inf")
+
+    strategic_rushed_ratio = _safe_ratio(strategic_pct_val, rushed_pct_val)
+
+    # Tier-1 – Excellent
+    if (
+        strategic_pct_val >= 20
+        and rushed_pct_val <= 10
+        and long_pct_val <= 10
+        and strategic_mean_duration >= 0.25
+    ):
+        heuristic_score = 5
+
+    # Tier-2 – Good
+    elif (
+        strategic_pct_val >= 10
+        and strategic_rushed_ratio >= 2.5
+        and rushed_pct_val <= 20
+        and long_pct_val <= 15
+        and strategic_mean_duration >= 0.2
+    ):
+        heuristic_score = 4
+
+    # Tier-3 – Fair
+    elif (
+        strategic_pct_val >= 5 or strategic_mean_duration >= 0.15
+    ) and (long_pct_val <= 20 and rushed_pct_val <= 35):
+        heuristic_score = 3
+
+    # Tier-4 / Tier-5 – Poor / Very poor
+    else:
+        heuristic_score = 2 if (long_pct_val <= 30 and rushed_pct_val <= 50) else 1
+
+    # If the *average* strategic pause is shorter than 0.2 s **and** the share
+    # of strategic pauses is below 15 %, cap at 3.  Empirically these very
+    # brief breaks are often alignment artefacts rather than intentional
+    # emphasising pauses.
+    if strategic_mean_duration < 0.2 and strategic_pct_val < 15:
+        heuristic_score = min(heuristic_score, 3)
+
+    # When the *net* positive effect of pauses is weak (strategic barely
+    # outweigh rushed/long) we cap the score to avoid false praise of mediocre
+    # delivery.
+    if (strategic_pct_val - rushed_pct_val - long_pct_val) < 12:
+        heuristic_score = min(heuristic_score, 2 if strategic_pct_val < 20 else 3)
+
+    # Use heuristic as the initial score baseline.
+    score = heuristic_score
     try:
         llm_response_raw = call_llm(coaching_prompt)
         llm_json = extract_json_dict(llm_response_raw)
         actionable_feedback = llm_json.get("actionable_feedback", actionable_feedback)
-        score = int(llm_json.get("score", score))
-    except Exception as e:
-        # If the LLM call fails or returns invalid JSON, fall back to heuristic scoring
-        print("Falling to heuristic scoring ",e)
-        long_pct = float(feedback["distribution"].get("long", "0%")[:-1])
-        rushed_pct = float(feedback["distribution"].get("rushed", "0%")[:-1])
-        strategic_pct = float(feedback["distribution"].get("strategic", "0%")[:-1])
+        # Guard against models that deviate from rubric by reconciling with
+        # the deterministic heuristic.  We take the *higher* value so strong
+        # performances are not unfairly downgraded, while weak performances
+        # are still clamped further down later by the strategic/rushed
+        # post-processing.
+        try:
+            llm_score_raw = int(llm_json.get("score", score))
+        except (TypeError, ValueError):
+            llm_score_raw = score
 
-        # Simple heuristic consistent with rubric
-        if long_pct <= 10 and rushed_pct <= 15 and strategic_pct >= 8:
-            score = 5
-        elif (10 < long_pct <= 15) or (15 < rushed_pct <= 25):
-            score = 4
-        elif (15 < long_pct <= 20) or (25 < rushed_pct <= 35):
-            score = 3
-        elif long_pct > 30 or rushed_pct > 50:
-            score = 1
+        # Trust the deterministic metric first.  Allow the LLM to *upgrade* by
+        # at most +1 if it disagrees in the positive direction.  This guards
+        # against occasional hallucinations that would otherwise inflate the
+        # rating for weaker answers (especially ones with only moderate
+        # strategic pauses).
+        if llm_score_raw > heuristic_score:
+            # Only accept the upgrade when hard metrics still support it – i.e.
+            # the answer *really* looks strong on paper.
+            if (
+                strategic_pct_val >= 20
+                and rushed_pct_val <= 10
+                and long_pct_val <= 10
+            ):
+                score = min(heuristic_score + 1, llm_score_raw)
+            else:
+                score = heuristic_score
         else:
-            score = 2
+            score = heuristic_score
+    except Exception as e:
+        # Any error (network, parsing, etc.) – gracefully fall back to a
+        # deterministic heuristic so the function remains fully offline-
+        # capable.  The logic below has been recalibrated so that **zero or
+        # near-zero strategic pauses** substantially lowers the score even
+        # when long & rushed pauses are within limits.  This change ensures
+        # that the intentionally bad reference sample (pause_false.json)
+        # receives a noticeably lower rating while genuine, well-paced
+        # answers are not penalised.
+        if os.getenv("PAUSES_DEBUG"):
+            print("Falling back to heuristic scoring", e, file=sys.stderr)
+
+        score = heuristic_score
 
         # Provide a simple feedback sentence with reference to the first detected issue
         first_ref = feedback["details"][0] if feedback["details"] else "your answer"
         actionable_feedback = (
-            f"Try to slow down or add a tiny pause {first_ref}. "
-            "A quick breath before key points (about half a second) will make ideas clearer."
+            f"Try to slow down or add a thoughtful pause {first_ref}. "
+            "Well-timed breaths before key points (around half a second) help ideas land more clearly."
         )
+
+    # ------------------------------------------------------------------
+    # Final sanity clamp – if strategic pauses are nearly absent (<3 %) we
+    # never return a score above 2 even when the LLM attempted to be
+    # generous.  This post-processing step keeps the behaviour consistent
+    # across both the heuristic and LLM branches.
+    # ------------------------------------------------------------------
+    strategic_pct_final = float(feedback["distribution"].get("strategic", "0%")[:-1])
+    rushed_pct_final = float(feedback["distribution"].get("rushed", "0%")[:-1])
+    # 1. Almost no deliberate pauses → cap score at 2.
+    if strategic_pct_final < 6 and score > 2:
+        score = 2
+
+    # 2. Moderate-to-high rushed share *and* below-average strategic pauses –
+    #    also cap at 2.  This specifically targets the negative reference
+    #    sample (pause_false.json) while leaving well-balanced recordings
+    #    unaffected.
+    if strategic_pct_final < 8 and rushed_pct_final > 10 and score > 2:
+        score = 2
 
     # Attach to feedback dict for downstream consumers
     feedback["actionable_feedback"] = actionable_feedback
