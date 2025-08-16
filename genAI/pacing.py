@@ -133,14 +133,37 @@ def format_time(seconds):
     return f"{minutes:02d}:{secs:02d}"
 
 def provide_pace_feedback(input_dict):
+    """Generate pacing feedback and a numerical score.
+
+    Args:
+        input_dict (dict): Transcript dict as produced by Whisper (expects
+            a "words" key with word-level timestamps).
+
+    Returns:
+        dict: {
+            "feedback": str,   # Human-readable feedback paragraph
+            "score": float     # 0-100 pacing score (higher is better)
+        }
+    """
+    if input_dict.get('words_timestamp',None) is not None:
+        input_dict = input_dict['words_timestamp']
+        
     words = input_dict.get('words', [])
     
+    # preprocess
+    # Remove elements without 'start' or 'end' keys
+    words = [w for w in words if 'start' in w and 'end' in w]
+    if len(words)<1:
+        return {
+            "feedback": "len(words) less than 1",
+            "score": -1
+        }
     # Calculate metrics and segments
     result = calculate_pace_metrics(words)
     if not result:
         return "Insufficient data for pace analysis"
     
-    # Prepare feedback
+    # Prepare feedback text
     feedback = "Quantitative Feedback:\n"
     feedback += f"Words Per Minute (WPM): Your average pace: {result['avg_wpm']} WPM\n"
     feedback += "Benchmarking: Aim for 120-150 WPM in interviews\n\n"
@@ -175,7 +198,47 @@ def provide_pace_feedback(input_dict):
             end_time = format_time(seg['end'])
             feedback += f"- [{start_time} - {end_time}]: {seg['text']}\n"
     
-    return feedback
+    # ------------------------------------------------------------
+    # Scoring rubric
+    # ------------------------------------------------------------
+    # We evaluate pacing on two dimensions:
+    #   1. Pace consistency – percentage of time spent in the ideal
+    #      window (105-170 WPM). Worth 60 points.
+    #        pace_consistency_score = ideal_pct * 0.6  (0-60)
+    #   2. Average speed accuracy – how close the *average* WPM is
+    #      to the recommended 120-150 WPM band. Worth 40 points.
+    #         deviation = distance, in WPM, from the nearest bound
+    #         accuracy_score = max(0, 40 - 2 * deviation)
+    #         (we lose 2 points for every WPM outside the band)
+    #   Total possible = 100. We clip the final score to [0, 100].
+
+    # Calculate score components
+    # 1. Pace consistency
+    pace_consistency_score = result['ideal_pct'] * 0.6  # 0-60
+
+    # 2. Average speed accuracy
+    recommended_min, recommended_max = 120, 150
+    avg_wpm = result['avg_wpm']
+    if recommended_min <= avg_wpm <= recommended_max:
+        accuracy_score = 40.0
+    else:
+        # deviation outside the recommended range
+        if avg_wpm < recommended_min:
+            deviation = recommended_min - avg_wpm
+        else:
+            deviation = avg_wpm - recommended_max
+        accuracy_score = max(0.0, 40.0 - 2.0 * deviation)
+
+    total_score = pace_consistency_score + accuracy_score
+    # Ensure the score is between 0 and 100
+    total_score = max(0.0, min(100.0, total_score))
+    total_score /= 20
+    total_score = round(total_score,1)
+    
+    return {
+        "feedback": feedback,
+        "score": total_score
+    }
 
 # {
 #   "feedback": "**Overall Assessment:**\nYour average speaking rate is currently at 108.1 words per minute (WPM), which is below the ideal range for interviews of 120-150 WPM. This may impact the clarity and engagement of your responses. However, you have segments where you're closer to the ideal pace, which highlights your potential for improvement in this area.\n\n**Strengths:**\nYou've effectively utilized an ideal speaking pace in several segments, such as from **0:07 to 0:18**, where you clearly articulated your points about the ODIA language and its data limitations. This segment flows well and showcases your ability to convey complex information at a comfortable pace. Additionally, sections like **1:18 to 1:21** and **1:41 to 1:51** reflect thoughtful clarity, contributing positively to your overall communication.\n\n**Areas for Improvement:**\n1. **Slow Segments:** About **24.3% of your speech was slow**, which can cause listeners to lose focus. For instance, the segment from **0:24 to 0:32** included filler phrases like \"um\" and \"it had just wasn't working good,\" which can interrupt your train of thought. \n\n   **Techniques to Speak More Concisely:**\n   - **Reduce Filler Words:** Instead of using \"um\" and \"so,\" practice taking brief pauses. This can help you gather your thoughts without using fillers, enhancing the perceived professionalism of your delivery.\n   - **Pre-plan Key Points:** Structure your thoughts before speaking. Knowing the main points you wish to convey can minimize hesitations and keep your speech flowing smoothly. For example, practice summarizing the key challenges of your project in a single, clear statement.\n\n2. **Fast Segments:** On the contrary, the segment from **1:51 to 1:57** where you spoke quickly might have caused your audience to miss important information. Fast speech can indicate nervousness or rushing through your thoughts, which may detract from the impact of your message. \n\n   **Pausing and Breathing Techniques:**\n   - **Include Strategic Pauses:** After important points, take a brief pause to emphasize your message. For example, after stating \"I learned a lot but still like next time we can do better,\" pause to let the information settle with your audience before proceeding.\n   - **Practice Controlled Breathing:** Before speaking, take a few deep breaths which can help calm nerves, allowing for a more measured delivery. Employing this technique can help maintain a steady pace throughout your speech.\n\n**Actionable Steps:**\n1. Record yourself practicing responses, focusing on eliminating unnecessary fillers while working to maintain a steady pace.\n2. Participate in mock interviews or speaking exercises where you can receive feedback on both speed and clarity.\n3. Consider using pacing tools or software to analyze and adjust your speaking rate effectively.\n\nRemember, the key to effective communication in interviews is clarity and engagement. You're already demonstrating the ability to articulate your thoughts well; with a bit of practice on pacing, you'll enhance your overall delivery. Keep up the hard work, and don’t hesitate to experiment with these techniques in your next practice session!"
@@ -245,5 +308,5 @@ if __name__ == "__main__":
         with sample_path.open() as f:
             asr_output = json.load(f)
         # print(asr_output)
-        print(json.dumps(calculate_pace_metrics(asr_output['words']), indent=2))
+        print(json.dumps(provide_pace_feedback(asr_output), indent=2))
         print()

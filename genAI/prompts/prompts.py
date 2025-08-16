@@ -15,8 +15,8 @@ Return JSON format with these keys:
 
 For each key, provide:  
 - `score` (1-5 scale: 1=Poor, 5=Excellent)  
-- `rationale` (2-3 sentence explanation with evidence, also make sure it is Easy-to-understand English)  
-- `quotes` (1-3 representative text excerpts illustrating the assessment)  
+- `rationale` (2-3 sentence explanation using SIMPLE ENGLISH with clear evidence)  
+- `quotes` (1-3 complete context excerpts showing full phrases/sentences)  
 
 **Analysis Guidelines**  
 | Feature          | Evaluation Criteria                                                                 |  
@@ -25,6 +25,11 @@ For each key, provide:
 | Vocabulary       | Lexical diversity, context-appropriateness, sophistication, repetition analysis     |  
 | Grammar & Syntax | Grammatical correctness, tense consistency, punctuation, sentence structure fluency |  
 | Structure & Flow | Logical progression, paragraph transitions, thematic cohesion, argument sequencing |  
+
+**Critical Instructions**  
+1. Use ONLY simple, easy-to-understand English in rationales  
+2. Quotes MUST be self-contained with full context (complete clauses/sentences)  
+3. Strictly maintain original JSON structure and keys  
 '''
 
 extract_resume_template = f'''
@@ -163,7 +168,8 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
     "Terminology Usage": {{"score": number, "reason": string}} // Omit if behavioral
   }},
   "overall_score": number, // sum of all score
-  "overall_feedback": "Concise strengths/weaknesses summary"
+  "overall_feedback": "Concise strengths/weaknesses summary",
+  "actionable_feedback": "- Fix X\n- Do Y\n- Try Z" 
 }}
 
 ---

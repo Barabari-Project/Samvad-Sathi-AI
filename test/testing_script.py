@@ -4,9 +4,10 @@ import gdown
 import os
 import concurrent.futures
 from tqdm import tqdm
+import json
 
 # Paths and URLs
-CSV_PATH = "Test_Cases_1.csv"
+CSV_PATH = "Test_Cases_2.csv"
 AUDIO_DIR = "audios"
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
@@ -15,6 +16,7 @@ URL1 = "http://localhost:8000/transcribe_whisper"
 URL2 = "http://localhost:8000/pace-analysis"
 URL3 = "http://localhost:8000/pauses-analysis"
 URL4 = "http://localhost:8000/communication-based-analysis"
+URL5 = "http://localhost:8000/transcribe_whisperx"
 
 # Load CSV
 df = pd.read_csv(CSV_PATH)
@@ -55,9 +57,9 @@ def process_analysis_requests(payload, transcript):
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(post_request, "pacing", URL2, payload),
-            executor.submit(post_request, "pauses", URL3, payload),
-            executor.submit(post_request, "communication", URL4, {"text": transcript})
+            executor.submit(post_request, "pacing", URL2, {"words_timestamp": payload}),
+            executor.submit(post_request, "pauses", URL3, {"words_timestamp": payload}),
+            executor.submit(post_request, "communication", URL4, transcript)
         ]
         for future in concurrent.futures.as_completed(futures):
             name, result = future.result()
@@ -68,48 +70,64 @@ def process_analysis_requests(payload, transcript):
 # Process each row
 for i, row in tqdm(df.iterrows(), total=len(df)):
     url = row.get("Drive link (male)")
-    if pd.isna(url) or url.strip() == "":
+    if pd.isna(url) or url.strip() == "" : #  [82,41,33,30]
         print(f"[SKIP] Row {i}: No drive link found.")
         continue
-
-    audio_path = os.path.join(AUDIO_DIR, f"audio_{i}.wav")
-
-    print(f"\n[PROCESSING] Row {i} - Downloading Audio...")
-    if not download_audio(url, audio_path):
-        print(f"[ERROR] Failed to download audio for row {i}")
-        df.at[i, "transcript"] = "Download failed"
-        continue
+    
+    # if i not in [32,33,34,43]:
+    #     continue
+    
 
     try:
-        # Step 1: Transcription
+        
+        # step 1: transcibe using whisperx
         print(f"[INFO] Transcribing audio for row {i}...")
-        with open(audio_path, "rb") as f:
-            r1 = requests.post(URL1, files={"file": f})
+        file_id = get_gdrive_file_id(url)
+        donwload_url = f"https://drive.google.com/uc?id={file_id}"
+        r1 = requests.post(URL5,json=donwload_url)
         r1.raise_for_status()
         response_json = r1.json()
+        
+
+        
+        with open("r1_res.json",'w') as f:
+            json.dump(response_json,f,indent=4)
+            
         transcript = response_json["text"]
+        
         df.at[i, "transcript"] = transcript
         print(f"[SUCCESS] Transcript: {transcript}")
 
         # Step 2-4: Run parallel
         print(f"[INFO] Running pacing, pauses, and communication analysis in parallel for row {i}...")
-        payload = {"profile": response_json}
-        results = process_analysis_requests(payload, transcript)
+        # payload = {"profile": response_json}
+        
+        results = process_analysis_requests(response_json, transcript)
 
-        df.at[i, "pacing"] = results.get("pacing", {}).get("feedback", "Error or missing feedback")
-        df.at[i, "pauses"] = results.get("pauses", {})
-        df.at[i, "comunication-based-analysis"] = results.get("communication", {})
+        try:
+            df.at[i, "pacing"] = results.get("pacing", {}).get("feedback", "Error or missing feedback")
+        except Exception as e:
+            print("Error at decoding pacing")
+            
+        try:
+            df.at[i, "pauses"] = results.get("pauses", {})
+        except Exception as e:
+            print("Error at decoding pauses")
+            
+        try:
+            df.at[i, "comunication-based-analysis"] = results.get("communication", {})
+        except Exception as e:
+            print("Error at decoding comm")
 
         print(f"[SUCCESS] Pacing: {df.at[i, 'pacing']}")
         print(f"[SUCCESS] Pauses: {df.at[i, 'pauses']}")
         print(f"[SUCCESS] Communication: {df.at[i, 'comunication-based-analysis']}")
-
     except Exception as e:
         error_msg = f"Error: {str(e)}"
         print(f"[ERROR] Row {i}: {error_msg}")
         df.at[i, "transcript"] = error_msg
 
 # Save final CSV
-output_csv = "output_with_transcript_pacing_pauses.csv"
+output_csv = "Test_Cases_2.csv"
 df.to_csv(output_csv, index=False)
 print(f"\n[SAVED] Output written to: {output_csv}")

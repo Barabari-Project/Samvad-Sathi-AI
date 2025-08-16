@@ -20,6 +20,7 @@ import numpy as np
 import librosa
 import statistics
 from typing import List, Dict
+import replicate
 
 
 from dotenv import load_dotenv
@@ -371,6 +372,60 @@ async def transcribe_audio(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"OpenAI error: {e}")
     
     return JSONResponse(content=transcription)
+
+# @app.post('/upload_to_drive')
+# @app.post('/chage_format_to_wav')
+import httpx
+
+# Create an HTTPX client with longer timeouts
+custom_client = httpx.Client(timeout=httpx.Timeout(60.0))  # 5 min read timeout
+
+@app.post('/transcribe_whisperx')
+async def transcribe_whisperx(audio_file_link:str = Body(...)):
+    '''
+    Transcribes the given audio file with wordlevel time stamps and confidance score
+    
+    Args:
+        audio_file_link (str) : downloadable link to audio file
+        
+    Returns:
+        JSONResponse: Detailed transcription output.
+    '''
+
+    # pre = 'https://drive.google.com/uc?export=download&id='
+    # audio_file_link = pre + '125S0xMf-J86RTGqIRtOEtwWt_IvYirYW' # my_answer.wav
+    # audio_file_link = pre + '18IND7KyV2Od4QvvxvIJI8X3s06mosvb2' # bond_pause.mp3
+    
+    output = replicate.run(
+        "victor-upmeet/whisperx:77505c700514deed62ab3891c0011e307f905ee527458afc15de7d9e2a3034e8",
+        input={
+            "debug": False,
+            "vad_onset": 0.5,
+            "audio_file": audio_file_link,
+            "batch_size": 64,
+            "vad_offset": 0.363,
+            "diarization": False,
+            "temperature": 0,
+            "align_output": True
+        }
+    )
+
+    words = []
+    try:
+        for i in output['segments']:
+            words += i['words']
+    except Exception as e:
+        print("ERROR IN /transcribe_whisperx endpoint ",e)
+        print(words)
+        return JSONResponse(content={"words":{},'text':f"words = {words}"})
+        
+    transcript = ''
+    for i in words:
+        transcript += i['word'] + ' '
+    transcript = transcript.strip()
+    
+    return JSONResponse(content={"words":words,'text':transcript})
+        
     
 @app.post('/get_knowledgeset')
 async def get_knowledgeset(user_profile:dictRequest = Body(...)):
@@ -461,11 +516,15 @@ async def measure_pace_features(words_timestamp:dict = Body()):
     
     output:
     {
-        'feedback':str
+        'feedback': str,   # verbal feedback
+        'score': float     # 0-100 pacing score
     }
     '''
+    # provide_pace_feedback now returns a dictionary with keys
+    # "feedback" (string) and "score" (float). We propagate both keys
+    # to the client for richer information.
     res = provide_pace_feedback(words_timestamp)
-    return JSONResponse(content={"feedback":res})
+    return JSONResponse(content=res)
 
 @app.post('/pauses-analysis')
 async def measure_pause_analysis(words_timestamp:dict = Body(...)): 
@@ -599,12 +658,20 @@ def genarate_final_report(Session_analysis:dict = Body(...)):
 
     
     clarity_sum,vocabulary_sum,grammar_sum,structure_sum = 0,0,0,0
-    for comm in communication_list:
+    pace_sum, pause_sum = 0,0
+    for ijk in Speech_Structure_Fluency:
+        pace_item = ijk['pace']
+        pause_item = ijk['pause']
+        comm = ijk['communication']
+        
         clarity_sum += comm["clarity"]["score"]
         vocabulary_sum += comm["vocabulary_richness"]["score"]
         grammar_sum += comm["grammar_syntax"]["score"]
         structure_sum += comm["structure_flow"]["score"]
-            
+        
+        pace_sum += float(pace_item['score'])
+        pause_sum += float(pause_item['score'])
+        
     scores = {
         "knowledge_competence": {
             "Accuracy":acc_sum,
@@ -616,7 +683,9 @@ def genarate_final_report(Session_analysis:dict = Body(...)):
             "clarity":clarity_sum,
             "vocabulary_richness":vocabulary_sum,
             "grammar_syntax":grammar_sum,
-            "structure_flow":structure_sum
+            "structure_flow":structure_sum,
+            "pace":pace_sum,
+            "pause":pause_sum
         }
     }
 

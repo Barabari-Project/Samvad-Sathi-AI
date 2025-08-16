@@ -9,150 +9,165 @@
     "attribute_scores": {
       "Accuracy": {
         "score": 3,
-        "reason": "Identified key challenges but lacked precision and clarity in technical details."
+        "reason": "Identified issues with low data for ODIA language and mentioned batch balancing approach, but lacks precision."
       },
       "Depth of Understanding": {
-        "score": 3,
-        "reason": "Some depth in challenge resolution but generic in description without specific metrics or comparisons."
+        "score": 4,
+        "reason": "Discussed challenges like memory issues and gradient accumulation, showing a good grasp of complex topics."
       },
       "Relevance": {
         "score": 5,
-        "reason": "Directly addressed the project and challenges faced during implementation."
+        "reason": "Directly addresses the question about challenges faced during the project, aligning well with the task."
       },
       "Examples/Evidence": {
         "score": 3,
-        "reason": "Provided some evidence of techniques used but no concrete examples of outcomes or data."
+        "reason": "Provided evidence of specific challenges and solutions, but lacking detailed outcomes."
       }
     },
-    "overall_score": 14,
-    "overall_feedback": "The candidate showed understanding of challenges but lacked clarity and depth in technical details. Specific examples of outcomes and more precise technical language would enhance the response."
+    "overall_score": 15,
+    "overall_feedback": "The candidate demonstrates a good understanding of challenges in the ChatGPT 2 project with relevant examples, but could enhance accuracy and profundity in technical explanations."
   },
   "communication_analysis": {
     "clarity": {
       "score": 2,
-      "rationale": "The text lacks coherence and is filled with filler phrases and repetitions, making it difficult to understand the main points clearly. For example, phrases like 'you know' and 'kind of' distract from the core message.",
+      "rationale": "The text is quite unclear due to the use of filler words like 'um' and 'like'. This makes it hard to follow the main points being made.",
       "quotes": [
-        "so um, we tried to, like, fix that",
-        "it had, just wasn't working good",
-        "you know what I mean"
+        "one technical challenge was like, ODIA language, you know, it had, like, way less data than others",
+        "the loss was, and all, loss was high and all, and um, it had, just wasn't working good",
+        "it's like, our first time training something this big, memory ka kaafi issue de raha tha"
       ]
     },
     "vocabulary_richness": {
       "score": 2,
-      "rationale": "The vocabulary is quite basic and includes colloquial expressions with limited lexical diversity. The frequent use of informal phrases and filler words reduces the sophistication of the language.",
+      "rationale": "The vocabulary is quite limited and contains many informal phrases. It lacks diversity and depth, which doesn't enhance the message.",
       "quotes": [
-        "we did, like, the gradient accumulation and stuff",
-        "marahi data kam tha, you know what I mean"
+        "we tried to, like, fix that by making batches balanced",
+        "data hi kam tha, you know what I mean",
+        "I mean, it helped, kind of, but not fully"
       ]
     },
     "grammar_syntax": {
       "score": 2,
-      "rationale": "There are multiple grammatical errors and awkward sentence structures that affect fluency. The use of informal speech patterns leads to a lack of tense consistency and incorrect punctuation.",
+      "rationale": "There are several grammatical errors and awkward sentence constructions. The syntax is often choppy and informal, making it confusing.",
       "quotes": [
         "model was like, kind of struggling to learn it properly",
-        "it had, just wasn't working good"
+        "it had, just wasn't working good",
+        "we did, like, the gradient accumulation and stuff"
       ]
     },
     "structure_flow": {
       "score": 2,
-      "rationale": "The text follows a loose narrative that lacks clear organization. Transitions between ideas are abrupt, and there is a lack of thematic cohesion that makes it challenging to follow the progression of thoughts.",
+      "rationale": "The text lacks a clear structure and smooth transitions. The ideas jump around, making it hard to follow the overall argument.",
       "quotes": [
+        "we tried to, like, fix that by making batches balanced, like, you know, make sure each batch had thoda-thoda from every language",
         "training the model itself was like, tough",
-        "memory ka kaafi issue de raha tha, and GPU be limited tha"
+        "but, I mean, we did jugaad, and somehow trained it"
       ]
     }
   },
-  "pace_analysis": "Quantitative Feedback:\nWords Per Minute (WPM): Your average pace: 108.6 WPM\nBenchmarking: Aim for 120-150 WPM in interviews\n\nPace Range Classification:\n- Too Slow: Your pace was slow 23.4% of the time\n- Ideal: You spoke at ideal pace for 75.7% of the time\n- Too Fast: Your pace exceeded 170 WPM for 0.9% of the time\n\nDetailed Pace Segments:\n\nToo slow segments:\n- [00:02 - 00:04]: so um one\n- [00:05 - 00:06]: was like\n- [00:24 - 00:32]: all and um it had just wasn't working good so um we\n- [01:00 - 01:04]: you know what I mean and so um\n- [01:05 - 01:06]: yeah so\n- [01:07 - 01:11]: the model itself was like tough it's\n- [01:21 - 01:22]: tha and\n- [01:28 - 01:33]: accumulation and stuff and processed data in\n\nIdeal segments:\n- [00:01 - 00:02]: of yeah so\n- [00:04 - 00:05]: one technical challenge was\n- [00:06 - 00:24]: like ODIA language you know it had like way less data than others so model was like kind of struggling to learn it properly I'm like you know the loss was and all loss was high and all\n- [00:32 - 01:00]: we tried to like fix that by making batches balanced like you know make sure each batch had thoda thoda from every language so like even if ODIA ka data kam tha it still came in training I mean it helped kind of but not fully cause data hi kam tha\n- [01:04 - 01:05]: um\n- [01:06 - 01:07]: so training the\n- [01:11 - 01:21]: it's it's like our first time training something this big memory ka kaafi issue de raha tha\n- [01:22 - 01:28]: and GPU be limited tha so um we did like the gradient accumulation\n- [01:33 - 01:51]: in chunks like um small parts so it doesn't crash or something so like haan it was kind of difficult but I mean we did jugaad and somehow trained it and yeah I\n\nToo fast segments:\n- [01:51 - 01:57]: I learned a lot but still like next time we can do better you know what I mean\n",
+  "pace_analysis": {
+    "feedback": "Quantitative Feedback:\nWords Per Minute (WPM): Your average pace: 108.6 WPM\nBenchmarking: Aim for 120-150 WPM in interviews\n\nPace Range Classification:\n- Too Slow: Your pace was slow 23.4% of the time\n- Ideal: You spoke at ideal pace for 75.7% of the time\n- Too Fast: Your pace exceeded 170 WPM for 0.9% of the time\n\nDetailed Pace Segments:\n\nToo slow segments:\n- [00:02 - 00:04]: so um one\n- [00:05 - 00:06]: was like\n- [00:24 - 00:32]: all and um it had just wasn't working good so um we\n- [01:00 - 01:04]: you know what I mean and so um\n- [01:05 - 01:06]: yeah so\n- [01:07 - 01:11]: the model itself was like tough it's\n- [01:21 - 01:22]: tha and\n- [01:28 - 01:33]: accumulation and stuff and processed data in\n\nIdeal segments:\n- [00:01 - 00:02]: of yeah so\n- [00:04 - 00:05]: one technical challenge was\n- [00:06 - 00:24]: like ODIA language you know it had like way less data than others so model was like kind of struggling to learn it properly I'm like you know the loss was and all loss was high and all\n- [00:32 - 01:00]: we tried to like fix that by making batches balanced like you know make sure each batch had thoda thoda from every language so like even if ODIA ka data kam tha it still came in training I mean it helped kind of but not fully cause data hi kam tha\n- [01:04 - 01:05]: um\n- [01:06 - 01:07]: so training the\n- [01:11 - 01:21]: it's it's like our first time training something this big memory ka kaafi issue de raha tha\n- [01:22 - 01:28]: and GPU be limited tha so um we did like the gradient accumulation\n- [01:33 - 01:51]: in chunks like um small parts so it doesn't crash or something so like haan it was kind of difficult but I mean we did jugaad and somehow trained it and yeah I\n\nToo fast segments:\n- [01:51 - 01:57]: I learned a lot but still like next time we can do better you know what I mean\n",
+    "score": 3.1
+  },
   "pause_analysis": {
-    "overview": "12 rushed transitions (<0.2s) making speech sound abrupt",
+    "overview": "4 rushed transitions (< 0.11s), 45 well-placed strategic pauses",
     "details": [
-      "⚠️ Rushed transition (0.0s) between 'others' → 'so': Add brief breath before important terms",
-      "⚠️ Rushed transition (0.0s) between 'so' → 'model': Add brief breath before important terms"
+      "⚠️ Rushed transition (0.0s) between 'so' → 'model' at 00:14: add a tiny pause so listeners can follow.",
+      "⚠️ Rushed transition (0.0s) between 'like' → 'you' at 00:40: add a tiny pause so listeners can follow.",
+      "✅ Good pause (0.2s) before 'ODIA' at 00:07: nice emphasis.",
+      "✅ Good pause (0.4s) before 'you' at 00:08: nice emphasis."
     ],
     "distribution": {
       "long": "0.0%",
-      "rushed": "22.6%",
-      "strategic": "0.0%",
-      "normal": "77.4%"
-    }
+      "rushed": "7.5%",
+      "strategic": "84.9%",
+      "normal": "7.5%"
+    },
+    "actionable_feedback": "Your pauses are really good! You have very few rushed pauses (only 7.5%), which is great. However, try to add tiny pauses to help listeners follow along better. For example, after 'so' at 00:14 and after 'like' at 00:40, a brief pause would help a lot. Keep using your strategic pauses like the ones before 'ODIA' at 00:07 and 'you' at 00:08—they make your message clearer.",
+    "score": 5
   }
 },
 {
-  "Question": "Describe your approach to implementing the real-time analytics dashboard. How did you handle data synchronization challenges?",
-  "Answer": "Ah right, the dashboard thing... so basically, we had this, like, streaming issue where data wasn't updating live? Like, the Kafka streams were getting, uh, delayed by couple seconds sometimes, which made the charts all jumpy. I'm like, you know, it's bad for users seeing wrong numbers. So we tried, um, adding more consumer groups but that didn't fix properly. Then we did, what's it called – window aggregation? No no, watermarking! Yeah, we set event-time watermarking to handle late data, and also, like, increased the partitions. Memory issues also came up though, cause servers were like, overloaded, so we had to do vertical scaling temporarily. Ultimately it worked... ish? But honestly, I feel we could've used Flink instead maybe. Learned tons about backpressure handling anyway.",
+  "Question": "Can you elaborate on your experience with the ChatGPT 2 project? What challenges did you face when implementing the multilingual model?",
+  "Answer": "of, yeah, so um, one technical challenge was like, ODIA language, you know, it had, like, way less data than others, so, model was like, kind of struggling to learn it properly, I'm like, you know, the loss was, and all, loss was high and all, and um, it had, just wasn't working good, so um, we tried to, like, fix that by making batches balanced, like, you know, make sure each batch had thoda-thoda from every language, so like, even if ODIA ka data kam tha, it still came in training, I mean, it helped, kind of, but not fully, cause data hi kam tha, you know what I mean, and so, um, yeah, so, training the model itself was like, tough, it's, it's like, our first time training something this big, memory ka kaafi issue de raha tha, and GPU be limited tha, so, um, we did, like, the gradient accumulation and stuff, and processed data in chunks, like, um, small parts, so it doesn't crash or something, so, like, haan, it was kind of difficult, but, I mean, we did jugaad, and somehow trained it, and yeah, I learned a lot, but still, like, next time we can do better, you know what I mean.",
   "domain_analysis": {
-    "category": "Technical Implementation",
+    "category": "Resume-specific",
     "hint_addressed": true,
     "attribute_scores": {
       "Accuracy": {
         "score": 4,
-        "reason": "Correctly identified techniques (watermarking, scaling) but mischaracterized consumer group purpose"
+        "reason": "The candidate accurately described the challenges faced in training the multilingual model, particularly regarding data scarcity for the ODIA language."
       },
       "Depth of Understanding": {
-        "score": 3,
-        "reason": "Shows awareness of solutions but lacks detail on implementation trade-offs"
+        "score": 4,
+        "reason": "The candidate explained balance in batches and gradient accumulation, demonstrating a good understanding of the underlying techniques, although the explanation lacked some technical precision."
       },
       "Relevance": {
         "score": 5,
-        "reason": "Directly addresses both dashboard approach and synchronization challenges"
+        "reason": "The response directly addresses the question about the ChatGPT 2 project and challenges. It mentions specific challenges related to data limitations and training processes."
       },
       "Examples/Evidence": {
         "score": 3,
-        "reason": "Mentioned specific technologies (Kafka) but no metrics on performance improvement"
+        "reason": "While the candidate provides examples of challenges (e.g., data scarcity, gradient accumulation), they could elaborate further on specific outcomes or metrics achieved."
       }
     },
-    "overall_score": 15,
-    "overall_feedback": "Candidate demonstrates relevant experience but needs more precise technical terminology and outcome quantification. Alternative solution (Flink) suggestion shows broader awareness."
+    "overall_score": 16,
+    "overall_feedback": "The candidate provided a relevant and mostly accurate account of their experience, demonstrating good foundational understanding and addressing the hint effectively. However, further depth and examples could enhance the response."
   },
   "communication_analysis": {
     "clarity": {
       "score": 2,
-      "rationale": "Frequent self-corrections and vague phrases obscure technical content. Hedge words reduce message confidence.",
+      "rationale": "The text has many filler words like 'um' and 'like', which makes it hard to understand. There are also long sentences that make the main idea unclear.",
       "quotes": [
-        "Like, the Kafka streams were getting, uh, delayed",
-        "Ultimately it worked... ish?",
-        "what's it called – window aggregation? No no"
+        "one technical challenge was like, ODIA language, you know, it had, like, way less data than others, so, model was like, kind of struggling to learn it properly",
+        "training the model itself was like, tough, it's, it's like, our first time training something this big"
       ]
     },
     "vocabulary_richness": {
-      "score": 2,
-      "rationale": "Over-reliance on filler words and conversational phrases diminishes technical credibility. Limited domain-specific vocabulary.",
+      "score": 3,
+      "rationale": "The vocabulary is mostly simple and repetitive, with phrases like 'kind of' and 'like' used often. It lacks more complex or varied word choices.",
       "quotes": [
-        "the dashboard thing",
-        "it's bad for users",
-        "Also, like, increased the partitions"
+        "we tried to, like, fix that by making batches balanced, like, you know, make sure each batch had thoda-thoda from every language",
+        "so, um, we did, like, the gradient accumulation and stuff, and processed data in chunks"
       ]
     },
     "grammar_syntax": {
-      "score": 3,
-      "rationale": "Mostly comprehensible but contains sentence fragments and inconsistent technical terminology.",
+      "score": 2,
+      "rationale": "There are several grammatical errors and awkward phrases. The sentences often lack clarity due to run-on structure and issues with parallelism.",
       "quotes": [
-        "Memory issues also came up though, cause servers were like, overloaded",
-        "But honestly, I feel we could've used Flink instead maybe"
+        "the loss was, and all, loss was high and all, and um, it had, just wasn't working good",
+        "memory ka kaafi issue de raha tha, and GPU be limited tha"
       ]
     },
     "structure_flow": {
-      "score": 3,
-      "rationale": "Chronological structure exists but disrupted by tangential thoughts and abrupt topic shifts.",
+      "score": 2,
+      "rationale": "The text has poor structure with many unrelated thoughts jumbled together. It jumps from one idea to another, making the flow hard to follow.",
       "quotes": [
-        "Then we did, what's it called – window aggregation? No no, watermarking!",
-        "Ultimately it worked... ish? But honestly..."
+        "I mean, it helped, kind of, but not fully, cause data hi kam tha, you know what I mean",
+        "so, like, haan, it was kind of difficult, but, I mean, we did jugaad, and somehow trained it"
       ]
     }
   },
-  "pace_analysis": "Quantitative Feedback:\nWords Per Minute (WPM): Your average pace: 98.2 WPM\nBenchmarking: Aim for 120-150 WPM in interviews\n\nPace Range Classification:\n- Too Slow: Your pace was slow 31.2% of the time\n- Ideal: You spoke at ideal pace for 66.3% of the time\n- Too Fast: Your pace exceeded 170 WPM for 2.5% of the time\n\nDetailed Pace Segments:\n\nToo slow segments:\n- [00:01 - 00:03]: Ah right\n- [00:17 - 00:21]: delayed by couple seconds\n- [00:38 - 00:41]: adding more consumer\n- [01:02 - 01:05]: no, watermarking! Yeah\n\nIdeal segments:\n- [00:03 - 00:17]: the dashboard thing... so basically we had this like streaming issue\n- [00:21 - 00:38]: sometimes which made the charts all jumpy I'm like you know it's bad\n- [00:41 - 01:02]: groups but that didn't fix properly Then we did what's it called window aggregation? No\n- [01:05 - 01:42]: we set event-time watermarking to handle late data and also like increased\n\nToo fast segments:\n- [01:42 - 01:51]: the partitions Memory issues also came up though cause servers\n- [02:03 - 02:11]: Learned tons about backpressure handling anyway",
+  "pace_analysis": {
+    "feedback": "Quantitative Feedback:\nWords Per Minute (WPM): Your average pace: 108.6 WPM\nBenchmarking: Aim for 120-150 WPM in interviews\n\nPace Range Classification:\n- Too Slow: Your pace was slow 23.4% of the time\n- Ideal: You spoke at ideal pace for 75.7% of the time\n- Too Fast: Your pace exceeded 170 WPM for 0.9% of the time\n\nDetailed Pace Segments:\n\nToo slow segments:\n- [00:02 - 00:04]: so um one\n- [00:05 - 00:06]: was like\n- [00:24 - 00:32]: all and um it had just wasn't working good so um we\n- [01:00 - 01:04]: you know what I mean and so um\n- [01:05 - 01:06]: yeah so\n- [01:07 - 01:11]: the model itself was like tough it's\n- [01:21 - 01:22]: tha and\n- [01:28 - 01:33]: accumulation and stuff and processed data in\n\nIdeal segments:\n- [00:01 - 00:02]: of yeah so\n- [00:04 - 00:05]: one technical challenge was\n- [00:06 - 00:24]: like ODIA language you know it had like way less data than others so model was like kind of struggling to learn it properly I'm like you know the loss was and all loss was high and all\n- [00:32 - 01:00]: we tried to like fix that by making batches balanced like you know make sure each batch had thoda thoda from every language so like even if ODIA ka data kam tha it still came in training I mean it helped kind of but not fully cause data hi kam tha\n- [01:04 - 01:05]: um\n- [01:06 - 01:07]: so training the\n- [01:11 - 01:21]: it's it's like our first time training something this big memory ka kaafi issue de raha tha\n- [01:22 - 01:28]: and GPU be limited tha so um we did like the gradient accumulation\n- [01:33 - 01:51]: in chunks like um small parts so it doesn't crash or something so like haan it was kind of difficult but I mean we did jugaad and somehow trained it and yeah I\n\nToo fast segments:\n- [01:51 - 01:57]: I learned a lot but still like next time we can do better you know what I mean\n",
+    "score": 3.1
+  },
   "pause_analysis": {
-    "overview": "9 rushed transitions (<0.2s) causing technical terms to blend",
+    "overview": "4 rushed transitions (< 0.11s), 45 well-placed strategic pauses",
     "details": [
-      "⚠️ Rushed transition (0.1s) between 'watermarking' → 'to': Causes critical technical concept to get lost",
-      "⚠️ Rushed transition (0.0s) between 'scaling' → 'temporarily': Reduces emphasis on solution limitations"
+      "⚠️ Rushed transition (0.0s) between 'so' → 'model' at 00:14: add a tiny pause so listeners can follow.",
+      "⚠️ Rushed transition (0.0s) between 'like' → 'you' at 00:40: add a tiny pause so listeners can follow.",
+      "✅ Good pause (0.2s) before 'ODIA' at 00:07: nice emphasis.",
+      "✅ Good pause (0.4s) before 'you' at 00:08: nice emphasis."
     ],
     "distribution": {
-      "long": "3.8%",
-      "rushed": "18.9%",
-      "strategic": "5.2%",
-      "normal": "72.1%"
-    }
+      "long": "0.0%",
+      "rushed": "7.5%",
+      "strategic": "84.9%",
+      "normal": "7.5%"
+    },
+    "actionable_feedback": "You did a great job using pauses overall! However, try to slow down just a bit during transitions to make it easier for everyone to follow your ideas. For example, after 'so' at (00:14) and after 'like' at (00:40), adding a tiny pause will help. This will make your speech clearer for the listeners.",
+    "score": 5
   }
 }
     ]
