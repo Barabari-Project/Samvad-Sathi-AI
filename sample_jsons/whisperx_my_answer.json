@@ -1,1326 +1,1235 @@
 {
-    "detected_language": "en",
-    "segments": [
-        {
-            "end": 2.63,
-            "start": 2.29,
-            "text": " Yeah.",
-            "words": [
-                {
-                    "end": 2.63,
-                    "score": 0.726,
-                    "start": 2.29,
-                    "word": "Yeah."
-                }
-            ]
-        },
-        {
-            "end": 13.214,
-            "start": 2.77,
-            "text": "So, um, one technical challenge was like audio language, you know, it had like way less data than others.",
-            "words": [
-                {
-                    "end": 3.17,
-                    "score": 0.941,
-                    "start": 2.77,
-                    "word": "So,"
-                },
-                {
-                    "end": 3.671,
-                    "score": 0.722,
-                    "start": 3.47,
-                    "word": "um,"
-                },
-                {
-                    "end": 4.731,
-                    "score": 0.775,
-                    "start": 4.611,
-                    "word": "one"
-                },
-                {
-                    "end": 5.211,
-                    "score": 0.929,
-                    "start": 4.791,
-                    "word": "technical"
-                },
-                {
-                    "end": 5.691,
-                    "score": 0.903,
-                    "start": 5.271,
-                    "word": "challenge"
-                },
-                {
-                    "end": 6.132,
-                    "score": 0.894,
-                    "start": 5.791,
-                    "word": "was"
-                },
-                {
-                    "end": 6.612,
-                    "score": 0.957,
-                    "start": 6.292,
-                    "word": "like"
-                },
-                {
-                    "end": 7.972,
-                    "score": 0.654,
-                    "start": 7.652,
-                    "word": "audio"
-                },
-                {
-                    "end": 8.372,
-                    "score": 0.809,
-                    "start": 8.012,
-                    "word": "language,"
-                },
-                {
-                    "end": 8.733,
-                    "score": 0.82,
-                    "start": 8.652,
-                    "word": "you"
-                },
-                {
-                    "end": 8.933,
-                    "score": 0.902,
-                    "start": 8.793,
-                    "word": "know,"
-                },
-                {
-                    "end": 10.113,
-                    "score": 0.958,
-                    "start": 10.033,
-                    "word": "it"
-                },
-                {
-                    "end": 10.593,
-                    "score": 0.854,
-                    "start": 10.253,
-                    "word": "had"
-                },
-                {
-                    "end": 11.033,
-                    "score": 0.926,
-                    "start": 10.753,
-                    "word": "like"
-                },
-                {
-                    "end": 11.774,
-                    "score": 0.719,
-                    "start": 11.494,
-                    "word": "way"
-                },
-                {
-                    "end": 12.014,
-                    "score": 0.92,
-                    "start": 11.794,
-                    "word": "less"
-                },
-                {
-                    "end": 12.474,
-                    "score": 0.829,
-                    "start": 12.094,
-                    "word": "data"
-                },
-                {
-                    "end": 12.734,
-                    "score": 0.807,
-                    "start": 12.554,
-                    "word": "than"
-                },
-                {
-                    "end": 13.214,
-                    "score": 0.598,
-                    "start": 12.834,
-                    "word": "others."
-                }
-            ]
-        },
-        {
-            "end": 17.856,
-            "start": 13.434,
-            "text": "So model was like kind of struggling to learn it properly.",
-            "words": [
-                {
-                    "end": 13.754,
-                    "score": 0.937,
-                    "start": 13.434,
-                    "word": "So"
-                },
-                {
-                    "end": 14.755,
-                    "score": 0.911,
-                    "start": 14.435,
-                    "word": "model"
-                },
-                {
-                    "end": 15.075,
-                    "score": 0.784,
-                    "start": 14.795,
-                    "word": "was"
-                },
-                {
-                    "end": 15.455,
-                    "score": 0.883,
-                    "start": 15.175,
-                    "word": "like"
-                },
-                {
-                    "end": 16.175,
-                    "score": 0.821,
-                    "start": 15.935,
-                    "word": "kind"
-                },
-                {
-                    "end": 16.295,
-                    "score": 0.827,
-                    "start": 16.215,
-                    "word": "of"
-                },
-                {
-                    "end": 16.816,
-                    "score": 0.876,
-                    "start": 16.355,
-                    "word": "struggling"
-                },
-                {
-                    "end": 16.976,
-                    "score": 0.827,
-                    "start": 16.876,
-                    "word": "to"
-                },
-                {
-                    "end": 17.216,
-                    "score": 0.821,
-                    "start": 17.016,
-                    "word": "learn"
-                },
-                {
-                    "end": 17.316,
-                    "score": 0.978,
-                    "start": 17.256,
-                    "word": "it"
-                },
-                {
-                    "end": 17.856,
-                    "score": 0.889,
-                    "start": 17.376,
-                    "word": "properly."
-                }
-            ]
-        },
-        {
-            "end": 27.98,
-            "start": 19.237,
-            "text": "I'm like, you know, the loss was, and all loss was high and all, and, um, it had",
-            "words": [
-                {
-                    "end": 19.357,
-                    "score": 0.806,
-                    "start": 19.237,
-                    "word": "I'm"
-                },
-                {
-                    "end": 19.597,
-                    "score": 0.808,
-                    "start": 19.397,
-                    "word": "like,"
-                },
-                {
-                    "end": 19.737,
-                    "score": 0.849,
-                    "start": 19.637,
-                    "word": "you"
-                },
-                {
-                    "end": 19.977,
-                    "score": 0.801,
-                    "start": 19.797,
-                    "word": "know,"
-                },
-                {
-                    "end": 20.857,
-                    "score": 0.939,
-                    "start": 20.737,
-                    "word": "the"
-                },
-                {
-                    "end": 21.217,
-                    "score": 0.871,
-                    "start": 20.897,
-                    "word": "loss"
-                },
-                {
-                    "end": 21.618,
-                    "score": 0.95,
-                    "start": 21.297,
-                    "word": "was,"
-                },
-                {
-                    "end": 22.178,
-                    "score": 0.806,
-                    "start": 22.038,
-                    "word": "and"
-                },
-                {
-                    "end": 23.098,
-                    "score": 0.547,
-                    "start": 22.878,
-                    "word": "all"
-                },
-                {
-                    "end": 23.838,
-                    "score": 0.82,
-                    "start": 23.618,
-                    "word": "loss"
-                },
-                {
-                    "end": 24.038,
-                    "score": 0.861,
-                    "start": 23.878,
-                    "word": "was"
-                },
-                {
-                    "end": 24.339,
-                    "score": 0.957,
-                    "start": 24.118,
-                    "word": "high"
-                },
-                {
-                    "end": 24.459,
-                    "score": 0.731,
-                    "start": 24.359,
-                    "word": "and"
-                },
-                {
-                    "end": 24.719,
-                    "score": 0.84,
-                    "start": 24.559,
-                    "word": "all,"
-                },
-                {
-                    "end": 25.679,
-                    "score": 0.748,
-                    "start": 25.499,
-                    "word": "and,"
-                },
-                {
-                    "end": 26.279,
-                    "score": 0.702,
-                    "start": 26.119,
-                    "word": "um,"
-                },
-                {
-                    "end": 27.7,
-                    "score": 0.952,
-                    "start": 27.62,
-                    "word": "it"
-                },
-                {
-                    "end": 27.98,
-                    "score": 0.936,
-                    "start": 27.78,
-                    "word": "had"
-                }
-            ]
-        },
-        {
-            "end": 57.556,
-            "start": 29.136,
-            "text": " just wasn't working good so um we tried to like fix that by making batches balanced like you know make sure each batch had thoda thoda from every language so like even if odia ka data kam tha it still came in training i mean it helped kind of but not fully",
-            "words": [
-                {
-                    "end": 29.336,
-                    "score": 0.802,
-                    "start": 29.136,
-                    "word": "just"
-                },
-                {
-                    "end": 29.696,
-                    "score": 0.894,
-                    "start": 29.396,
-                    "word": "wasn't"
-                },
-                {
-                    "end": 30.297,
-                    "score": 0.901,
-                    "start": 29.977,
-                    "word": "working"
-                },
-                {
-                    "end": 30.497,
-                    "score": 0.876,
-                    "start": 30.317,
-                    "word": "good"
-                },
-                {
-                    "end": 31.778,
-                    "score": 1,
-                    "start": 31.498,
-                    "word": "so"
-                },
-                {
-                    "end": 32.138,
-                    "score": 0.649,
-                    "start": 31.998,
-                    "word": "um"
-                },
-                {
-                    "end": 33.759,
-                    "score": 0.99,
-                    "start": 33.519,
-                    "word": "we"
-                },
-                {
-                    "end": 34.24,
-                    "score": 0.875,
-                    "start": 33.939,
-                    "word": "tried"
-                },
-                {
-                    "end": 34.64,
-                    "score": 0.94,
-                    "start": 34.38,
-                    "word": "to"
-                },
-                {
-                    "end": 35.641,
-                    "score": 0.833,
-                    "start": 35.38,
-                    "word": "like"
-                },
-                {
-                    "end": 36.421,
-                    "score": 0.852,
-                    "start": 36.101,
-                    "word": "fix"
-                },
-                {
-                    "end": 36.801,
-                    "score": 0.857,
-                    "start": 36.481,
-                    "word": "that"
-                },
-                {
-                    "end": 37.062,
-                    "score": 0.87,
-                    "start": 36.901,
-                    "word": "by"
-                },
-                {
-                    "end": 37.542,
-                    "score": 0.849,
-                    "start": 37.142,
-                    "word": "making"
-                },
-                {
-                    "end": 38.062,
-                    "score": 0.788,
-                    "start": 37.662,
-                    "word": "batches"
-                },
-                {
-                    "end": 38.603,
-                    "score": 0.879,
-                    "start": 38.182,
-                    "word": "balanced"
-                },
-                {
-                    "end": 40.424,
-                    "score": 0.972,
-                    "start": 40.204,
-                    "word": "like"
-                },
-                {
-                    "end": 40.584,
-                    "score": 0.89,
-                    "start": 40.464,
-                    "word": "you"
-                },
-                {
-                    "end": 40.804,
-                    "score": 0.782,
-                    "start": 40.624,
-                    "word": "know"
-                },
-                {
-                    "end": 41.485,
-                    "score": 0.888,
-                    "start": 41.285,
-                    "word": "make"
-                },
-                {
-                    "end": 41.885,
-                    "score": 0.847,
-                    "start": 41.585,
-                    "word": "sure"
-                },
-                {
-                    "end": 42.325,
-                    "score": 0.696,
-                    "start": 42.105,
-                    "word": "each"
-                },
-                {
-                    "end": 42.966,
-                    "score": 0.601,
-                    "start": 42.625,
-                    "word": "batch"
-                },
-                {
-                    "end": 43.366,
-                    "score": 0.853,
-                    "start": 43.146,
-                    "word": "had"
-                },
-                {
-                    "end": 43.826,
-                    "score": 0.856,
-                    "start": 43.486,
-                    "word": "thoda"
-                },
-                {
-                    "end": 44.267,
-                    "score": 0.882,
-                    "start": 43.886,
-                    "word": "thoda"
-                },
-                {
-                    "end": 44.667,
-                    "score": 0.87,
-                    "start": 44.447,
-                    "word": "from"
-                },
-                {
-                    "end": 45.067,
-                    "score": 0.956,
-                    "start": 44.827,
-                    "word": "every"
-                },
-                {
-                    "end": 45.507,
-                    "score": 0.891,
-                    "start": 45.107,
-                    "word": "language"
-                },
-                {
-                    "end": 47.389,
-                    "score": 0.788,
-                    "start": 47.209,
-                    "word": "so"
-                },
-                {
-                    "end": 47.649,
-                    "score": 0.918,
-                    "start": 47.429,
-                    "word": "like"
-                },
-                {
-                    "end": 48.169,
-                    "score": 0.818,
-                    "start": 47.949,
-                    "word": "even"
-                },
-                {
-                    "end": 48.369,
-                    "score": 0.871,
-                    "start": 48.269,
-                    "word": "if"
-                },
-                {
-                    "end": 49.23,
-                    "score": 0.868,
-                    "start": 48.93,
-                    "word": "odia"
-                },
-                {
-                    "end": 49.45,
-                    "score": 0.81,
-                    "start": 49.31,
-                    "word": "ka"
-                },
-                {
-                    "end": 49.911,
-                    "score": 0.887,
-                    "start": 49.49,
-                    "word": "data"
-                },
-                {
-                    "end": 50.451,
-                    "score": 0.71,
-                    "start": 50.191,
-                    "word": "kam"
-                },
-                {
-                    "end": 50.791,
-                    "score": 0.862,
-                    "start": 50.471,
-                    "word": "tha"
-                },
-                {
-                    "end": 51.512,
-                    "score": 0.963,
-                    "start": 51.392,
-                    "word": "it"
-                },
-                {
-                    "end": 52.012,
-                    "score": 0.932,
-                    "start": 51.612,
-                    "word": "still"
-                },
-                {
-                    "end": 52.432,
-                    "score": 0.946,
-                    "start": 52.192,
-                    "word": "came"
-                },
-                {
-                    "end": 52.572,
-                    "score": 0.964,
-                    "start": 52.492,
-                    "word": "in"
-                },
-                {
-                    "end": 53.013,
-                    "score": 0.759,
-                    "start": 52.632,
-                    "word": "training"
-                },
-                {
-                    "end": 54.093,
-                    "score": 0.692,
-                    "start": 54.033,
-                    "word": "i"
-                },
-                {
-                    "end": 54.334,
-                    "score": 0.752,
-                    "start": 54.133,
-                    "word": "mean"
-                },
-                {
-                    "end": 55.014,
-                    "score": 0.965,
-                    "start": 54.934,
-                    "word": "it"
-                },
-                {
-                    "end": 55.534,
-                    "score": 0.585,
-                    "start": 55.254,
-                    "word": "helped"
-                },
-                {
-                    "end": 55.895,
-                    "score": 0.784,
-                    "start": 55.675,
-                    "word": "kind"
-                },
-                {
-                    "end": 56.055,
-                    "score": 0.832,
-                    "start": 55.975,
-                    "word": "of"
-                },
-                {
-                    "end": 56.795,
-                    "score": 0.857,
-                    "start": 56.575,
-                    "word": "but"
-                },
-                {
-                    "end": 57.196,
-                    "score": 0.85,
-                    "start": 57.015,
-                    "word": "not"
-                },
-                {
-                    "end": 57.556,
-                    "score": 0.988,
-                    "start": 57.256,
-                    "word": "fully"
-                }
-            ]
-        },
-        {
-            "end": 60.353,
-            "start": 58.592,
-            "text": " Because the data was less.",
-            "words": [
-                {
-                    "end": 58.912,
-                    "score": 0.676,
-                    "start": 58.592,
-                    "word": "Because"
-                },
-                {
-                    "end": 59.553,
-                    "score": 0.495,
-                    "start": 59.432,
-                    "word": "the"
-                },
-                {
-                    "end": 59.833,
-                    "score": 0.406,
-                    "start": 59.573,
-                    "word": "data"
-                },
-                {
-                    "end": 60.073,
-                    "score": 0.661,
-                    "start": 59.873,
-                    "word": "was"
-                },
-                {
-                    "end": 60.353,
-                    "score": 0.38,
-                    "start": 60.093,
-                    "word": "less."
-                }
-            ]
-        },
-        {
-            "end": 61.634,
-            "start": 60.893,
-            "text": "You know what I mean.",
-            "words": [
-                {
-                    "end": 60.993,
-                    "score": 0.85,
-                    "start": 60.893,
-                    "word": "You"
-                },
-                {
-                    "end": 61.153,
-                    "score": 0.929,
-                    "start": 61.033,
-                    "word": "know"
-                },
-                {
-                    "end": 61.314,
-                    "score": 0.91,
-                    "start": 61.173,
-                    "word": "what"
-                },
-                {
-                    "end": 61.414,
-                    "score": 0.502,
-                    "start": 61.374,
-                    "word": "I"
-                },
-                {
-                    "end": 61.634,
-                    "score": 0.632,
-                    "start": 61.454,
-                    "word": "mean."
-                }
-            ]
-        },
-        {
-            "end": 70.919,
-            "start": 63.115,
-            "text": "And so, yeah, so training the model itself was like tough.",
-            "words": [
-                {
-                    "end": 63.235,
-                    "score": 0.834,
-                    "start": 63.115,
-                    "word": "And"
-                },
-                {
-                    "end": 63.635,
-                    "score": 0.887,
-                    "start": 63.315,
-                    "word": "so,"
-                },
-                {
-                    "end": 66.717,
-                    "score": 0.812,
-                    "start": 66.396,
-                    "word": "yeah,"
-                },
-                {
-                    "end": 67.057,
-                    "score": 0.896,
-                    "start": 66.797,
-                    "word": "so"
-                },
-                {
-                    "end": 67.817,
-                    "score": 0.917,
-                    "start": 67.377,
-                    "word": "training"
-                },
-                {
-                    "end": 68.337,
-                    "score": 0.933,
-                    "start": 68.217,
-                    "word": "the"
-                },
-                {
-                    "end": 68.758,
-                    "score": 0.916,
-                    "start": 68.397,
-                    "word": "model"
-                },
-                {
-                    "end": 69.278,
-                    "score": 0.928,
-                    "start": 68.858,
-                    "word": "itself"
-                },
-                {
-                    "end": 69.658,
-                    "score": 0.863,
-                    "start": 69.398,
-                    "word": "was"
-                },
-                {
-                    "end": 70.038,
-                    "score": 0.899,
-                    "start": 69.778,
-                    "word": "like"
-                },
-                {
-                    "end": 70.919,
-                    "score": 0.58,
-                    "start": 70.639,
-                    "word": "tough."
-                }
-            ]
-        },
-        {
-            "end": 77.302,
-            "start": 72.56,
-            "text": "It's like our first time training something this big.",
-            "words": [
-                {
-                    "end": 73.42,
-                    "score": 0.918,
-                    "start": 72.56,
-                    "word": "It's"
-                },
-                {
-                    "end": 73.86,
-                    "score": 0.948,
-                    "start": 73.6,
-                    "word": "like"
-                },
-                {
-                    "end": 75.301,
-                    "score": 0.256,
-                    "start": 75.121,
-                    "word": "our"
-                },
-                {
-                    "end": 75.601,
-                    "score": 0.77,
-                    "start": 75.341,
-                    "word": "first"
-                },
-                {
-                    "end": 75.862,
-                    "score": 0.853,
-                    "start": 75.661,
-                    "word": "time"
-                },
-                {
-                    "end": 76.262,
-                    "score": 0.868,
-                    "start": 75.922,
-                    "word": "training"
-                },
-                {
-                    "end": 76.722,
-                    "score": 0.828,
-                    "start": 76.322,
-                    "word": "something"
-                },
-                {
-                    "end": 76.982,
-                    "score": 0.889,
-                    "start": 76.782,
-                    "word": "this"
-                },
-                {
-                    "end": 77.302,
-                    "score": 0.999,
-                    "start": 77.082,
-                    "word": "big."
-                }
-            ]
-        },
-        {
-            "end": 81.084,
-            "start": 78.383,
-            "text": "Memory was giving a lot of issues.",
-            "words": [
-                {
-                    "end": 78.843,
-                    "score": 0.964,
-                    "start": 78.383,
-                    "word": "Memory"
-                },
-                {
-                    "end": 79.884,
-                    "score": 0.491,
-                    "start": 78.863,
-                    "word": "was"
-                },
-                {
-                    "end": 80.144,
-                    "score": 0.297,
-                    "start": 79.904,
-                    "word": "giving"
-                },
-                {
-                    "end": 80.184,
-                    "score": 0.004,
-                    "start": 80.164,
-                    "word": "a"
-                },
-                {
-                    "end": 80.464,
-                    "score": 0.685,
-                    "start": 80.204,
-                    "word": "lot"
-                },
-                {
-                    "end": 80.624,
-                    "score": 0.29,
-                    "start": 80.544,
-                    "word": "of"
-                },
-                {
-                    "end": 81.084,
-                    "score": 0.807,
-                    "start": 80.784,
-                    "word": "issues."
-                }
-            ]
-        },
-        {
-            "end": 110.822,
-            "start": 82.603,
-            "text": " and GPUB limited tha so um we did like the gradient accumulation and stuff and processed data in chunks like um small parts so it doesn't crash or something so like huh it was kind of difficult but I mean we did jugaad and somehow trained it and yeah",
-            "words": [
-                {
-                    "end": 82.743,
-                    "score": 0.678,
-                    "start": 82.603,
-                    "word": "and"
-                },
-                {
-                    "end": 83.704,
-                    "score": 0.808,
-                    "start": 83.103,
-                    "word": "GPUB"
-                },
-                {
-                    "end": 84.204,
-                    "score": 0.918,
-                    "start": 83.764,
-                    "word": "limited"
-                },
-                {
-                    "end": 84.564,
-                    "score": 0.602,
-                    "start": 84.264,
-                    "word": "tha"
-                },
-                {
-                    "end": 85.725,
-                    "score": 0.984,
-                    "start": 85.345,
-                    "word": "so"
-                },
-                {
-                    "end": 86.366,
-                    "score": 0.909,
-                    "start": 86.165,
-                    "word": "um"
-                },
-                {
-                    "end": 87.146,
-                    "score": 0.998,
-                    "start": 87.006,
-                    "word": "we"
-                },
-                {
-                    "end": 87.386,
-                    "score": 0.944,
-                    "start": 87.186,
-                    "word": "did"
-                },
-                {
-                    "end": 87.686,
-                    "score": 0.799,
-                    "start": 87.446,
-                    "word": "like"
-                },
-                {
-                    "end": 87.907,
-                    "score": 0.89,
-                    "start": 87.787,
-                    "word": "the"
-                },
-                {
-                    "end": 88.647,
-                    "score": 0.805,
-                    "start": 88.207,
-                    "word": "gradient"
-                },
-                {
-                    "end": 89.548,
-                    "score": 0.707,
-                    "start": 88.707,
-                    "word": "accumulation"
-                },
-                {
-                    "end": 89.848,
-                    "score": 0.799,
-                    "start": 89.748,
-                    "word": "and"
-                },
-                {
-                    "end": 90.268,
-                    "score": 0.987,
-                    "start": 89.928,
-                    "word": "stuff"
-                },
-                {
-                    "end": 91.549,
-                    "score": 0.589,
-                    "start": 91.389,
-                    "word": "and"
-                },
-                {
-                    "end": 92.41,
-                    "score": 0.832,
-                    "start": 91.569,
-                    "word": "processed"
-                },
-                {
-                    "end": 92.99,
-                    "score": 0.716,
-                    "start": 92.67,
-                    "word": "data"
-                },
-                {
-                    "end": 93.15,
-                    "score": 0.828,
-                    "start": 93.01,
-                    "word": "in"
-                },
-                {
-                    "end": 93.61,
-                    "score": 0.83,
-                    "start": 93.21,
-                    "word": "chunks"
-                },
-                {
-                    "end": 94.911,
-                    "score": 0.823,
-                    "start": 94.611,
-                    "word": "like"
-                },
-                {
-                    "end": 96.252,
-                    "score": 0.924,
-                    "start": 96.032,
-                    "word": "um"
-                },
-                {
-                    "end": 97.353,
-                    "score": 0.809,
-                    "start": 96.993,
-                    "word": "small"
-                },
-                {
-                    "end": 97.733,
-                    "score": 0.883,
-                    "start": 97.413,
-                    "word": "parts"
-                },
-                {
-                    "end": 98.214,
-                    "score": 0.902,
-                    "start": 97.913,
-                    "word": "so"
-                },
-                {
-                    "end": 98.414,
-                    "score": 0.838,
-                    "start": 98.334,
-                    "word": "it"
-                },
-                {
-                    "end": 98.794,
-                    "score": 0.836,
-                    "start": 98.474,
-                    "word": "doesn't"
-                },
-                {
-                    "end": 99.234,
-                    "score": 0.953,
-                    "start": 98.874,
-                    "word": "crash"
-                },
-                {
-                    "end": 99.374,
-                    "score": 0.98,
-                    "start": 99.314,
-                    "word": "or"
-                },
-                {
-                    "end": 99.795,
-                    "score": 0.912,
-                    "start": 99.414,
-                    "word": "something"
-                },
-                {
-                    "end": 101.196,
-                    "score": 0.926,
-                    "start": 100.855,
-                    "word": "so"
-                },
-                {
-                    "end": 101.856,
-                    "score": 0.742,
-                    "start": 101.576,
-                    "word": "like"
-                },
-                {
-                    "end": 102.797,
-                    "score": 0.78,
-                    "start": 102.516,
-                    "word": "huh"
-                },
-                {
-                    "end": 103.377,
-                    "score": 0.962,
-                    "start": 103.297,
-                    "word": "it"
-                },
-                {
-                    "end": 104.158,
-                    "score": 0.823,
-                    "start": 103.937,
-                    "word": "was"
-                },
-                {
-                    "end": 104.438,
-                    "score": 0.877,
-                    "start": 104.238,
-                    "word": "kind"
-                },
-                {
-                    "end": 104.578,
-                    "score": 0.668,
-                    "start": 104.498,
-                    "word": "of"
-                },
-                {
-                    "end": 105.158,
-                    "score": 0.913,
-                    "start": 104.658,
-                    "word": "difficult"
-                },
-                {
-                    "end": 105.498,
-                    "score": 0.848,
-                    "start": 105.318,
-                    "word": "but"
-                },
-                {
-                    "end": 106.019,
-                    "score": 0.921,
-                    "start": 105.959,
-                    "word": "I"
-                },
-                {
-                    "end": 106.319,
-                    "score": 0.848,
-                    "start": 106.079,
-                    "word": "mean"
-                },
-                {
-                    "end": 106.859,
-                    "score": 0.916,
-                    "start": 106.619,
-                    "word": "we"
-                },
-                {
-                    "end": 107.18,
-                    "score": 0.993,
-                    "start": 106.979,
-                    "word": "did"
-                },
-                {
-                    "end": 107.8,
-                    "score": 0.847,
-                    "start": 107.26,
-                    "word": "jugaad"
-                },
-                {
-                    "end": 108.681,
-                    "score": 0.651,
-                    "start": 108.52,
-                    "word": "and"
-                },
-                {
-                    "end": 109.301,
-                    "score": 0.921,
-                    "start": 108.821,
-                    "word": "somehow"
-                },
-                {
-                    "end": 109.641,
-                    "score": 0.751,
-                    "start": 109.381,
-                    "word": "trained"
-                },
-                {
-                    "end": 109.761,
-                    "score": 0.596,
-                    "start": 109.681,
-                    "word": "it"
-                },
-                {
-                    "end": 110.542,
-                    "score": 0.862,
-                    "start": 110.442,
-                    "word": "and"
-                },
-                {
-                    "end": 110.822,
-                    "score": 0.679,
-                    "start": 110.602,
-                    "word": "yeah"
-                }
-            ]
-        },
-        {
-            "end": 116.247,
-            "start": 111.914,
-            "text": " I learned a lot, but still like next time we can do better.",
-            "words": [
-                {
-                    "end": 112.035,
-                    "score": 0.799,
-                    "start": 111.914,
-                    "word": "I"
-                },
-                {
-                    "end": 112.356,
-                    "score": 0.868,
-                    "start": 112.075,
-                    "word": "learned"
-                },
-                {
-                    "end": 112.456,
-                    "score": 0.524,
-                    "start": 112.416,
-                    "word": "a"
-                },
-                {
-                    "end": 112.757,
-                    "score": 0.993,
-                    "start": 112.516,
-                    "word": "lot,"
-                },
-                {
-                    "end": 113.338,
-                    "score": 0.939,
-                    "start": 113.158,
-                    "word": "but"
-                },
-                {
-                    "end": 113.8,
-                    "score": 0.98,
-                    "start": 113.459,
-                    "word": "still"
-                },
-                {
-                    "end": 114.121,
-                    "score": 0.9,
-                    "start": 113.88,
-                    "word": "like"
-                },
-                {
-                    "end": 114.923,
-                    "score": 0.846,
-                    "start": 114.662,
-                    "word": "next"
-                },
-                {
-                    "end": 115.264,
-                    "score": 0.712,
-                    "start": 115.003,
-                    "word": "time"
-                },
-                {
-                    "end": 115.505,
-                    "score": 0.999,
-                    "start": 115.385,
-                    "word": "we"
-                },
-                {
-                    "end": 115.746,
-                    "score": 0.756,
-                    "start": 115.545,
-                    "word": "can"
-                },
-                {
-                    "end": 115.886,
-                    "score": 0.984,
-                    "start": 115.786,
-                    "word": "do"
-                },
-                {
-                    "end": 116.247,
-                    "score": 0.802,
-                    "start": 115.946,
-                    "word": "better."
-                }
-            ]
-        },
-        {
-            "end": 117.15,
-            "start": 116.428,
-            "text": "You know what I mean?",
-            "words": [
-                {
-                    "end": 116.528,
-                    "score": 0.917,
-                    "start": 116.428,
-                    "word": "You"
-                },
-                {
-                    "end": 116.709,
-                    "score": 0.79,
-                    "start": 116.568,
-                    "word": "know"
-                },
-                {
-                    "end": 116.889,
-                    "score": 0.796,
-                    "start": 116.729,
-                    "word": "what"
-                },
-                {
-                    "end": 116.989,
-                    "score": 0.584,
-                    "start": 116.949,
-                    "word": "I"
-                },
-                {
-                    "end": 117.15,
-                    "score": 0.936,
-                    "start": 117.05,
-                    "word": "mean?"
-                }
-            ]
-        }
-    ]
+  "words": [
+    {
+      "end": 2.63,
+      "score": 0.726,
+      "start": 2.29,
+      "word": "Yeah."
+    },
+    {
+      "end": 3.17,
+      "score": 0.941,
+      "start": 2.77,
+      "word": "So,"
+    },
+    {
+      "end": 3.671,
+      "score": 0.722,
+      "start": 3.47,
+      "word": "um,"
+    },
+    {
+      "end": 4.731,
+      "score": 0.775,
+      "start": 4.611,
+      "word": "one"
+    },
+    {
+      "end": 5.211,
+      "score": 0.929,
+      "start": 4.791,
+      "word": "technical"
+    },
+    {
+      "end": 5.691,
+      "score": 0.903,
+      "start": 5.271,
+      "word": "challenge"
+    },
+    {
+      "end": 6.132,
+      "score": 0.894,
+      "start": 5.791,
+      "word": "was"
+    },
+    {
+      "end": 6.612,
+      "score": 0.957,
+      "start": 6.292,
+      "word": "like"
+    },
+    {
+      "end": 7.972,
+      "score": 0.654,
+      "start": 7.652,
+      "word": "audio"
+    },
+    {
+      "end": 8.372,
+      "score": 0.809,
+      "start": 8.012,
+      "word": "language,"
+    },
+    {
+      "end": 8.733,
+      "score": 0.82,
+      "start": 8.652,
+      "word": "you"
+    },
+    {
+      "end": 8.933,
+      "score": 0.902,
+      "start": 8.793,
+      "word": "know,"
+    },
+    {
+      "end": 10.113,
+      "score": 0.958,
+      "start": 10.033,
+      "word": "it"
+    },
+    {
+      "end": 10.593,
+      "score": 0.854,
+      "start": 10.253,
+      "word": "had"
+    },
+    {
+      "end": 11.033,
+      "score": 0.926,
+      "start": 10.753,
+      "word": "like"
+    },
+    {
+      "end": 11.774,
+      "score": 0.719,
+      "start": 11.494,
+      "word": "way"
+    },
+    {
+      "end": 12.014,
+      "score": 0.92,
+      "start": 11.794,
+      "word": "less"
+    },
+    {
+      "end": 12.474,
+      "score": 0.829,
+      "start": 12.094,
+      "word": "data"
+    },
+    {
+      "end": 12.734,
+      "score": 0.807,
+      "start": 12.554,
+      "word": "than"
+    },
+    {
+      "end": 13.214,
+      "score": 0.598,
+      "start": 12.834,
+      "word": "others."
+    },
+    {
+      "end": 13.754,
+      "score": 0.937,
+      "start": 13.434,
+      "word": "So"
+    },
+    {
+      "end": 14.755,
+      "score": 0.911,
+      "start": 14.435,
+      "word": "model"
+    },
+    {
+      "end": 15.075,
+      "score": 0.784,
+      "start": 14.795,
+      "word": "was"
+    },
+    {
+      "end": 15.455,
+      "score": 0.883,
+      "start": 15.175,
+      "word": "like"
+    },
+    {
+      "end": 16.175,
+      "score": 0.821,
+      "start": 15.935,
+      "word": "kind"
+    },
+    {
+      "end": 16.295,
+      "score": 0.827,
+      "start": 16.215,
+      "word": "of"
+    },
+    {
+      "end": 16.816,
+      "score": 0.876,
+      "start": 16.355,
+      "word": "struggling"
+    },
+    {
+      "end": 16.976,
+      "score": 0.827,
+      "start": 16.876,
+      "word": "to"
+    },
+    {
+      "end": 17.216,
+      "score": 0.821,
+      "start": 17.016,
+      "word": "learn"
+    },
+    {
+      "end": 17.316,
+      "score": 0.978,
+      "start": 17.256,
+      "word": "it"
+    },
+    {
+      "end": 17.856,
+      "score": 0.889,
+      "start": 17.376,
+      "word": "properly."
+    },
+    {
+      "end": 19.357,
+      "score": 0.806,
+      "start": 19.237,
+      "word": "I'm"
+    },
+    {
+      "end": 19.597,
+      "score": 0.808,
+      "start": 19.397,
+      "word": "like,"
+    },
+    {
+      "end": 19.737,
+      "score": 0.849,
+      "start": 19.637,
+      "word": "you"
+    },
+    {
+      "end": 19.977,
+      "score": 0.801,
+      "start": 19.797,
+      "word": "know,"
+    },
+    {
+      "end": 20.857,
+      "score": 0.939,
+      "start": 20.737,
+      "word": "the"
+    },
+    {
+      "end": 21.217,
+      "score": 0.871,
+      "start": 20.897,
+      "word": "loss"
+    },
+    {
+      "end": 21.618,
+      "score": 0.95,
+      "start": 21.297,
+      "word": "was,"
+    },
+    {
+      "end": 22.178,
+      "score": 0.806,
+      "start": 22.038,
+      "word": "and"
+    },
+    {
+      "end": 23.098,
+      "score": 0.547,
+      "start": 22.878,
+      "word": "all"
+    },
+    {
+      "end": 23.838,
+      "score": 0.82,
+      "start": 23.618,
+      "word": "loss"
+    },
+    {
+      "end": 24.038,
+      "score": 0.861,
+      "start": 23.878,
+      "word": "was"
+    },
+    {
+      "end": 24.339,
+      "score": 0.957,
+      "start": 24.118,
+      "word": "high"
+    },
+    {
+      "end": 24.459,
+      "score": 0.731,
+      "start": 24.359,
+      "word": "and"
+    },
+    {
+      "end": 24.719,
+      "score": 0.84,
+      "start": 24.559,
+      "word": "all,"
+    },
+    {
+      "end": 25.679,
+      "score": 0.748,
+      "start": 25.499,
+      "word": "and,"
+    },
+    {
+      "end": 26.279,
+      "score": 0.702,
+      "start": 26.119,
+      "word": "um,"
+    },
+    {
+      "end": 27.7,
+      "score": 0.952,
+      "start": 27.62,
+      "word": "it"
+    },
+    {
+      "end": 27.98,
+      "score": 0.936,
+      "start": 27.78,
+      "word": "had"
+    },
+    {
+      "end": 29.336,
+      "score": 0.802,
+      "start": 29.136,
+      "word": "just"
+    },
+    {
+      "end": 29.696,
+      "score": 0.894,
+      "start": 29.396,
+      "word": "wasn't"
+    },
+    {
+      "end": 30.297,
+      "score": 0.901,
+      "start": 29.977,
+      "word": "working"
+    },
+    {
+      "end": 30.497,
+      "score": 0.876,
+      "start": 30.317,
+      "word": "good"
+    },
+    {
+      "end": 31.778,
+      "score": 1,
+      "start": 31.498,
+      "word": "so"
+    },
+    {
+      "end": 32.138,
+      "score": 0.649,
+      "start": 31.998,
+      "word": "um"
+    },
+    {
+      "end": 33.759,
+      "score": 0.99,
+      "start": 33.519,
+      "word": "we"
+    },
+    {
+      "end": 34.24,
+      "score": 0.875,
+      "start": 33.939,
+      "word": "tried"
+    },
+    {
+      "end": 34.64,
+      "score": 0.94,
+      "start": 34.38,
+      "word": "to"
+    },
+    {
+      "end": 35.641,
+      "score": 0.833,
+      "start": 35.38,
+      "word": "like"
+    },
+    {
+      "end": 36.421,
+      "score": 0.852,
+      "start": 36.101,
+      "word": "fix"
+    },
+    {
+      "end": 36.801,
+      "score": 0.857,
+      "start": 36.481,
+      "word": "that"
+    },
+    {
+      "end": 37.062,
+      "score": 0.87,
+      "start": 36.901,
+      "word": "by"
+    },
+    {
+      "end": 37.542,
+      "score": 0.849,
+      "start": 37.142,
+      "word": "making"
+    },
+    {
+      "end": 38.062,
+      "score": 0.788,
+      "start": 37.662,
+      "word": "batches"
+    },
+    {
+      "end": 38.603,
+      "score": 0.879,
+      "start": 38.182,
+      "word": "balanced"
+    },
+    {
+      "end": 40.424,
+      "score": 0.972,
+      "start": 40.204,
+      "word": "like"
+    },
+    {
+      "end": 40.584,
+      "score": 0.89,
+      "start": 40.464,
+      "word": "you"
+    },
+    {
+      "end": 40.804,
+      "score": 0.782,
+      "start": 40.624,
+      "word": "know"
+    },
+    {
+      "end": 41.485,
+      "score": 0.888,
+      "start": 41.285,
+      "word": "make"
+    },
+    {
+      "end": 41.885,
+      "score": 0.847,
+      "start": 41.585,
+      "word": "sure"
+    },
+    {
+      "end": 42.325,
+      "score": 0.696,
+      "start": 42.105,
+      "word": "each"
+    },
+    {
+      "end": 42.966,
+      "score": 0.601,
+      "start": 42.625,
+      "word": "batch"
+    },
+    {
+      "end": 43.366,
+      "score": 0.853,
+      "start": 43.146,
+      "word": "had"
+    },
+    {
+      "end": 43.826,
+      "score": 0.856,
+      "start": 43.486,
+      "word": "thoda"
+    },
+    {
+      "end": 44.267,
+      "score": 0.882,
+      "start": 43.886,
+      "word": "thoda"
+    },
+    {
+      "end": 44.667,
+      "score": 0.87,
+      "start": 44.447,
+      "word": "from"
+    },
+    {
+      "end": 45.067,
+      "score": 0.956,
+      "start": 44.827,
+      "word": "every"
+    },
+    {
+      "end": 45.507,
+      "score": 0.891,
+      "start": 45.107,
+      "word": "language"
+    },
+    {
+      "end": 47.389,
+      "score": 0.788,
+      "start": 47.209,
+      "word": "so"
+    },
+    {
+      "end": 47.649,
+      "score": 0.918,
+      "start": 47.429,
+      "word": "like"
+    },
+    {
+      "end": 48.169,
+      "score": 0.818,
+      "start": 47.949,
+      "word": "even"
+    },
+    {
+      "end": 48.369,
+      "score": 0.871,
+      "start": 48.269,
+      "word": "if"
+    },
+    {
+      "end": 49.23,
+      "score": 0.868,
+      "start": 48.93,
+      "word": "odia"
+    },
+    {
+      "end": 49.45,
+      "score": 0.81,
+      "start": 49.31,
+      "word": "ka"
+    },
+    {
+      "end": 49.911,
+      "score": 0.887,
+      "start": 49.49,
+      "word": "data"
+    },
+    {
+      "end": 50.451,
+      "score": 0.71,
+      "start": 50.191,
+      "word": "kam"
+    },
+    {
+      "end": 50.791,
+      "score": 0.862,
+      "start": 50.471,
+      "word": "tha"
+    },
+    {
+      "end": 51.512,
+      "score": 0.963,
+      "start": 51.392,
+      "word": "it"
+    },
+    {
+      "end": 52.012,
+      "score": 0.932,
+      "start": 51.612,
+      "word": "still"
+    },
+    {
+      "end": 52.432,
+      "score": 0.946,
+      "start": 52.192,
+      "word": "came"
+    },
+    {
+      "end": 52.572,
+      "score": 0.964,
+      "start": 52.492,
+      "word": "in"
+    },
+    {
+      "end": 53.013,
+      "score": 0.759,
+      "start": 52.632,
+      "word": "training"
+    },
+    {
+      "end": 54.093,
+      "score": 0.692,
+      "start": 54.033,
+      "word": "i"
+    },
+    {
+      "end": 54.334,
+      "score": 0.752,
+      "start": 54.133,
+      "word": "mean"
+    },
+    {
+      "end": 55.014,
+      "score": 0.965,
+      "start": 54.934,
+      "word": "it"
+    },
+    {
+      "end": 55.534,
+      "score": 0.585,
+      "start": 55.254,
+      "word": "helped"
+    },
+    {
+      "end": 55.895,
+      "score": 0.784,
+      "start": 55.675,
+      "word": "kind"
+    },
+    {
+      "end": 56.055,
+      "score": 0.832,
+      "start": 55.975,
+      "word": "of"
+    },
+    {
+      "end": 56.795,
+      "score": 0.857,
+      "start": 56.575,
+      "word": "but"
+    },
+    {
+      "end": 57.196,
+      "score": 0.85,
+      "start": 57.015,
+      "word": "not"
+    },
+    {
+      "end": 57.556,
+      "score": 0.988,
+      "start": 57.256,
+      "word": "fully"
+    },
+    {
+      "end": 58.912,
+      "score": 0.676,
+      "start": 58.592,
+      "word": "Because"
+    },
+    {
+      "end": 59.553,
+      "score": 0.495,
+      "start": 59.432,
+      "word": "the"
+    },
+    {
+      "end": 59.833,
+      "score": 0.406,
+      "start": 59.573,
+      "word": "data"
+    },
+    {
+      "end": 60.073,
+      "score": 0.661,
+      "start": 59.873,
+      "word": "was"
+    },
+    {
+      "end": 60.353,
+      "score": 0.38,
+      "start": 60.093,
+      "word": "less."
+    },
+    {
+      "end": 60.993,
+      "score": 0.85,
+      "start": 60.893,
+      "word": "You"
+    },
+    {
+      "end": 61.153,
+      "score": 0.929,
+      "start": 61.033,
+      "word": "know"
+    },
+    {
+      "end": 61.314,
+      "score": 0.91,
+      "start": 61.173,
+      "word": "what"
+    },
+    {
+      "end": 61.414,
+      "score": 0.502,
+      "start": 61.374,
+      "word": "I"
+    },
+    {
+      "end": 61.634,
+      "score": 0.632,
+      "start": 61.454,
+      "word": "mean."
+    },
+    {
+      "end": 63.235,
+      "score": 0.834,
+      "start": 63.115,
+      "word": "And"
+    },
+    {
+      "end": 63.635,
+      "score": 0.887,
+      "start": 63.315,
+      "word": "so,"
+    },
+    {
+      "end": 66.717,
+      "score": 0.812,
+      "start": 66.396,
+      "word": "yeah,"
+    },
+    {
+      "end": 67.057,
+      "score": 0.896,
+      "start": 66.797,
+      "word": "so"
+    },
+    {
+      "end": 67.817,
+      "score": 0.917,
+      "start": 67.377,
+      "word": "training"
+    },
+    {
+      "end": 68.337,
+      "score": 0.933,
+      "start": 68.217,
+      "word": "the"
+    },
+    {
+      "end": 68.758,
+      "score": 0.916,
+      "start": 68.397,
+      "word": "model"
+    },
+    {
+      "end": 69.278,
+      "score": 0.928,
+      "start": 68.858,
+      "word": "itself"
+    },
+    {
+      "end": 69.658,
+      "score": 0.863,
+      "start": 69.398,
+      "word": "was"
+    },
+    {
+      "end": 70.038,
+      "score": 0.899,
+      "start": 69.778,
+      "word": "like"
+    },
+    {
+      "end": 70.919,
+      "score": 0.58,
+      "start": 70.639,
+      "word": "tough."
+    },
+    {
+      "end": 73.42,
+      "score": 0.918,
+      "start": 72.56,
+      "word": "It's"
+    },
+    {
+      "end": 73.86,
+      "score": 0.948,
+      "start": 73.6,
+      "word": "like"
+    },
+    {
+      "end": 75.301,
+      "score": 0.256,
+      "start": 75.121,
+      "word": "our"
+    },
+    {
+      "end": 75.601,
+      "score": 0.77,
+      "start": 75.341,
+      "word": "first"
+    },
+    {
+      "end": 75.862,
+      "score": 0.853,
+      "start": 75.661,
+      "word": "time"
+    },
+    {
+      "end": 76.262,
+      "score": 0.868,
+      "start": 75.922,
+      "word": "training"
+    },
+    {
+      "end": 76.722,
+      "score": 0.828,
+      "start": 76.322,
+      "word": "something"
+    },
+    {
+      "end": 76.982,
+      "score": 0.889,
+      "start": 76.782,
+      "word": "this"
+    },
+    {
+      "end": 77.302,
+      "score": 0.999,
+      "start": 77.082,
+      "word": "big."
+    },
+    {
+      "end": 78.843,
+      "score": 0.964,
+      "start": 78.383,
+      "word": "Memory"
+    },
+    {
+      "end": 79.884,
+      "score": 0.491,
+      "start": 78.863,
+      "word": "was"
+    },
+    {
+      "end": 80.144,
+      "score": 0.297,
+      "start": 79.904,
+      "word": "giving"
+    },
+    {
+      "end": 80.184,
+      "score": 0.004,
+      "start": 80.164,
+      "word": "a"
+    },
+    {
+      "end": 80.464,
+      "score": 0.685,
+      "start": 80.204,
+      "word": "lot"
+    },
+    {
+      "end": 80.624,
+      "score": 0.29,
+      "start": 80.544,
+      "word": "of"
+    },
+    {
+      "end": 81.084,
+      "score": 0.807,
+      "start": 80.784,
+      "word": "issues."
+    },
+    {
+      "end": 82.743,
+      "score": 0.678,
+      "start": 82.603,
+      "word": "and"
+    },
+    {
+      "end": 83.704,
+      "score": 0.808,
+      "start": 83.103,
+      "word": "GPUB"
+    },
+    {
+      "end": 84.204,
+      "score": 0.918,
+      "start": 83.764,
+      "word": "limited"
+    },
+    {
+      "end": 84.564,
+      "score": 0.602,
+      "start": 84.264,
+      "word": "tha"
+    },
+    {
+      "end": 85.725,
+      "score": 0.984,
+      "start": 85.345,
+      "word": "so"
+    },
+    {
+      "end": 86.366,
+      "score": 0.909,
+      "start": 86.165,
+      "word": "um"
+    },
+    {
+      "end": 87.146,
+      "score": 0.998,
+      "start": 87.006,
+      "word": "we"
+    },
+    {
+      "end": 87.386,
+      "score": 0.944,
+      "start": 87.186,
+      "word": "did"
+    },
+    {
+      "end": 87.686,
+      "score": 0.799,
+      "start": 87.446,
+      "word": "like"
+    },
+    {
+      "end": 87.907,
+      "score": 0.89,
+      "start": 87.787,
+      "word": "the"
+    },
+    {
+      "end": 88.647,
+      "score": 0.805,
+      "start": 88.207,
+      "word": "gradient"
+    },
+    {
+      "end": 89.548,
+      "score": 0.707,
+      "start": 88.707,
+      "word": "accumulation"
+    },
+    {
+      "end": 89.848,
+      "score": 0.799,
+      "start": 89.748,
+      "word": "and"
+    },
+    {
+      "end": 90.268,
+      "score": 0.987,
+      "start": 89.928,
+      "word": "stuff"
+    },
+    {
+      "end": 91.549,
+      "score": 0.589,
+      "start": 91.389,
+      "word": "and"
+    },
+    {
+      "end": 92.41,
+      "score": 0.832,
+      "start": 91.569,
+      "word": "processed"
+    },
+    {
+      "end": 92.99,
+      "score": 0.716,
+      "start": 92.67,
+      "word": "data"
+    },
+    {
+      "end": 93.15,
+      "score": 0.828,
+      "start": 93.01,
+      "word": "in"
+    },
+    {
+      "end": 93.61,
+      "score": 0.83,
+      "start": 93.21,
+      "word": "chunks"
+    },
+    {
+      "end": 94.911,
+      "score": 0.823,
+      "start": 94.611,
+      "word": "like"
+    },
+    {
+      "end": 96.252,
+      "score": 0.924,
+      "start": 96.032,
+      "word": "um"
+    },
+    {
+      "end": 97.353,
+      "score": 0.809,
+      "start": 96.993,
+      "word": "small"
+    },
+    {
+      "end": 97.733,
+      "score": 0.883,
+      "start": 97.413,
+      "word": "parts"
+    },
+    {
+      "end": 98.214,
+      "score": 0.902,
+      "start": 97.913,
+      "word": "so"
+    },
+    {
+      "end": 98.414,
+      "score": 0.838,
+      "start": 98.334,
+      "word": "it"
+    },
+    {
+      "end": 98.794,
+      "score": 0.836,
+      "start": 98.474,
+      "word": "doesn't"
+    },
+    {
+      "end": 99.234,
+      "score": 0.953,
+      "start": 98.874,
+      "word": "crash"
+    },
+    {
+      "end": 99.374,
+      "score": 0.98,
+      "start": 99.314,
+      "word": "or"
+    },
+    {
+      "end": 99.795,
+      "score": 0.912,
+      "start": 99.414,
+      "word": "something"
+    },
+    {
+      "end": 101.196,
+      "score": 0.926,
+      "start": 100.855,
+      "word": "so"
+    },
+    {
+      "end": 101.856,
+      "score": 0.742,
+      "start": 101.576,
+      "word": "like"
+    },
+    {
+      "end": 102.797,
+      "score": 0.78,
+      "start": 102.516,
+      "word": "huh"
+    },
+    {
+      "end": 103.377,
+      "score": 0.962,
+      "start": 103.297,
+      "word": "it"
+    },
+    {
+      "end": 104.158,
+      "score": 0.823,
+      "start": 103.937,
+      "word": "was"
+    },
+    {
+      "end": 104.438,
+      "score": 0.877,
+      "start": 104.238,
+      "word": "kind"
+    },
+    {
+      "end": 104.578,
+      "score": 0.668,
+      "start": 104.498,
+      "word": "of"
+    },
+    {
+      "end": 105.158,
+      "score": 0.913,
+      "start": 104.658,
+      "word": "difficult"
+    },
+    {
+      "end": 105.498,
+      "score": 0.848,
+      "start": 105.318,
+      "word": "but"
+    },
+    {
+      "end": 106.019,
+      "score": 0.921,
+      "start": 105.959,
+      "word": "I"
+    },
+    {
+      "end": 106.319,
+      "score": 0.848,
+      "start": 106.079,
+      "word": "mean"
+    },
+    {
+      "end": 106.859,
+      "score": 0.916,
+      "start": 106.619,
+      "word": "we"
+    },
+    {
+      "end": 107.18,
+      "score": 0.993,
+      "start": 106.979,
+      "word": "did"
+    },
+    {
+      "end": 107.8,
+      "score": 0.847,
+      "start": 107.26,
+      "word": "jugaad"
+    },
+    {
+      "end": 108.681,
+      "score": 0.651,
+      "start": 108.52,
+      "word": "and"
+    },
+    {
+      "end": 109.301,
+      "score": 0.921,
+      "start": 108.821,
+      "word": "somehow"
+    },
+    {
+      "end": 109.641,
+      "score": 0.751,
+      "start": 109.381,
+      "word": "trained"
+    },
+    {
+      "end": 109.761,
+      "score": 0.596,
+      "start": 109.681,
+      "word": "it"
+    },
+    {
+      "end": 110.542,
+      "score": 0.862,
+      "start": 110.442,
+      "word": "and"
+    },
+    {
+      "end": 110.822,
+      "score": 0.679,
+      "start": 110.602,
+      "word": "yeah"
+    },
+    {
+      "end": 112.035,
+      "score": 0.799,
+      "start": 111.914,
+      "word": "I"
+    },
+    {
+      "end": 112.356,
+      "score": 0.868,
+      "start": 112.075,
+      "word": "learned"
+    },
+    {
+      "end": 112.456,
+      "score": 0.524,
+      "start": 112.416,
+      "word": "a"
+    },
+    {
+      "end": 112.757,
+      "score": 0.993,
+      "start": 112.516,
+      "word": "lot,"
+    },
+    {
+      "end": 113.338,
+      "score": 0.939,
+      "start": 113.158,
+      "word": "but"
+    },
+    {
+      "end": 113.8,
+      "score": 0.98,
+      "start": 113.459,
+      "word": "still"
+    },
+    {
+      "end": 114.121,
+      "score": 0.9,
+      "start": 113.88,
+      "word": "like"
+    },
+    {
+      "end": 114.923,
+      "score": 0.846,
+      "start": 114.662,
+      "word": "next"
+    },
+    {
+      "end": 115.264,
+      "score": 0.712,
+      "start": 115.003,
+      "word": "time"
+    },
+    {
+      "end": 115.505,
+      "score": 0.999,
+      "start": 115.385,
+      "word": "we"
+    },
+    {
+      "end": 115.746,
+      "score": 0.756,
+      "start": 115.545,
+      "word": "can"
+    },
+    {
+      "end": 115.886,
+      "score": 0.984,
+      "start": 115.786,
+      "word": "do"
+    },
+    {
+      "end": 116.247,
+      "score": 0.802,
+      "start": 115.946,
+      "word": "better."
+    },
+    {
+      "end": 116.528,
+      "score": 0.917,
+      "start": 116.428,
+      "word": "You"
+    },
+    {
+      "end": 116.709,
+      "score": 0.79,
+      "start": 116.568,
+      "word": "know"
+    },
+    {
+      "end": 116.889,
+      "score": 0.796,
+      "start": 116.729,
+      "word": "what"
+    },
+    {
+      "end": 116.989,
+      "score": 0.584,
+      "start": 116.949,
+      "word": "I"
+    },
+    {
+      "end": 117.15,
+      "score": 0.936,
+      "start": 117.05,
+      "word": "mean?"
+    }
+  ],
+  "text": "Yeah. So, um, one technical challenge was like audio language, you know, it had like way less data than others. So model was like kind of struggling to learn it properly. I'm like, you know, the loss was, and all loss was high and all, and, um, it had just wasn't working good so um we tried to like fix that by making batches balanced like you know make sure each batch had thoda thoda from every language so like even if odia ka data kam tha it still came in training i mean it helped kind of but not fully Because the data was less. You know what I mean. And so, yeah, so training the model itself was like tough. It's like our first time training something this big. Memory was giving a lot of issues. and GPUB limited tha so um we did like the gradient accumulation and stuff and processed data in chunks like um small parts so it doesn't crash or something so like huh it was kind of difficult but I mean we did jugaad and somehow trained it and yeah I learned a lot, but still like next time we can do better. You know what I mean?"
 }

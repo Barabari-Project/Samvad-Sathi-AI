@@ -1,0 +1,98 @@
+{
+  "user_profile": {
+    "name": "Smit Shah",
+    "contact": {
+      "phone": "+91 7990391454",
+      "email": "smitshah084@gmail.com",
+      "linkedin": "linkedin.com/in/smit-shah-856b75266/",
+      "github": "https://github.com/smitshah084"
+    },
+    "education": {
+      "degree": "Bachelor of Technology in Computer Engineering",
+      "institution": "Dharamsinh Desai University, Nadiad, India",
+      "expected_graduation": "May 2026",
+      "CPI": "7.69 / 10"
+    },
+    "experience": [
+      {
+        "title": "AI Engineer (Freelance)",
+        "company": "The Barabari Collective",
+        "duration": "June 2025 – Present",
+        "responsibilities": [
+          "Spearheading the development of an AI-based interview assessment system with modules for resume parsing, adaptive question generation, and multi-modal evaluation.",
+          "Engineering a speech analysis module to evaluate fluency, pacing, filler words, and tone using openSMILE and custom signal processing.",
+          "Optimizing the system for mixed-language Indian speakers to enhance accuracy and deliver personalized feedback."
+        ]
+      },
+      {
+        "title": "AI/ML Team Member",
+        "company": "GDSC DDU Chapter",
+        "duration": "2023–2024",
+        "responsibilities": [
+          "Conducted an online session on the fundamentals of Machine Learning, teaching core concepts and practical applications to a diverse audience."
+        ]
+      }
+    ],
+    "certifications": [
+      "Finalist in Smart India Hackathon 2023 for the project Chatbot for Power Substation Queries using RAG and Python.",
+      "Participated in the Innovation Design and Entrepreneurship Bootcamp (May 2024) organized by AICTE and the Ministry of Education’s Innovation Cell.",
+      "Secured rank 972 out of 74,000 participants in the Amazon ML Challenge 2024 with a project on Fine-tuning microsoft/ﬂorence using Transformers and PyTorch.",
+      "Built a Neural Network from Scratch in core Python without ML using any libraries.",
+      "2nd Place (Rs. 2,000) in poster-making competition at A.idea – Where Innovation Meets AI, hosted by CSI DDU.",
+      "Advanced Learning Algorithms – DeepLearning.AI",
+      "Introduction to TensorFlow for AI, ML and DL – DeepLearning.AI",
+      "Supervised Machine Learning – Stanford University"
+    ],
+    "projects": [
+      {
+        "name": "ChatGPT 2 (124M)",
+        "description": "Trained and implemented from scratch in Pytorch",
+        "technologies": [
+          "Python",
+          "PyTorch",
+          "AWS"
+        ],
+        "details": [
+          "Winner of Bhashathon 2025, won a cash prize of Rs. 50,000.",
+          "Developed a multilingual next-token prediction model for six Indian languages.",
+          "Implemented and trained a GPT-2 model (124M parameters) from scratch in PyTorch.",
+          "Trained a SentencePiece unigram tokenizer (vocab size: 50,304) optimized for Indic languages and low-memory systems using reservoir sampling and chunk-based streaming.",
+          "Implemented end-to-end data preprocessing pipeline with parallelized processing, deduplication, and language-specific normalization across a 73 GB dataset (3.2B tokens).",
+          "Achieved a token generation speed of 56K tokens/sec on an AWS G5, NVIDIA A10G GPU; processed 4.1B tokens using gradient accumulation to manage memory constraints."
+        ]
+      }
+    ],
+    "skills": [
+      "Python",
+      "C++",
+      "JavaScript",
+      "PyTorch",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "FAISS",
+      "scikit-learn",
+      "Flask",
+      "FastAPI",
+      "Express.js",
+      "TensorFlow",
+      "Git",
+      "AWS",
+      "Linux",
+      "SentencePiece",
+      "OpenAI",
+      "OpenAI-Agents",
+      "Deepgram",
+      "openSMILE"
+    ]
+  },
+  "answer": "of, yeah, so um, one technical challenge was like, ODIA language, you know, it had, like, way less data than others, so, model was like, kind of struggling to learn it properly, I'm like, you know, the loss was, and all, loss was high and all, and um, it had, just wasn't working good, so um, we tried to, like, fix that by making batches balanced, like, you know, make sure each batch had thoda-thoda from every language, so like, even if ODIA ka data kam tha, it still came in training, I mean, it helped, kind of, but not fully, cause data hi kam tha, you know what I mean, and so, um, yeah, so, training the model itself was like, tough, it's, it's like, our first time training something this big, memory ka kaafi issue de raha tha, and GPU be limited tha, so, um, we did, like, the gradient accumulation and stuff, and processed data in chunks, like, um, small parts, so it doesn't crash or something, so, like, haan, it was kind of difficult, but, I mean, we did jugaad, and somehow trained it, and yeah, I learned a lot, but still, like, next time we can do better, you know what I mean.",
+  "years_of_experience": 0,
+  "Interview_Question": {
+      "category": "Resume-specific",
+      "difficulty": "Easy",
+      "question": "Can you elaborate on your experience with the ChatGPT 2 project? What challenges did you face when implementing the multilingual model?",
+      "hint": "Expect comments on parallel processing and normalization."
+    },
+  "job_role": "Data Science"
+}

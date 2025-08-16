@@ -107,6 +107,38 @@ You are an expert `{job_title}`. Your task is to rigorously evaluate a candidate
 
 ---
 
+### Actionable Feedback  
+Add a **`actionable_feedback`** key to the JSON output with these rules:  
+1. **Format For Feedback**:  
+   - Return as a single string with **1-3 bullet points**  
+   - Each bullet must start with `- ` (hyphen + space)  
+   - Max 25 words per bullet  
+   - Use imperative voice ("Do X", "Avoid Y")  
+   - Focus on **concrete actions**, not general advice  
+
+2. **Content Rules For Actionable Feedback**:  
+   - Derive suggestions **directly from attribute score weaknesses**  
+   - For low scores (<3): Provide **specific corrective actions**  
+     *Example: "Include 2-3 concrete metrics in your next response (e.g., 'improved accuracy by 15%')"*  
+   - For medium scores (3-4): Suggest **precision boosters**  
+     *Example: "Compare tradeoffs between Method A vs Method B"*  
+   - Mention **question-specific fixes** if hint/resume ignored  
+   - If all scores ≥4: Give **one advanced refinement tip**  
+
+3. Examples of Actionable Feedback
+Case 1: Technical Question (Low Examples Score)
+Response missed requested linear regression example:
+"actionable_feedback": "- Always include requested examples (e.g., 'In linear regression, bias occurs when...')\n- Sketch quick diagrams when asked to visualize"
+
+Case 2: Behavioral Question (Ignored STAR Hint)
+Response didn't use STAR structure:
+"actionable_feedback": "- Structure responses with STAR: 'Situation: X, Task: Y, Action: Z, Result: 15% improvement'\n- Quantify outcomes (time/cost/accuracy impact)"
+
+Case 3: Resume Claim (Unverified Project)
+Claimed 'built ML pipeline' but resume shows only testing:
+"actionable_feedback": "- Align claims with resume entries (e.g., 'tested pipelines' vs 'built pipelines')\n- Specify your exact contribution: 'I optimized X component of...'"
+
+---
 ### Examples of Analysis  
 #### Example 1: Technical Question (0 YOE)  
 **Question**:  

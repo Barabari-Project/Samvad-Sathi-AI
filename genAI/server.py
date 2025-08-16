@@ -21,7 +21,11 @@ import librosa
 import statistics
 from typing import List, Dict
 import replicate
+import httpx
+import re
 
+# Create an HTTPX client with longer timeouts
+custom_client = httpx.Client(timeout=httpx.Timeout(60.0))  # 5 min read timeout
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -96,9 +100,21 @@ def extract_json_dict(text: str):
             (text.rindex(']') + 1 if ']' in text else -1)
         )
         json_str = text[start:end]
+
+        # Remove trailing commas
+        json_str = re.sub(r',(\s*[}\]])', r'\1', json_str)
+
+        # Escape raw newlines inside quoted strings
+        def escape_newlines_in_strings(match):
+            return match.group(0).replace("\n", "\\n")
+
+        json_str = re.sub(r'"([^"\\]*(\\.[^"\\]*)*)"', escape_newlines_in_strings, json_str)
+        
         return json.loads(json_str)
     except json.JSONDecodeError as e:
+        print("LLM's OUTPUT")
         print(text)
+        print("Extracted JSON string")
         print(json_str)
         raise ValueError(f"Invalid JSON found: {e}")
 
@@ -373,13 +389,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     
     return JSONResponse(content=transcription)
 
-# @app.post('/upload_to_drive')
-# @app.post('/chage_format_to_wav')
-import httpx
-
-# Create an HTTPX client with longer timeouts
-custom_client = httpx.Client(timeout=httpx.Timeout(60.0))  # 5 min read timeout
-
 @app.post('/transcribe_whisperx')
 async def transcribe_whisperx(audio_file_link:str = Body(...)):
     '''
@@ -390,6 +399,11 @@ async def transcribe_whisperx(audio_file_link:str = Body(...)):
         
     Returns:
         JSONResponse: Detailed transcription output.
+        
+    Sample inputs:
+    1) my_answer.wav = https://drive.google.com/uc?export=download&id=125S0xMf-J86RTGqIRtOEtwWt_IvYirYW
+    2) bond_pause.mp3 = https://drive.google.com/uc?export=download&id=18IND7KyV2Od4QvvxvIJI8X3s06mosvb2
+    3) Telugu audio with fillers.m4a = https://drive.google.com/uc?export=download&id=1VQY_bm2I0CJkYkjsxPMDmVrDlZe23HPA
     '''
 
     # pre = 'https://drive.google.com/uc?export=download&id='
