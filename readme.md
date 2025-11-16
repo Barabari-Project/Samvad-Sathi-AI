@@ -1,3 +1,6 @@
+# Hosted on
+https://www.samvaad-sathi.barabaricollective.org/
+
 # genAI Interview-Coaching Toolkit
 
 This repository hosts a collection of **speech & text-analysis utilities** that power an
